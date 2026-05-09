@@ -1,0 +1,417 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* ============================================================
+     Brand — Apple dark-premium adaptation
+     Mantém #a2dd00 + off-white #f3f0ed como cores sagradas,
+     mas eleva o background com um preto mais profundo (Apple-like)
+     e uma escala de superfícies translúcidas em camadas.
+     ============================================================ */
+  --color-bg: #0a0a0c;
+  --color-bg-secondary: #0f1012;
+  --color-bg-elevated: #131418;
+  --color-card: rgba(28, 30, 36, 0.72);
+  --color-card-solid: #1a1c22;
+  --color-card-hover: rgba(36, 38, 46, 0.85);
+  --color-accent: #a2dd00;
+  --color-accent-hover: #b6f200;
+  --color-accent-soft: rgba(162, 221, 0, 0.12);
+  --color-text: #f3f0ed;
+  --color-text-secondary: rgba(243, 240, 237, 0.62);
+  --color-text-muted: rgba(243, 240, 237, 0.38);
+  --color-border: rgba(243, 240, 237, 0.06);
+  --color-border-strong: rgba(243, 240, 237, 0.12);
+  --color-border-accent: rgba(162, 221, 0, 0.4);
+  --color-danger: #f87171;
+  --color-warn: #fbbf24;
+
+  /* Apple radii — generosos, pill em CTAs */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-2xl: 22px;
+  --radius-3xl: 28px;
+  --radius-4xl: 36px;
+  --radius-pill: 980px;
+
+  /* Apple spacing rhythm: 4 / 8 / 16 / 24 / 48 / 96 */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 48px;
+  --space-2xl: 96px;
+
+  /* Easing — Apple's signature cubic-bezier */
+  --ease-out: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Sombras em camadas — Apple style */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.45);
+  --shadow-glow: 0 0 32px rgba(162, 221, 0, 0.18);
+
+  /* Fonts — SF Pro nativa, Inter como fallback web */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    var(--font-inter), "Segoe UI", system-ui, sans-serif;
+  --font-mono: "SF Mono", var(--font-jetbrains-mono), "JetBrains Mono",
+    ui-monospace, Menlo, monospace;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    background: var(--color-bg);
+    color: var(--color-text);
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.011em;
+    min-height: 100vh;
+    /* Sutil gradient ambiente — Apple loves these */
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(162, 221, 0, 0.06), transparent 60%),
+      radial-gradient(ellipse 60% 40% at 100% 0%, rgba(255, 255, 255, 0.02), transparent 50%);
+    background-attachment: fixed;
+  }
+  h1, h2, h3, h4 {
+    letter-spacing: -0.022em;
+    font-weight: 600;
+  }
+  h1 {
+    letter-spacing: -0.028em;
+  }
+  ::selection {
+    background: rgba(162, 221, 0, 0.28);
+    color: var(--color-text);
+  }
+  /* Smooth focus ring — Apple style */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+}
+
+@layer utilities {
+  /* ============================================================
+     Color utilities (semantic)
+     ============================================================ */
+  .text-secondary {
+    color: var(--color-text-secondary);
+  }
+  .text-muted {
+    color: var(--color-text-muted);
+  }
+  .bg-card {
+    background: var(--color-card);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+  }
+  .bg-card-hover {
+    background: var(--color-card-hover);
+  }
+  .bg-card-solid {
+    background: var(--color-card-solid);
+  }
+  .border-subtle {
+    border-color: var(--color-border);
+  }
+  .border-strong {
+    border-color: var(--color-border-strong);
+  }
+
+  /* ============================================================
+     Buttons — Apple pill shape, micro-interaction
+     ============================================================ */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: var(--color-accent);
+    color: #0a0a0c;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    letter-spacing: -0.01em;
+    border-radius: var(--radius-pill);
+    padding: 0.6875rem 1.375rem;
+    transition: transform 0.2s var(--ease-out),
+                background 0.2s var(--ease-out),
+                box-shadow 0.3s var(--ease-out),
+                filter 0.2s var(--ease-out);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.15) inset, var(--shadow-xs);
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: var(--color-accent-hover);
+    transform: scale(1.02);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, var(--shadow-glow);
+  }
+  .btn-primary:active:not(:disabled) {
+    transform: scale(0.98);
+    transition-duration: 0.1s;
+  }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--color-text);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    letter-spacing: -0.01em;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-pill);
+    padding: 0.625rem 1.3125rem;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: transform 0.2s var(--ease-out),
+                background 0.2s var(--ease-out),
+                border-color 0.2s var(--ease-out);
+  }
+  .btn-ghost:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(243, 240, 237, 0.2);
+    transform: scale(1.02);
+  }
+  .btn-ghost:active:not(:disabled) {
+    transform: scale(0.98);
+    transition-duration: 0.1s;
+  }
+
+  /* ============================================================
+     Cards — glassmorphism leve, Apple style
+     ============================================================ */
+  .card {
+    background: var(--color-card);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.25s var(--ease-out),
+                background 0.25s var(--ease-out),
+                box-shadow 0.3s var(--ease-out),
+                transform 0.25s var(--ease-out);
+  }
+  .card-hoverable:hover {
+    border-color: var(--color-border-strong);
+    background: var(--color-card-hover);
+    box-shadow: var(--shadow-md);
+  }
+
+  /* Card sólido (sem blur) para áreas com vídeo / imagem por trás */
+  .card-solid {
+    background: var(--color-card-solid);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* ============================================================
+     Inputs — pílula suave Apple
+     ============================================================ */
+  .input-apple {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    padding: 0.6875rem 0.9375rem;
+    font-size: 0.9375rem;
+    color: var(--color-text);
+    transition: border-color 0.2s var(--ease-out),
+                background 0.2s var(--ease-out),
+                box-shadow 0.2s var(--ease-out);
+  }
+  .input-apple::placeholder {
+    color: var(--color-text-muted);
+  }
+  .input-apple:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: 0 0 0 4px rgba(162, 221, 0, 0.12);
+  }
+
+  /* ============================================================
+     Scrollbar utility
+     ============================================================ */
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { scrollbar-width: none; }
+
+  /* ============================================================
+     Brand animations
+     ============================================================ */
+  .landing-float {
+    animation: landing-float 6s var(--ease-out) infinite;
+  }
+  @keyframes landing-float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(-10px) rotate(0.5deg); }
+  }
+
+  .landing-glow-pulse {
+    animation: landing-glow-pulse 4s var(--ease-out) infinite;
+  }
+  @keyframes landing-glow-pulse {
+    0%, 100% { box-shadow: 0 0 32px rgba(162, 221, 0, 0.15); }
+    50%      { box-shadow: 0 0 56px rgba(162, 221, 0, 0.32); }
+  }
+
+  .landing-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  .landing-shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      110deg,
+      transparent 30%,
+      rgba(162, 221, 0, 0.08) 50%,
+      transparent 70%
+    );
+    animation: landing-shimmer 5s var(--ease-out) infinite;
+  }
+  @keyframes landing-shimmer {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* Apple-style fade-up entrance */
+  .fade-up {
+    animation: fade-up 0.7s var(--ease-spring) both;
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-in {
+    animation: fade-in 0.5s var(--ease-out) both;
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* ============================================================
+     Background decorations
+     ============================================================ */
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(243, 240, 237, 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(243, 240, 237, 0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .radial-fade {
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 100%);
+  }
+
+  .noise-overlay {
+    position: relative;
+  }
+  .noise-overlay::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.015;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ============================================================
+     Apple-style headline sizing helpers
+     ============================================================ */
+  .headline-hero {
+    font-size: clamp(2.75rem, 6vw, 5rem);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.034em;
+  }
+  .headline-section {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.028em;
+  }
+  .headline-card {
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.018em;
+  }
+  .body-large {
+    font-size: 1.0625rem;
+    line-height: 1.5;
+    letter-spacing: -0.011em;
+  }
+
+  /* Inline code in docs / prose */
+  .docs-inline-code {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 1.5px 6px;
+    color: var(--color-text);
+  }
+
+  /* Legal page links */
+  .legal-link {
+    color: var(--color-text);
+    text-decoration: underline;
+    text-decoration-color: rgba(162, 221, 0, 0.5);
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1.5px;
+    transition: color 0.15s var(--ease-out);
+  }
+  .legal-link:hover {
+    color: var(--color-accent);
+  }
+}
+
+/* ============================================================
+   Custom scrollbar — slim, Apple-inspired
+   ============================================================ */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(243, 240, 237, 0.08);
+  border-radius: var(--radius-pill);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(162, 221, 0, 0.3);
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,185 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id                          String              @id
+  email                       String              @unique
+  emailVerified               Boolean             @default(false)
+  name                        String?
+  image                       String?
+  createdAt                   DateTime            @default(now())
+  updatedAt                   DateTime            @updatedAt
+  creditsBalance              Int                 @default(0)
+  stripeCustomerId            String?             @unique
+  role                        Role                @default(user)
+  autoRechargeEnabled         Boolean             @default(false)
+  autoRechargeInProgress      Boolean             @default(false)
+  autoRechargeLastError       String?
+  autoRechargeLastTriggeredAt DateTime?
+  autoRechargeThreshold       Int                 @default(100)
+  autoRechargeTopupId         String?
+  defaultPaymentMethodId      String?
+  accounts                    Account[]
+  apiKeys                     ApiKey[]
+  transactions                CreditTransaction[]
+  generations                 Generation[]
+  sessions                    Session[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  ipAddress String?
+  userAgent String?
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("verification")
+}
+
+model ApiKey {
+  id               String            @id @default(cuid())
+  userId           String
+  name             String
+  prefix           String
+  hashedKey        String            @unique
+  lastUsedAt       DateTime?
+  revokedAt        DateTime?
+  createdAt        DateTime          @default(now())
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  generations      Generation[]
+  rateLimitBuckets RateLimitBucket[]
+
+  @@index([userId])
+  @@index([hashedKey])
+  @@map("api_key")
+}
+
+model RateLimitBucket {
+  id          String   @id @default(cuid())
+  apiKeyId    String
+  bucket      String
+  windowStart DateTime
+  count       Int      @default(0)
+  apiKey      ApiKey   @relation(fields: [apiKeyId], references: [id], onDelete: Cascade)
+
+  @@unique([apiKeyId, bucket])
+  @@index([windowStart])
+  @@map("rate_limit_bucket")
+}
+
+model Generation {
+  id              String           @id @default(cuid())
+  userId          String
+  apiKeyId        String?
+  kind            GenerationKind
+  model           String
+  tier            String
+  resolution      String
+  aspectRatio     String
+  durationSeconds Int
+  audio           Boolean
+  prompt          String
+  negativePrompt  String?
+  creditsCost     Int
+  status          GenerationStatus @default(pending)
+  operationName   String?
+  videoUrl        String?
+  videoGcsUri     String?
+  errorCode       String?
+  errorMessage    String?
+  createdAt       DateTime         @default(now())
+  completedAt     DateTime?
+  apiKey          ApiKey?          @relation(fields: [apiKeyId], references: [id])
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([status])
+  @@index([operationName])
+  @@map("generation")
+}
+
+model CreditTransaction {
+  id              String          @id @default(cuid())
+  userId          String
+  amount          Int
+  type            TransactionType
+  description     String?
+  generationId    String?
+  stripePaymentId String?         @unique
+  amountUsdCents  Int?
+  createdAt       DateTime        @default(now())
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@map("credit_transaction")
+}
+
+enum GenerationStatus {
+  pending
+  processing
+  succeeded
+  failed
+  refunded
+}
+
+enum GenerationKind {
+  text_to_video
+  image_to_video
+  references
+}
+
+enum TransactionType {
+  topup
+  debit
+  refund
+  bonus
+  adjustment
+}
+
+enum Role {
+  user
+  admin
+}
