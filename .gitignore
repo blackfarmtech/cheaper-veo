@@ -13,3 +13,4 @@ build
 prisma/migrations/dev.db*
 coverage
 .cache
+precificacao_pay_as_you_go_veo31.md
