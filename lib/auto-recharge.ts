@@ -205,8 +205,8 @@ export async function triggerAutoRechargeIfNeeded(
 
   try {
     await stripe.paymentIntents.create({
-      amount: topup.usd * 100,
-      currency: "usd",
+      amount: topup.amountCents,
+      currency: topup.currency,
       customer: user.stripeCustomerId,
       payment_method: user.defaultPaymentMethodId,
       off_session: true,
@@ -216,7 +216,8 @@ export async function triggerAutoRechargeIfNeeded(
         userId,
         topupId: topup.id,
         credits: String(topup.credits),
-        amountUsdCents: String(topup.usd * 100),
+        amountCents: String(topup.amountCents),
+        currency: topup.currency,
         kind: "auto_recharge",
       },
     });

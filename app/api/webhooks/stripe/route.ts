@@ -99,21 +99,23 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session): Promis
   const metadata = session.metadata ?? {};
   const userId = metadata.userId;
   const creditsRaw = metadata.credits;
-  const amountUsdCentsRaw = metadata.amountUsdCents;
+  // New (BRL-aware) metadata keys, with legacy fallback for in-flight USD sessions.
+  const amountCentsRaw = metadata.amountCents ?? metadata.amountUsdCents;
+  const currency = metadata.currency ?? (session.currency ? session.currency.toLowerCase() : "usd");
 
-  if (!userId || !creditsRaw || !amountUsdCentsRaw) {
+  if (!userId || !creditsRaw || !amountCentsRaw) {
     throw new PermanentWebhookError(
-      `missing metadata on session ${session.id}: userId=${userId} credits=${creditsRaw} amountUsdCents=${amountUsdCentsRaw}`,
+      `missing metadata on session ${session.id}: userId=${userId} credits=${creditsRaw} amountCents=${amountCentsRaw}`,
     );
   }
 
   const credits = Number.parseInt(creditsRaw, 10);
-  const amountUsdCents = Number.parseInt(amountUsdCentsRaw, 10);
+  const amountCents = Number.parseInt(amountCentsRaw, 10);
   if (!Number.isFinite(credits) || credits <= 0) {
     throw new PermanentWebhookError(`invalid credits in metadata: ${creditsRaw}`);
   }
-  if (!Number.isFinite(amountUsdCents) || amountUsdCents <= 0) {
-    throw new PermanentWebhookError(`invalid amountUsdCents in metadata: ${amountUsdCentsRaw}`);
+  if (!Number.isFinite(amountCents) || amountCents <= 0) {
+    throw new PermanentWebhookError(`invalid amountCents in metadata: ${amountCentsRaw}`);
   }
 
   const paymentIntent = session.payment_intent;
@@ -130,7 +132,8 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session): Promis
     userId,
     amount: credits,
     stripePaymentId,
-    amountUsdCents,
+    amountCents,
+    currency,
   });
 
   // eslint-disable-next-line no-console
@@ -170,15 +173,16 @@ async function handleSetupCompleted(session: Stripe.Checkout.Session): Promise<v
 async function handleAutoRechargeSucceeded(pi: Stripe.PaymentIntent): Promise<void> {
   const userId = pi.metadata?.userId;
   const creditsRaw = pi.metadata?.credits;
-  const amountUsdCentsRaw = pi.metadata?.amountUsdCents;
+  const amountCentsRaw = pi.metadata?.amountCents ?? pi.metadata?.amountUsdCents;
+  const currency = pi.metadata?.currency ?? pi.currency ?? "usd";
 
-  if (!userId || !creditsRaw || !amountUsdCentsRaw) {
+  if (!userId || !creditsRaw || !amountCentsRaw) {
     throw new PermanentWebhookError(
       `auto-recharge PI ${pi.id} missing metadata`,
     );
   }
   const credits = Number.parseInt(creditsRaw, 10);
-  const amountUsdCents = Number.parseInt(amountUsdCentsRaw, 10);
+  const amountCents = Number.parseInt(amountCentsRaw, 10);
   if (!Number.isFinite(credits) || credits <= 0) {
     throw new PermanentWebhookError(`auto-recharge PI ${pi.id} invalid credits`);
   }
@@ -187,7 +191,8 @@ async function handleAutoRechargeSucceeded(pi: Stripe.PaymentIntent): Promise<vo
     userId,
     amount: credits,
     stripePaymentId: pi.id,
-    amountUsdCents,
+    amountCents,
+    currency,
   });
 
   await releaseAutoRechargeLock(userId);

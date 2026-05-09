@@ -22,10 +22,27 @@ const SIGNUP_BONUS_CREDITS = Number.parseInt(
   10,
 );
 
+const trustedOrigins = Array.from(
+  new Set(
+    [
+      process.env.BETTER_AUTH_URL,
+      process.env.NEXT_PUBLIC_APP_URL,
+      process.env.VERCEL_URL && `https://${process.env.VERCEL_URL}`,
+      process.env.VERCEL_BRANCH_URL && `https://${process.env.VERCEL_BRANCH_URL}`,
+      process.env.VERCEL_PROJECT_PRODUCTION_URL &&
+        `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`,
+      ...(process.env.BETTER_AUTH_TRUSTED_ORIGINS?.split(",").map((s) =>
+        s.trim(),
+      ) ?? []),
+    ].filter((v): v is string => Boolean(v)),
+  ),
+);
+
 export const auth = betterAuth({
   appName: "GeraEW",
   baseURL: process.env.BETTER_AUTH_URL ?? "http://localhost:3000",
   secret: process.env.BETTER_AUTH_SECRET,
+  trustedOrigins,
   database: prismaAdapter(prisma, { provider: "postgresql" }),
   emailAndPassword: {
     enabled: true,

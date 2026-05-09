@@ -111,24 +111,39 @@ export function calculateCredits(input: {
 }
 
 /**
- * Recargas pay-as-you-go sugeridas. Sem bônus, conversão 1:1 (US$0.01 = 1 cr).
+ * Pay-as-you-go top-ups.
+ *
+ * Pricing is anchored in BRL (Brazilian Real) because the merchant Stripe
+ * account is BR — settlement currency must match line-item currency, otherwise
+ * cross-border restrictions block BR cards in USD. Adaptive Pricing on Stripe
+ * Checkout localizes the display for international visitors automatically
+ * (USD/EUR/etc), and we receive BRL.
+ *
+ * Rough USD reference (1 USD ≈ 5 BRL) is provided for UI display only.
+ * Credits are currency-agnostic (1 cr = the unit a generation costs).
+ *
+ * Conversion at R$ 0.05 per credit:
+ *   R$ 25 → 500 cr   ($5 reference)
+ *   R$ 50 → 1.000 cr ($10 reference)
  */
 export interface TopupOption {
   id: string;
-  usd: number;       // dollars
+  currency: "brl" | "usd";
+  amountCents: number;     // line-item unit_amount in the topup's currency
+  usdReference: number;    // approximate USD value, for bilingual UI display only
   credits: number;
   label: string;
   highlight?: boolean;
 }
 
 export const TOPUPS: TopupOption[] = [
-  { id: "topup-5",   usd: 5,   credits: 500,    label: "Entrada mínima" },
-  { id: "topup-10",  usd: 10,  credits: 1_000,  label: "Uso leve" },
-  { id: "topup-25",  usd: 25,  credits: 2_500,  label: "Criadores" },
-  { id: "topup-50",  usd: 50,  credits: 5_000,  label: "Recorrente", highlight: true },
-  { id: "topup-100", usd: 100, credits: 10_000, label: "Agências" },
-  { id: "topup-250", usd: 250, credits: 25_000, label: "Escala" },
-  { id: "topup-500", usd: 500, credits: 50_000, label: "Enterprise" },
+  { id: "topup-25",   currency: "brl", amountCents: 25_00,   usdReference: 5,   credits: 500,    label: "Entrada" },
+  { id: "topup-50",   currency: "brl", amountCents: 50_00,   usdReference: 10,  credits: 1_000,  label: "Uso leve" },
+  { id: "topup-125",  currency: "brl", amountCents: 125_00,  usdReference: 25,  credits: 2_500,  label: "Criadores" },
+  { id: "topup-250",  currency: "brl", amountCents: 250_00,  usdReference: 50,  credits: 5_000,  label: "Recorrente", highlight: true },
+  { id: "topup-500",  currency: "brl", amountCents: 500_00,  usdReference: 100, credits: 10_000, label: "Agências" },
+  { id: "topup-1250", currency: "brl", amountCents: 1250_00, usdReference: 250, credits: 25_000, label: "Escala" },
+  { id: "topup-2500", currency: "brl", amountCents: 2500_00, usdReference: 500, credits: 50_000, label: "Enterprise" },
 ];
 
 export function getTopupById(id: string): TopupOption | undefined {
@@ -136,12 +151,29 @@ export function getTopupById(id: string): TopupOption | undefined {
 }
 
 /**
- * Conversão crédito → centavos USD (estritamente 1:1).
+ * Credits cost in BRL cents. At R$0,05/cr, 1 credit = 5 BRL cents.
+ */
+export function creditsToBrlCents(credits: number): number {
+  return credits * 5;
+}
+
+/**
+ * Approximate USD reference for credits (display only). Uses the BRL anchor
+ * from TOPUPS (1 cr ≈ $0.01 by design).
+ */
+export function creditsToUsdReference(credits: number): number {
+  return credits / 100;
+}
+
+/**
+ * Legacy alias for credit→cents conversion. Kept for callers that still
+ * reference "USD cents" semantics from the original USD-anchored model.
+ * Returns BRL cents in the new model.
  */
 export function creditsToUsdCents(credits: number): number {
-  return credits;
+  return creditsToBrlCents(credits);
 }
 
 export function creditsToUsd(credits: number): number {
-  return credits / 100;
+  return creditsToUsdReference(credits);
 }

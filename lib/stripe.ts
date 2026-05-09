@@ -36,7 +36,18 @@ export async function getOrCreateCustomer(userId: string, email: string): Promis
   });
 
   if (user?.stripeCustomerId) {
-    return user.stripeCustomerId;
+    try {
+      const existing = await stripe.customers.retrieve(user.stripeCustomerId);
+      if (!existing.deleted) return existing.id;
+    } catch (err: unknown) {
+      // If the customer belongs to another mode (test↔live) or was deleted,
+      // Stripe responds with a 404 / resource_missing — fall through and recreate.
+      const code =
+        err && typeof err === "object" && "code" in err
+          ? (err as { code?: string }).code
+          : undefined;
+      if (code !== "resource_missing") throw err;
+    }
   }
 
   const customer = await stripe.customers.create({

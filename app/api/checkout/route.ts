@@ -47,22 +47,25 @@ export async function POST(req: Request): Promise<Response> {
   }
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
-  const amountUsdCents = topup.usd * 100;
+  const amountCents = topup.amountCents;
 
   try {
     const checkoutSession = await stripe.checkout.sessions.create({
       mode: "payment",
       customer: customerId,
-      payment_method_types: ["card"],
+      // Omitting payment_method_types lets Stripe auto-select methods enabled
+      // in the Dashboard that are compatible with the line-item currency.
+      // BRL unlocks Pix automatically; cards always work; Adaptive Pricing
+      // shows the localized currency to international visitors.
       line_items: [
         {
           price_data: {
-            currency: "usd",
+            currency: topup.currency,
             product_data: {
-              name: `GeraEW · ${topup.credits} créditos`,
+              name: `Cheaper Veo · ${topup.credits} créditos`,
               description: `Recarga pay-as-you-go — ${topup.label}`,
             },
-            unit_amount: amountUsdCents,
+            unit_amount: amountCents,
           },
           quantity: 1,
         },
@@ -73,14 +76,16 @@ export async function POST(req: Request): Promise<Response> {
         userId,
         topupId: topup.id,
         credits: topup.credits.toString(),
-        amountUsdCents: amountUsdCents.toString(),
+        amountCents: amountCents.toString(),
+        currency: topup.currency,
       },
       payment_intent_data: {
         metadata: {
           userId,
           topupId: topup.id,
           credits: topup.credits.toString(),
-          amountUsdCents: amountUsdCents.toString(),
+          amountCents: amountCents.toString(),
+          currency: topup.currency,
         },
       },
     });
@@ -93,6 +98,21 @@ export async function POST(req: Request): Promise<Response> {
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error("[checkout] stripe.checkout.sessions.create failed", err);
-    return NextResponse.json({ error: "checkout_create_failed" }, { status: 500 });
+    const stripeCode =
+      err && typeof err === "object" && "code" in err
+        ? (err as { code?: string }).code
+        : undefined;
+    const stripeType =
+      err && typeof err === "object" && "type" in err
+        ? (err as { type?: string }).type
+        : undefined;
+    return NextResponse.json(
+      {
+        error: "checkout_create_failed",
+        stripeCode: stripeCode ?? null,
+        stripeType: stripeType ?? null,
+      },
+      { status: 500 },
+    );
   }
 }

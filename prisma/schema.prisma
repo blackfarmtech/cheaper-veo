@@ -149,7 +149,8 @@ model CreditTransaction {
   description     String?
   generationId    String?
   stripePaymentId String?         @unique
-  amountUsdCents  Int?
+  amountCents     Int?
+  currency        String?         @default("usd") @db.VarChar(3)
   createdAt       DateTime        @default(now())
   user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 

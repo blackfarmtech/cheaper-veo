@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 
 import { prisma } from "@/lib/prisma";
-import { formatCredits, formatUsd } from "@/lib/utils";
+import { formatCredits, formatMoney } from "@/lib/utils";
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
@@ -44,14 +44,17 @@ export default async function AdminOverviewPage() {
       where: { generations: { some: { createdAt: { gte: since30d } } } },
     }),
     prisma.user.aggregate({ _sum: { creditsBalance: true } }),
-    prisma.creditTransaction.aggregate({
+    // Group by currency so BRL and legacy USD top-ups don't get mixed in one number.
+    prisma.creditTransaction.groupBy({
+      by: ["currency"],
       where: { type: "topup", createdAt: { gte: since30d } },
-      _sum: { amountUsdCents: true },
+      _sum: { amountCents: true },
       _count: { _all: true },
     }),
-    prisma.creditTransaction.aggregate({
+    prisma.creditTransaction.groupBy({
+      by: ["currency"],
       where: { type: "topup" },
-      _sum: { amountUsdCents: true },
+      _sum: { amountCents: true },
       _count: { _all: true },
     }),
     prisma.generation.count({ where: { createdAt: { gte: since30d } } }),
@@ -73,8 +76,29 @@ export default async function AdminOverviewPage() {
   ]);
 
   const creditsTotal = creditsInCirculation._sum.creditsBalance ?? 0;
-  const revenue30d = revenue30dAgg._sum.amountUsdCents ?? 0;
-  const revenueAll = revenueAllAgg._sum.amountUsdCents ?? 0;
+  // Mixed-currency aggregation — present each currency separately so totals
+  // remain meaningful. BRL is the primary going forward; USD is legacy.
+  const revenue30dByCurrency = revenue30dAgg.map((r) => ({
+    currency: r.currency ?? "usd",
+    amountCents: r._sum.amountCents ?? 0,
+    count: r._count._all,
+  }));
+  const revenueAllByCurrency = revenueAllAgg.map((r) => ({
+    currency: r.currency ?? "usd",
+    amountCents: r._sum.amountCents ?? 0,
+    count: r._count._all,
+  }));
+  // Primary currency (highest volume) for the headline number.
+  const primary30d =
+    revenue30dByCurrency.sort((a, b) => b.amountCents - a.amountCents)[0] ??
+    { currency: "brl" as const, amountCents: 0, count: 0 };
+  const primaryAll =
+    revenueAllByCurrency.sort((a, b) => b.amountCents - a.amountCents)[0] ??
+    { currency: "brl" as const, amountCents: 0, count: 0 };
+  const revenue30d = primary30d.amountCents;
+  const revenueAll = primaryAll.amountCents;
+  const revenue30dCurrency = primary30d.currency;
+  const revenueAllCurrency = primaryAll.currency;
 
   return (
     <div className="space-y-10">
@@ -102,8 +126,8 @@ export default async function AdminOverviewPage() {
         <Kpi
           icon={DollarSign}
           label="Receita (30d)"
-          value={formatUsd(revenue30d)}
-          sub={`Total all-time: ${formatUsd(revenueAll)}`}
+          value={formatMoney(revenue30d, revenue30dCurrency)}
+          sub={`Total all-time: ${formatMoney(revenueAll, revenueAllCurrency)}`}
         />
         <Kpi
           icon={Activity}
@@ -115,7 +139,7 @@ export default async function AdminOverviewPage() {
           icon={Coins}
           label="Créditos em circulação"
           value={formatCredits(creditsTotal)}
-          sub={`= ${formatUsd(creditsTotal)} a usar`}
+          sub={`= ${formatMoney(creditsTotal * 5, "brl")} a usar`}
         />
       </div>
 
@@ -248,8 +272,8 @@ export default async function AdminOverviewPage() {
                       style={{ fontFamily: "var(--font-mono)" }}
                     >
                       +{formatCredits(tx.amount)} cr ·{" "}
-                      {tx.amountUsdCents != null
-                        ? formatUsd(tx.amountUsdCents)
+                      {tx.amountCents != null
+                        ? formatMoney(tx.amountCents, tx.currency)
                         : "—"}
                     </div>
                   </div>

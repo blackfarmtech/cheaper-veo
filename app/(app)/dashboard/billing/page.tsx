@@ -6,7 +6,7 @@ import { getSavedCardDisplay } from "@/lib/auto-recharge";
 import { TOPUPS } from "@/lib/pricing";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
-import { cn, formatCredits, formatUsd } from "@/lib/utils";
+import { cn, formatCredits, formatMoney } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -58,7 +58,9 @@ export default async function BillingPage({ searchParams }: BillingPageProps): P
   const topupChoices = TOPUPS.map((t) => ({
     id: t.id,
     label: t.label,
-    usd: t.usd,
+    amountCents: t.amountCents,
+    currency: t.currency,
+    usdReference: t.usdReference,
     credits: t.credits,
   }));
 
@@ -158,7 +160,7 @@ export default async function BillingPage({ searchParams }: BillingPageProps): P
           {formatCredits(balance)}
         </div>
         <div className="mt-2 text-[15px] text-secondary">
-          créditos · equivalente a {formatUsd(balance)}
+          créditos · ≈ {formatMoney(balance * 5, "brl")} ({formatMoney(balance, "usd")})
         </div>
       </section>
 
@@ -269,8 +271,8 @@ function HistoryTable({ transactions }: { transactions: CreditTransaction[] }): 
                     className="px-5 py-4 text-right tabular-nums text-muted"
                     style={{ fontFamily: "var(--font-mono)" }}
                   >
-                    {tx.amountUsdCents != null
-                      ? formatUsd(tx.amountUsdCents)
+                    {tx.amountCents != null
+                      ? formatMoney(tx.amountCents, tx.currency)
                       : "—"}
                   </td>
                 </tr>

@@ -80,7 +80,16 @@ export function TopupGrid({ topups }: TopupGridProps): React.ReactElement {
                     className="text-3xl font-semibold tracking-tight"
                     style={{ letterSpacing: "-0.022em" }}
                   >
-                    US${topup.usd}
+                    R${topup.amountCents / 100}
+                  </div>
+                  <div
+                    className="mt-0.5 text-[11px] uppercase text-muted"
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      letterSpacing: "0.08em",
+                    }}
+                  >
+                    ≈ ${topup.usdReference} USD
                   </div>
                   <div className="mt-1.5 text-sm text-secondary">
                     {formatCredits(topup.credits)} créditos

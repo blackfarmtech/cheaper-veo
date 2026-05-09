@@ -13,7 +13,9 @@ import {
 interface TopupChoice {
   id: string;
   label: string;
-  usd: number;
+  amountCents: number;
+  currency: "brl" | "usd";
+  usdReference: number;
   credits: number;
 }
 
@@ -275,7 +277,7 @@ export function AutoRechargeCard({
           >
             {topups.map((t) => (
               <option key={t.id} value={t.id}>
-                ${t.usd} — {formatCredits(t.credits)} cr ({t.label})
+                {t.currency === "brl" ? "R$" : "$"}{t.amountCents / 100} (≈ ${t.usdReference}) — {formatCredits(t.credits)} cr
               </option>
             ))}
           </select>

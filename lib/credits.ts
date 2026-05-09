@@ -97,7 +97,8 @@ export async function addTopupCredits(input: {
   userId: string;
   amount: number;
   stripePaymentId: string;
-  amountUsdCents: number;
+  amountCents: number;
+  currency: string;
 }): Promise<{ newBalance: number; alreadyApplied: boolean }> {
   if (input.amount <= 0) {
     throw new Error("addTopupCredits: amount must be positive.");
@@ -112,7 +113,8 @@ export async function addTopupCredits(input: {
           amount: input.amount,
           type: "topup",
           stripePaymentId: input.stripePaymentId,
-          amountUsdCents: input.amountUsdCents,
+          amountCents: input.amountCents,
+          currency: input.currency,
           description: `Top-up ${input.amount} credits`,
         },
       });

@@ -10,7 +10,7 @@ import { StatusBadge } from "@/components/dashboard/StatusBadge";
 import { getSavedCardDisplay } from "@/lib/auto-recharge";
 import { prisma } from "@/lib/prisma";
 import { getModelById, getTopupById } from "@/lib/pricing";
-import { cn, formatCredits, formatUsd } from "@/lib/utils";
+import { cn, formatCredits, formatMoney } from "@/lib/utils";
 
 interface PageProps {
   params: Promise<{ userId: string }>;
@@ -118,7 +118,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
             {formatCredits(user.creditsBalance)} cr
           </div>
           <div className="mt-1 text-xs text-muted">
-            ≈ {formatUsd(user.creditsBalance)}
+            ≈ {formatMoney(user.creditsBalance * 5, "brl")}
           </div>
         </div>
 
@@ -203,7 +203,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
             </div>
             <p className="mt-1 text-[13px] text-secondary">
               {user.autoRechargeEnabled && topupConfigured
-                ? `Cobra ${topupConfigured.label.toLowerCase()} ($${topupConfigured.usd}) quando saldo < ${formatCredits(user.autoRechargeThreshold)} cr`
+                ? `Cobra ${topupConfigured.label.toLowerCase()} (${formatMoney(topupConfigured.amountCents, topupConfigured.currency)}) quando saldo < ${formatCredits(user.autoRechargeThreshold)} cr`
                 : "Sem configuração ativa."}
             </p>
           </div>

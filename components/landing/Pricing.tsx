@@ -194,12 +194,23 @@ export function Pricing() {
                   }
                 >
                   <div className="flex items-center justify-between">
-                    <span
-                      className="text-3xl font-semibold tracking-tight"
-                      style={{ letterSpacing: "-0.022em" }}
-                    >
-                      US${topup.usd}
-                    </span>
+                    <div className="flex flex-col">
+                      <span
+                        className="text-3xl font-semibold tracking-tight"
+                        style={{ letterSpacing: "-0.022em" }}
+                      >
+                        R${topup.amountCents / 100}
+                      </span>
+                      <span
+                        className="mt-0.5 text-[11px] uppercase text-muted"
+                        style={{
+                          fontFamily: "var(--font-mono)",
+                          letterSpacing: "0.08em",
+                        }}
+                      >
+                        ≈ ${topup.usdReference} USD
+                      </span>
+                    </div>
                     {highlight && (
                       <span
                         className="rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase"
