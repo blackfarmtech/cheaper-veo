@@ -48,6 +48,10 @@ export async function POST(req: Request): Promise<Response> {
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
   const amountCents = topup.amountCents;
+  // Opt-in: Stripe Tax must be enabled and configured in the Dashboard
+  // (Settings → Tax) before flipping this on, otherwise checkout creation
+  // fails. Set STRIPE_AUTOMATIC_TAX=1 once tax registrations are in place.
+  const automaticTaxEnabled = process.env.STRIPE_AUTOMATIC_TAX === "1";
 
   try {
     const checkoutSession = await stripe.checkout.sessions.create({
@@ -56,6 +60,7 @@ export async function POST(req: Request): Promise<Response> {
       // Omitting payment_method_types lets Stripe auto-select methods enabled
       // in the Dashboard that are compatible with the line-item currency.
       // BRL unlocks Pix automatically; cards always work; Adaptive Pricing
+      // (must be enabled in Dashboard → Settings → Payments → Adaptive Pricing)
       // shows the localized currency to international visitors.
       line_items: [
         {
@@ -70,6 +75,20 @@ export async function POST(req: Request): Promise<Response> {
           quantity: 1,
         },
       ],
+      // Collecting the billing address gives Stripe the buyer's country, which
+      // it uses to (a) localize the displayed currency via Adaptive Pricing
+      // and (b) compute taxes correctly when automatic_tax is enabled.
+      billing_address_collection: "required",
+      // Lets B2B buyers add VAT/CNPJ/EIN so invoices are tax-compliant in
+      // their jurisdiction. Stripe validates the format per country.
+      tax_id_collection: { enabled: true },
+      // Stripe Tax computes and adds tax based on the buyer's location and
+      // your registered tax thresholds. Requires Stripe Tax to be enabled in
+      // the Dashboard before turning on STRIPE_AUTOMATIC_TAX=1.
+      automatic_tax: { enabled: automaticTaxEnabled },
+      // Locale auto-detects from the browser; Stripe Checkout already does
+      // this, but pinning "auto" is explicit and survives custom callers.
+      locale: "auto",
       success_url: `${appUrl}/dashboard/billing?success=1`,
       cancel_url: `${appUrl}/dashboard/billing?canceled=1`,
       metadata: {

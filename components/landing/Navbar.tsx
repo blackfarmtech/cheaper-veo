@@ -84,7 +84,7 @@ export function Navbar({ isAuthenticated, email, balance }: NavbarProps) {
           aria-label="Cheaper Veo"
         >
           <Image
-            src="/logo-icon.png"
+            src="/logo-mobile.png"
             alt="Cheaper Veo"
             width={442}
             height={442}

@@ -160,7 +160,7 @@ export default async function BillingPage({ searchParams }: BillingPageProps): P
           {formatCredits(balance)}
         </div>
         <div className="mt-2 text-[15px] text-secondary">
-          credits · ≈ {formatMoney(balance * 5, "brl")} ({formatMoney(balance, "usd")})
+          credits · ≈ {formatMoney(balance, "usd")} ({formatMoney(balance * 5, "brl")})
         </div>
       </section>
 

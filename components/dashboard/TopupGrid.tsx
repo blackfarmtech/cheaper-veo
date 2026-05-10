@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import type { TopupOption } from "@/lib/pricing";
-import { cn, formatCredits } from "@/lib/utils";
+import { cn, formatBrl, formatCredits } from "@/lib/utils";
 
 interface TopupGridProps {
   topups: TopupOption[];
@@ -54,6 +54,11 @@ export function TopupGrid({ topups }: TopupGridProps): React.ReactElement {
         </div>
       ) : null}
 
+      <p className="text-[12px] text-muted">
+        Prices shown in USD. Stripe converts to your local currency at
+        checkout.
+      </p>
+
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {topups.map((topup) => {
           const isLoading = loadingId === topup.id;
@@ -80,7 +85,10 @@ export function TopupGrid({ topups }: TopupGridProps): React.ReactElement {
                     className="text-3xl font-semibold tracking-tight"
                     style={{ letterSpacing: "-0.022em" }}
                   >
-                    R${topup.amountCents / 100}
+                    ${topup.usdReference}
+                    <span className="ml-1 text-base font-medium text-muted">
+                      USD
+                    </span>
                   </div>
                   <div
                     className="mt-0.5 text-[11px] uppercase text-muted"
@@ -89,7 +97,7 @@ export function TopupGrid({ topups }: TopupGridProps): React.ReactElement {
                       letterSpacing: "0.08em",
                     }}
                   >
-                    ≈ ${topup.usdReference} USD
+                    ≈ {formatBrl(topup.amountCents)}
                   </div>
                   <div className="mt-1.5 text-sm text-secondary">
                     {formatCredits(topup.credits)} credits

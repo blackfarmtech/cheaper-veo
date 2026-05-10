@@ -277,7 +277,7 @@ export function AutoRechargeCard({
           >
             {topups.map((t) => (
               <option key={t.id} value={t.id}>
-                {t.currency === "brl" ? "R$" : "$"}{t.amountCents / 100} (≈ ${t.usdReference}) — {formatCredits(t.credits)} cr
+                ${t.usdReference} USD (≈ R${t.amountCents / 100}) — {formatCredits(t.credits)} cr
               </option>
             ))}
           </select>
