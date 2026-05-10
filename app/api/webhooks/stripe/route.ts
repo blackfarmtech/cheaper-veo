@@ -7,12 +7,15 @@ import {
   persistDefaultPaymentMethod,
   releaseAutoRechargeLock,
 } from "@/lib/auto-recharge";
-import {
-  sendAutoRechargeFailedEmail,
-  sendTopupSuccessEmail,
-} from "@/lib/email";
 import { prisma } from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
+
+// Lazy import for the same reason as lib/auth.ts: keep the webhook entrypoint
+// free of React Email's chunky module graph so signature verification and
+// credit application never fail because of an email template import.
+async function loadEmail() {
+  return import("@/lib/email");
+}
 
 export const runtime = "nodejs";
 // Stripe sends webhooks with raw bodies; never let Next.js cache or transform them.
@@ -257,15 +260,17 @@ async function handleAutoRechargeFailed(pi: Stripe.PaymentIntent): Promise<void>
     `[stripe-webhook] auto-recharge FAILED user=${userId} pi=${pi.id} reason=${pi.last_payment_error?.code ?? "unknown"}`,
   );
 
-  void sendAutoRechargeFailedEmail({ to: updated.email, reason }).catch(
-    (err) => {
+  void loadEmail()
+    .then(({ sendAutoRechargeFailedEmail }) =>
+      sendAutoRechargeFailedEmail({ to: updated.email, reason }),
+    )
+    .catch((err: unknown) => {
       // eslint-disable-next-line no-console
       console.error(
         `[stripe-webhook] auto-recharge failed email error user=${userId}:`,
         err,
       );
-    },
-  );
+    });
 }
 
 async function notifyTopupSuccess(args: {
@@ -282,6 +287,7 @@ async function notifyTopupSuccess(args: {
       select: { email: true },
     });
     if (!user?.email) return;
+    const { sendTopupSuccessEmail } = await loadEmail();
     await sendTopupSuccessEmail({
       to: user.email,
       credits: args.credits,

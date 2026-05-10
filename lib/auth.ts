@@ -41,11 +41,10 @@ const trustedOrigins = Array.from(
       process.env.VERCEL_URL && `https://${process.env.VERCEL_URL}`,
       process.env.VERCEL_BRANCH_URL && `https://${process.env.VERCEL_BRANCH_URL}`,
       process.env.VERCEL_PROJECT_PRODUCTION_URL &&
-        `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`,
+      `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`,
       isDev && "http://localhost:3000",
       isDev && "http://127.0.0.1:3000",
       "https://cheaperveo.com",
-      "https://www.cheaperveo.com",
       ...(process.env.BETTER_AUTH_TRUSTED_ORIGINS?.split(",").map((s) =>
         s.trim(),
       ) ?? []),
@@ -55,8 +54,8 @@ const trustedOrigins = Array.from(
 
 const resolvedBaseURL = isDev
   ? process.env.NEXT_PUBLIC_APP_URL ??
-    process.env.BETTER_AUTH_URL ??
-    "http://localhost:3000"
+  process.env.BETTER_AUTH_URL ??
+  "http://localhost:3000"
   : process.env.BETTER_AUTH_URL ?? "http://localhost:3000";
 
 export const auth = betterAuth({
