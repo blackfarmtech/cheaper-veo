@@ -1,28 +1,76 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight, BookOpen, CheckCircle2 } from "lucide-react";
+import { useEffect, useState } from "react";
 
-const HERO_VIDEO_URL =
-  "https://cdn.geraew.com.br/storage/v1/object/public/ai-generations/generations/cmoxn4him0c5rpq015yr2v5nk/2f654c71-2bc6-45d9-a748-a97b260ee510/output_0.mp4";
+const HERO_VIDEO_URL = "/hero/hero.mp4";
+const HERO_POSTER_URL = "/hero/hero-poster.jpg";
 
 export function Hero() {
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const connection = (
+      navigator as Navigator & {
+        connection?: { saveData?: boolean; effectiveType?: string };
+      }
+    ).connection;
+    const saveData = connection?.saveData ?? false;
+    const slowNetwork = /2g|slow-2g/.test(connection?.effectiveType ?? "");
+
+    if (isMobile || reducedMotion || saveData || slowNetwork) return;
+
+    const load = () => setShouldLoadVideo(true);
+    const idle = (
+      window as Window & {
+        requestIdleCallback?: (
+          cb: () => void,
+          opts?: { timeout: number },
+        ) => number;
+      }
+    ).requestIdleCallback;
+
+    if (idle) {
+      idle(load, { timeout: 2000 });
+    } else {
+      const t = window.setTimeout(load, 1500);
+      return () => window.clearTimeout(t);
+    }
+  }, []);
+
   return (
     <section
       className="relative -mt-14 flex min-h-[100svh] items-center justify-center overflow-hidden"
-      style={{ isolation: "isolate" }}
+      style={{
+        isolation: "isolate",
+        backgroundColor: "rgb(10, 10, 12)",
+        backgroundImage: `url(${HERO_POSTER_URL})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
     >
-      {/* Video background */}
-      <video
-        className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-        style={{ zIndex: 0 }}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-        aria-hidden
-      >
-        <source src={HERO_VIDEO_URL} type="video/mp4" />
-      </video>
+      {shouldLoadVideo && (
+        <video
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+          style={{ zIndex: 0 }}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster={HERO_POSTER_URL}
+          aria-hidden
+        >
+          <source src={HERO_VIDEO_URL} type="video/mp4" />
+        </video>
+      )}
 
       {/* Layered overlays for legibility */}
       <div
