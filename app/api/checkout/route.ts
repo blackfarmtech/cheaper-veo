@@ -79,6 +79,10 @@ export async function POST(req: Request): Promise<Response> {
       // it uses to (a) localize the displayed currency via Adaptive Pricing
       // and (b) compute taxes correctly when automatic_tax is enabled.
       billing_address_collection: "required",
+      // Required when passing `customer` with billing_address_collection or
+      // tax_id_collection — without these, Stripe rejects the session with
+      // "you need to set customer_update.address to auto…".
+      customer_update: { address: "auto", name: "auto" },
       // Lets B2B buyers add VAT/CNPJ/EIN so invoices are tax-compliant in
       // their jurisdiction. Stripe validates the format per country.
       tax_id_collection: { enabled: true },

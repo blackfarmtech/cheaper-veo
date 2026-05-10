@@ -23,8 +23,15 @@ export function TopupGrid({ topups }: TopupGridProps): React.ReactElement {
         body: JSON.stringify({ topupId }),
       });
       if (!res.ok) {
-        const data: { error?: string } = await res.json().catch(() => ({}));
-        throw new Error(data.error ?? `Failed (${res.status})`);
+        const data: {
+          error?: string;
+          stripeCode?: string | null;
+          stripeType?: string | null;
+        } = await res.json().catch(() => ({}));
+        const stripeBits = data.stripeCode
+          ? ` (${data.stripeCode}${data.stripeType ? ` / ${data.stripeType}` : ""})`
+          : "";
+        throw new Error(`${data.error ?? `Failed (${res.status})`}${stripeBits}`);
       }
       const data: { url?: string } = await res.json();
       if (!data.url) {

@@ -2,12 +2,16 @@ import { betterAuth, type BetterAuthOptions } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
 
-import {
-  sendResetPasswordEmail,
-  sendVerifyEmail,
-  sendWelcomeEmail,
-} from "@/lib/email";
 import { prisma } from "@/lib/prisma";
+
+// React Email + Resend pull a chunky module graph that some serverless
+// runtimes have intermittently failed to load at module init. Importing
+// lazily (only inside the auth callbacks that actually fire) keeps the hot
+// path of `auth.api.getSession()` — which every authenticated page hits —
+// independent of the email subsystem.
+async function loadEmail() {
+  return import("@/lib/email");
+}
 
 const googleClientId = process.env.GOOGLE_CLIENT_ID;
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
@@ -70,6 +74,7 @@ export const auth = betterAuth({
     // emailVerified at the use-site so users can still browse pricing/billing.
     requireEmailVerification: false,
     sendResetPassword: async ({ user, url }) => {
+      const { sendResetPasswordEmail } = await loadEmail();
       await sendResetPasswordEmail({ to: user.email, resetUrl: url });
     },
   },
@@ -83,6 +88,7 @@ export const auth = betterAuth({
       const verifyUrl = url.includes("callbackURL=")
         ? url
         : `${url}${url.includes("?") ? "&" : "?"}callbackURL=${encodeURIComponent("/verify-email?status=success")}`;
+      const { sendVerifyEmail } = await loadEmail();
       await sendVerifyEmail({ to: user.email, verifyUrl });
     },
   },
@@ -139,14 +145,18 @@ export const auth = betterAuth({
           if (firstTime) {
             // Welcome email is fire-and-forget — never block signup if Resend
             // is down or unconfigured.
-            void sendWelcomeEmail({
-              to: user.email,
-              name: user.name ?? null,
-              bonusCredits: SIGNUP_BONUS_CREDITS,
-            }).catch((err) => {
-              // eslint-disable-next-line no-console
-              console.error(`[auth] welcome email failed for ${user.id}:`, err);
-            });
+            void loadEmail()
+              .then(({ sendWelcomeEmail }) =>
+                sendWelcomeEmail({
+                  to: user.email,
+                  name: user.name ?? null,
+                  bonusCredits: SIGNUP_BONUS_CREDITS,
+                }),
+              )
+              .catch((err: unknown) => {
+                // eslint-disable-next-line no-console
+                console.error(`[auth] welcome email failed for ${user.id}:`, err);
+              });
           }
         },
       },
