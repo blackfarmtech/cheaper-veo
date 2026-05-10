@@ -1,8 +1,8 @@
 /**
- * Catálogo de preços — Pay as you go.
- * 1 crédito = US$0.01 (1 cent)
- * Preços tabelados para vídeos de 8 segundos.
- * Para 4s e 6s aplicamos prorata linear arredondado pra cima (4s = 50%, 6s = 75%).
+ * Pricing catalog — Pay as you go.
+ * 1 credit = US$0.01 (1 cent)
+ * Prices tabulated for 8-second videos.
+ * For 4s and 6s we apply linear prorata rounded up (4s = 50%, 6s = 75%).
  */
 
 export type Tier = "lite" | "fast" | "quality";
@@ -26,7 +26,7 @@ export const MODELS: ModelOption[] = [
     tier: "lite",
     upstreamModel: "veo-3.1-fast-generate-001",
     label: "Veo 3.1 Lite",
-    description: "Testes rápidos e alto volume.",
+    description: "Quick tests and high volume.",
     speedHint: "1-2 min",
     resolutions: ["720p", "1080p"],
   },
@@ -35,7 +35,7 @@ export const MODELS: ModelOption[] = [
     tier: "fast",
     upstreamModel: "veo-3.1-fast-generate-001",
     label: "Veo 3.1 Fast",
-    description: "Melhor custo-benefício para criadores e apps.",
+    description: "Best value for creators and apps.",
     speedHint: "1-3 min",
     resolutions: ["720p", "1080p", "4k"],
   },
@@ -44,14 +44,14 @@ export const MODELS: ModelOption[] = [
     tier: "quality",
     upstreamModel: "veo-3.1-generate-001",
     label: "Veo 3.1 Quality",
-    description: "Vídeos finais e produção premium.",
+    description: "Final videos and premium production.",
     speedHint: "2-5 min",
     resolutions: ["720p", "1080p", "4k"],
   },
 ];
 
 /**
- * Tabela de créditos por vídeo de 8s (precificacao_pay_as_you_go_veo31.md).
+ * Credit table per 8s video (precificacao_pay_as_you_go_veo31.md).
  */
 const PRICE_8S: Record<Tier, Record<Resolution, { audio: number; noAudio: number }>> = {
   lite: {
@@ -137,12 +137,12 @@ export interface TopupOption {
 }
 
 export const TOPUPS: TopupOption[] = [
-  { id: "topup-25",   currency: "brl", amountCents: 25_00,   usdReference: 5,   credits: 500,    label: "Entrada" },
-  { id: "topup-50",   currency: "brl", amountCents: 50_00,   usdReference: 10,  credits: 1_000,  label: "Uso leve" },
-  { id: "topup-125",  currency: "brl", amountCents: 125_00,  usdReference: 25,  credits: 2_500,  label: "Criadores" },
-  { id: "topup-250",  currency: "brl", amountCents: 250_00,  usdReference: 50,  credits: 5_000,  label: "Recorrente", highlight: true },
-  { id: "topup-500",  currency: "brl", amountCents: 500_00,  usdReference: 100, credits: 10_000, label: "Agências" },
-  { id: "topup-1250", currency: "brl", amountCents: 1250_00, usdReference: 250, credits: 25_000, label: "Escala" },
+  { id: "topup-25",   currency: "brl", amountCents: 25_00,   usdReference: 5,   credits: 500,    label: "Starter" },
+  { id: "topup-50",   currency: "brl", amountCents: 50_00,   usdReference: 10,  credits: 1_000,  label: "Light use" },
+  { id: "topup-125",  currency: "brl", amountCents: 125_00,  usdReference: 25,  credits: 2_500,  label: "Creators" },
+  { id: "topup-250",  currency: "brl", amountCents: 250_00,  usdReference: 50,  credits: 5_000,  label: "Recurring", highlight: true },
+  { id: "topup-500",  currency: "brl", amountCents: 500_00,  usdReference: 100, credits: 10_000, label: "Agencies" },
+  { id: "topup-1250", currency: "brl", amountCents: 1250_00, usdReference: 250, credits: 25_000, label: "Scale" },
   { id: "topup-2500", currency: "brl", amountCents: 2500_00, usdReference: 500, credits: 50_000, label: "Enterprise" },
 ];
 

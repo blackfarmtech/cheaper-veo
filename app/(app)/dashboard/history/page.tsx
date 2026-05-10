@@ -27,14 +27,14 @@ const STATUSES: GenerationStatus[] = [
 ];
 
 const STATUS_LABELS: Record<GenerationStatus, string> = {
-  pending: "Em fila",
-  processing: "Processando",
-  succeeded: "Concluído",
-  failed: "Falhou",
-  refunded: "Reembolsado",
+  pending: "Queued",
+  processing: "Processing",
+  succeeded: "Succeeded",
+  failed: "Failed",
+  refunded: "Refunded",
 };
 
-const dateTimeFmt = new Intl.DateTimeFormat("pt-BR", {
+const dateTimeFmt = new Intl.DateTimeFormat("en-US", {
   day: "2-digit",
   month: "2-digit",
   year: "numeric",
@@ -128,10 +128,10 @@ export default async function HistoryPage({ searchParams }: PageProps) {
           className="text-3xl font-semibold tracking-tight md:text-[2.25rem]"
           style={{ letterSpacing: "-0.024em" }}
         >
-          Histórico
+          History
         </h1>
         <p className="text-[15px] text-secondary">
-          Todas as gerações da sua conta. Filtre por status ou modelo.
+          All generations from your account. Filter by status or model.
         </p>
       </header>
 
@@ -151,7 +151,7 @@ export default async function HistoryPage({ searchParams }: PageProps) {
                 border: "1px solid var(--color-border-strong)",
               }}
             >
-              <option value="">Todos</option>
+              <option value="">All</option>
               {STATUSES.map((s) => (
                 <option key={s} value={s}>
                   {STATUS_LABELS[s]}
@@ -160,7 +160,7 @@ export default async function HistoryPage({ searchParams }: PageProps) {
             </select>
           </label>
           <label className="flex flex-col gap-1.5">
-            <span className={fieldLabel}>Modelo</span>
+            <span className={fieldLabel}>Model</span>
             <select
               name="model"
               defaultValue={modelFilter ?? ""}
@@ -170,7 +170,7 @@ export default async function HistoryPage({ searchParams }: PageProps) {
                 border: "1px solid var(--color-border-strong)",
               }}
             >
-              <option value="">Todos</option>
+              <option value="">All</option>
               {MODELS.map((m) => (
                 <option key={m.id} value={m.id}>
                   {m.label}
@@ -181,10 +181,10 @@ export default async function HistoryPage({ searchParams }: PageProps) {
         </div>
         <div className="flex gap-2">
           <button type="submit" className="btn-primary">
-            Aplicar
+            Apply
           </button>
           <Link href="/dashboard/history" className="btn-ghost">
-            Limpar
+            Clear
           </Link>
         </div>
       </form>
@@ -198,12 +198,12 @@ export default async function HistoryPage({ searchParams }: PageProps) {
           style={{ borderBottom: "1px solid var(--color-border)" }}
         >
           <h2 className="text-[17px] font-semibold tracking-tight">
-            Gerações
+            Generations
           </h2>
           <span className="text-xs text-muted">
             {total === 0
-              ? "Nenhum resultado"
-              : `${showingFrom}–${showingTo} de ${formatCredits(total)}`}
+              ? "No results"
+              : `${showingFrom}–${showingTo} of ${formatCredits(total)}`}
           </span>
         </div>
 
@@ -211,16 +211,16 @@ export default async function HistoryPage({ searchParams }: PageProps) {
           <div className="p-7">
             <EmptyState
               icon={HistoryIcon}
-              title="Nenhuma geração encontrada"
+              title="No generations found"
               description={
                 status || modelFilter
-                  ? "Tente ajustar os filtros para ver mais resultados."
-                  : "Suas gerações aparecerão aqui assim que você criar a primeira."
+                  ? "Try adjusting the filters to see more results."
+                  : "Your generations will appear here as soon as you create the first one."
               }
               cta={
                 status || modelFilter
                   ? undefined
-                  : { label: "Abrir playground", href: "/dashboard/playground" }
+                  : { label: "Open playground", href: "/dashboard/playground" }
               }
             />
           </div>
@@ -236,15 +236,15 @@ export default async function HistoryPage({ searchParams }: PageProps) {
                     letterSpacing: "0.08em",
                   }}
                 >
-                  <th className="px-7 py-3.5 font-medium">Data</th>
-                  <th className="px-7 py-3.5 font-medium">Modelo</th>
-                  <th className="px-7 py-3.5 font-medium">Resolução / Áudio</th>
-                  <th className="px-7 py-3.5 font-medium">Duração</th>
+                  <th className="px-7 py-3.5 font-medium">Date</th>
+                  <th className="px-7 py-3.5 font-medium">Model</th>
+                  <th className="px-7 py-3.5 font-medium">Resolution / Audio</th>
+                  <th className="px-7 py-3.5 font-medium">Duration</th>
                   <th className="px-7 py-3.5 text-right font-medium">
-                    Créditos
+                    Credits
                   </th>
                   <th className="px-7 py-3.5 font-medium">Status</th>
-                  <th className="px-7 py-3.5 text-right font-medium">Ação</th>
+                  <th className="px-7 py-3.5 text-right font-medium">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -283,7 +283,7 @@ export default async function HistoryPage({ searchParams }: PageProps) {
                         >
                           <span>{gen.resolution}</span>
                           <span className="text-muted">
-                            {gen.audio ? "com áudio" : "sem áudio"}
+                            {gen.audio ? "with audio" : "no audio"}
                           </span>
                         </div>
                       </td>
@@ -323,7 +323,7 @@ export default async function HistoryPage({ searchParams }: PageProps) {
                             className="text-[10px] text-[var(--color-danger)]"
                             title={gen.errorMessage}
                           >
-                            {gen.errorCode ?? "erro"}
+                            {gen.errorCode ?? "error"}
                           </span>
                         ) : (
                           <span className="text-xs text-muted">—</span>
@@ -343,7 +343,7 @@ export default async function HistoryPage({ searchParams }: PageProps) {
             style={{ borderTop: "1px solid var(--color-border)" }}
           >
             <span className="text-xs text-muted">
-              Página {page} de {totalPages}
+              Page {page} of {totalPages}
             </span>
             <div className="flex items-center gap-2">
               {page > 1 ? (
@@ -357,7 +357,7 @@ export default async function HistoryPage({ searchParams }: PageProps) {
                   style={{ border: "1px solid var(--color-border-strong)" }}
                 >
                   <ChevronLeft className="h-3.5 w-3.5" />
-                  Anterior
+                  Previous
                 </Link>
               ) : (
                 <span
@@ -365,7 +365,7 @@ export default async function HistoryPage({ searchParams }: PageProps) {
                   style={{ border: "1px solid var(--color-border)" }}
                 >
                   <ChevronLeft className="h-3.5 w-3.5" />
-                  Anterior
+                  Previous
                 </span>
               )}
               {page < totalPages ? (
@@ -378,7 +378,7 @@ export default async function HistoryPage({ searchParams }: PageProps) {
                   className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs text-secondary transition-all hover:bg-white/[0.05] hover:text-[var(--color-text)]"
                   style={{ border: "1px solid var(--color-border-strong)" }}
                 >
-                  Próxima
+                  Next
                   <ChevronRight className="h-3.5 w-3.5" />
                 </Link>
               ) : (
@@ -386,7 +386,7 @@ export default async function HistoryPage({ searchParams }: PageProps) {
                   className="inline-flex cursor-not-allowed items-center gap-1 rounded-full px-3 py-1.5 text-xs text-muted opacity-50"
                   style={{ border: "1px solid var(--color-border)" }}
                 >
-                  Próxima
+                  Next
                   <ChevronRight className="h-3.5 w-3.5" />
                 </span>
               )}

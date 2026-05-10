@@ -2,6 +2,11 @@ import { betterAuth, type BetterAuthOptions } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
 
+import {
+  sendResetPasswordEmail,
+  sendVerifyEmail,
+  sendWelcomeEmail,
+} from "@/lib/email";
 import { prisma } from "@/lib/prisma";
 
 const googleClientId = process.env.GOOGLE_CLIENT_ID;
@@ -61,44 +66,87 @@ export const auth = betterAuth({
     autoSignIn: true,
     minPasswordLength: 8,
     maxPasswordLength: 128,
+    // Login is allowed before verification; the generation endpoints enforce
+    // emailVerified at the use-site so users can still browse pricing/billing.
     requireEmailVerification: false,
+    sendResetPassword: async ({ user, url }) => {
+      await sendResetPasswordEmail({ to: user.email, resetUrl: url });
+    },
+  },
+  emailVerification: {
+    sendOnSignUp: true,
+    autoSignInAfterVerification: true,
+    sendVerificationEmail: async ({ user, url }) => {
+      // Better Auth sometimes builds the URL without an explicit callbackURL.
+      // We pin one so the user lands on a friendly success page instead of
+      // a JSON response after clicking through.
+      const verifyUrl = url.includes("callbackURL=")
+        ? url
+        : `${url}${url.includes("?") ? "&" : "?"}callbackURL=${encodeURIComponent("/verify-email?status=success")}`;
+      await sendVerifyEmail({ to: user.email, verifyUrl });
+    },
   },
   socialProviders,
   databaseHooks: {
     user: {
       create: {
         after: async (user) => {
-          if (SIGNUP_BONUS_CREDITS <= 0) return;
-          // Idempotent: only grant if no existing transactions for this user.
-          // Better Auth might re-run the hook in edge cases (OAuth re-link).
-          try {
+          // Idempotent: only grant the bonus once per user. Better Auth might
+          // re-run the hook in edge cases (OAuth re-link), so we gate on the
+          // bonus transaction — also our marker for "first time we see them",
+          // which decides whether to send the welcome email.
+          let firstTime = false;
+          if (SIGNUP_BONUS_CREDITS > 0) {
+            try {
+              const existing = await prisma.creditTransaction.findFirst({
+                where: { userId: user.id, type: "bonus" },
+                select: { id: true },
+              });
+              if (!existing) {
+                firstTime = true;
+                await prisma.$transaction([
+                  prisma.user.update({
+                    where: { id: user.id },
+                    data: { creditsBalance: { increment: SIGNUP_BONUS_CREDITS } },
+                  }),
+                  prisma.creditTransaction.create({
+                    data: {
+                      userId: user.id,
+                      amount: SIGNUP_BONUS_CREDITS,
+                      type: "bonus",
+                      description: `Welcome bonus — ${SIGNUP_BONUS_CREDITS} free credits`,
+                    },
+                  }),
+                ]);
+              }
+            } catch (err) {
+              // Don't block signup if bonus grant fails — it's a soft perk.
+              // eslint-disable-next-line no-console
+              console.error(
+                `[auth] failed to grant signup bonus to ${user.id}:`,
+                err,
+              );
+            }
+          } else {
+            // Bonus disabled — still want to send welcome on first signup.
             const existing = await prisma.creditTransaction.findFirst({
               where: { userId: user.id, type: "bonus" },
               select: { id: true },
             });
-            if (existing) return;
+            firstTime = !existing;
+          }
 
-            await prisma.$transaction([
-              prisma.user.update({
-                where: { id: user.id },
-                data: { creditsBalance: { increment: SIGNUP_BONUS_CREDITS } },
-              }),
-              prisma.creditTransaction.create({
-                data: {
-                  userId: user.id,
-                  amount: SIGNUP_BONUS_CREDITS,
-                  type: "bonus",
-                  description: `Welcome bonus — ${SIGNUP_BONUS_CREDITS} créditos grátis`,
-                },
-              }),
-            ]);
-          } catch (err) {
-            // Don't block signup if bonus grant fails — it's a soft perk.
-            // eslint-disable-next-line no-console
-            console.error(
-              `[auth] failed to grant signup bonus to ${user.id}:`,
-              err,
-            );
+          if (firstTime) {
+            // Welcome email is fire-and-forget — never block signup if Resend
+            // is down or unconfigured.
+            void sendWelcomeEmail({
+              to: user.email,
+              name: user.name ?? null,
+              bonusCredits: SIGNUP_BONUS_CREDITS,
+            }).catch((err) => {
+              // eslint-disable-next-line no-console
+              console.error(`[auth] welcome email failed for ${user.id}:`, err);
+            });
           }
         },
       },

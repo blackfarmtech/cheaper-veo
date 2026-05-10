@@ -20,11 +20,11 @@ interface BillingPageProps {
 }
 
 const TYPE_LABEL: Record<TransactionType, string> = {
-  topup: "Recarga",
-  debit: "Débito",
-  refund: "Reembolso",
-  bonus: "Bônus",
-  adjustment: "Ajuste",
+  topup: "Top-up",
+  debit: "Debit",
+  refund: "Refund",
+  bonus: "Bonus",
+  adjustment: "Adjustment",
 };
 
 export default async function BillingPage({ searchParams }: BillingPageProps): Promise<React.ReactElement> {
@@ -71,10 +71,10 @@ export default async function BillingPage({ searchParams }: BillingPageProps): P
           className="text-3xl font-semibold tracking-tight md:text-[2.25rem]"
           style={{ letterSpacing: "-0.024em" }}
         >
-          Saldo & Recargas
+          Balance & Top-ups
         </h1>
         <p className="mt-1.5 text-[15px] text-secondary">
-          Recargas pay-as-you-go. 1 crédito equivale a US$0,01.
+          Pay-as-you-go top-ups. 1 credit equals US$0.01.
         </p>
       </header>
 
@@ -90,8 +90,8 @@ export default async function BillingPage({ searchParams }: BillingPageProps): P
             boxShadow: "var(--shadow-glow)",
           }}
         >
-          Pagamento confirmado. Os créditos aparecerão no seu saldo em instantes —
-          podemos demorar alguns segundos para o webhook do Stripe ser processado.
+          Payment confirmed. Credits will appear in your balance shortly —
+          it can take a few seconds for the Stripe webhook to be processed.
         </div>
       ) : null}
 
@@ -104,7 +104,7 @@ export default async function BillingPage({ searchParams }: BillingPageProps): P
             borderRadius: "var(--radius-lg)",
           }}
         >
-          Pagamento cancelado. Nenhuma cobrança foi feita.
+          Payment canceled. No charge was made.
         </div>
       ) : null}
 
@@ -119,7 +119,7 @@ export default async function BillingPage({ searchParams }: BillingPageProps): P
             borderRadius: "var(--radius-lg)",
           }}
         >
-          Cartão salvo com sucesso. Configure a auto-recarga abaixo.
+          Card saved successfully. Configure auto-recharge below.
         </div>
       ) : null}
 
@@ -132,7 +132,7 @@ export default async function BillingPage({ searchParams }: BillingPageProps): P
             borderRadius: "var(--radius-lg)",
           }}
         >
-          Adição de cartão cancelada.
+          Card setup canceled.
         </div>
       ) : null}
 
@@ -147,7 +147,7 @@ export default async function BillingPage({ searchParams }: BillingPageProps): P
           className="text-[11px] uppercase text-muted"
           style={{ letterSpacing: "0.08em" }}
         >
-          Saldo atual
+          Current balance
         </div>
         <div
           className="mt-3 text-5xl font-semibold tracking-tight md:text-6xl"
@@ -160,7 +160,7 @@ export default async function BillingPage({ searchParams }: BillingPageProps): P
           {formatCredits(balance)}
         </div>
         <div className="mt-2 text-[15px] text-secondary">
-          créditos · ≈ {formatMoney(balance * 5, "brl")} ({formatMoney(balance, "usd")})
+          credits · ≈ {formatMoney(balance * 5, "brl")} ({formatMoney(balance, "usd")})
         </div>
       </section>
 
@@ -176,10 +176,10 @@ export default async function BillingPage({ searchParams }: BillingPageProps): P
       <section className="space-y-5">
         <div>
           <h2 className="text-2xl font-semibold tracking-tight" style={{ letterSpacing: "-0.022em" }}>
-            Recarregar
+            Top up
           </h2>
           <p className="mt-1 text-[14px] text-secondary">
-            Pagamento único via Stripe. Os créditos não expiram.
+            One-time payment via Stripe. Credits never expire.
           </p>
         </div>
         <TopupGrid topups={TOPUPS} />
@@ -188,9 +188,9 @@ export default async function BillingPage({ searchParams }: BillingPageProps): P
       <section className="space-y-5">
         <div>
           <h2 className="text-2xl font-semibold tracking-tight" style={{ letterSpacing: "-0.022em" }}>
-            Histórico
+            History
           </h2>
-          <p className="mt-1 text-[14px] text-secondary">Últimas 10 movimentações.</p>
+          <p className="mt-1 text-[14px] text-secondary">Last 10 transactions.</p>
         </div>
         <HistoryTable transactions={transactions} />
       </section>
@@ -202,7 +202,7 @@ function HistoryTable({ transactions }: { transactions: CreditTransaction[] }): 
   if (transactions.length === 0) {
     return (
       <div className="card p-7 text-sm text-muted">
-        Você ainda não tem transações. Faça sua primeira recarga acima.
+        You don&apos;t have any transactions yet. Make your first top-up above.
       </div>
     );
   }
@@ -223,14 +223,14 @@ function HistoryTable({ transactions }: { transactions: CreditTransaction[] }): 
                 letterSpacing: "0.08em",
               }}
             >
-              <th className="px-5 py-3.5 font-medium">Data</th>
-              <th className="px-5 py-3.5 font-medium">Tipo</th>
-              <th className="px-5 py-3.5 font-medium">Descrição</th>
+              <th className="px-5 py-3.5 font-medium">Date</th>
+              <th className="px-5 py-3.5 font-medium">Type</th>
+              <th className="px-5 py-3.5 font-medium">Description</th>
               <th className="px-5 py-3.5 text-right font-medium">
-                Valor (créditos)
+                Amount (credits)
               </th>
               <th className="px-5 py-3.5 text-right font-medium">
-                Pagamento (USD)
+                Payment (USD)
               </th>
             </tr>
           </thead>
@@ -286,7 +286,7 @@ function HistoryTable({ transactions }: { transactions: CreditTransaction[] }): 
 }
 
 function formatDate(date: Date): string {
-  return new Intl.DateTimeFormat("pt-BR", {
+  return new Intl.DateTimeFormat("en-US", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",

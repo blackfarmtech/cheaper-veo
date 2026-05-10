@@ -7,8 +7,8 @@ import { getSession } from "@/lib/session";
 import { LoginForm } from "./login-form";
 
 export const metadata: Metadata = {
-  title: "Entrar — Cheaper Veo",
-  description: "Acesse sua conta Cheaper Veo para gerenciar créditos, API keys e gerações.",
+  title: "Sign in — Cheaper Veo",
+  description: "Access your Cheaper Veo account to manage credits, API keys and generations.",
 };
 
 export default async function LoginPage() {

@@ -78,7 +78,7 @@ export function GenerationProgress({
           status: "failed",
           errorCode: "POLL_NETWORK_ERROR",
           errorMessage:
-            err instanceof Error ? err.message : "Falha ao consultar status.",
+            err instanceof Error ? err.message : "Failed to check status.",
         }));
         return;
       }
@@ -129,7 +129,7 @@ export function GenerationProgress({
           style={{ color: "var(--color-accent)" }}
         >
           <CheckCircle2 className="h-4 w-4" aria-hidden />
-          Vídeo pronto
+          Video ready
         </div>
         <video
           controls
@@ -149,8 +149,8 @@ export function GenerationProgress({
               borderRadius: "var(--radius-md)",
             }}
           >
-            Aviso: Supabase Storage falhou ({state.errorMessage}). Servindo
-            direto da origem upstream — pode expirar em breve.
+            Warning: Supabase Storage failed ({state.errorMessage}). Serving
+            directly from the upstream source — may expire soon.
           </p>
         ) : null}
         <div className="flex flex-wrap gap-2">
@@ -165,7 +165,7 @@ export function GenerationProgress({
           {onReset && (
             <button type="button" onClick={onReset} className="btn-ghost">
               <RefreshCw className="h-4 w-4" aria-hidden />
-              Gerar outro
+              Generate another
             </button>
           )}
         </div>
@@ -187,11 +187,11 @@ export function GenerationProgress({
           style={{ color: "var(--color-warn)" }}
         >
           <AlertTriangle className="h-4 w-4" aria-hidden />
-          Vídeo gerado mas sem URL disponível
+          Video generated but no URL available
         </div>
         <p className="text-xs text-muted">
-          O upstream marcou como concluído, mas não conseguimos obter um link
-          reproduzível. Verifique os logs do servidor (busque por &quot;{taskId}&quot;).
+          The upstream marked it as complete, but we could not get a
+          playable link. Check the server logs (search for &quot;{taskId}&quot;).
         </p>
         <p
           className="text-xs text-muted"
@@ -203,7 +203,7 @@ export function GenerationProgress({
           <div>
             <button type="button" onClick={onReset} className="btn-ghost">
               <RefreshCw className="h-4 w-4" aria-hidden />
-              Tentar novamente
+              Try again
             </button>
           </div>
         )}
@@ -220,8 +220,8 @@ export function GenerationProgress({
         >
           <AlertTriangle className="h-4 w-4" aria-hidden />
           {state.status === "refunded"
-            ? "Geração reembolsada"
-            : "Geração falhou"}
+            ? "Generation refunded"
+            : "Generation failed"}
         </div>
         {state.errorCode && (
           <p
@@ -245,14 +245,14 @@ export function GenerationProgress({
         )}
         <p className="text-xs text-muted">
           {state.status === "refunded"
-            ? "Créditos reembolsados — você pode tentar novamente sem custo."
-            : "Verifique os parâmetros e tente novamente."}
+            ? "Credits refunded — you can try again at no cost."
+            : "Check the parameters and try again."}
         </p>
         {onReset && (
           <div>
             <button type="button" onClick={onReset} className="btn-ghost">
               <RefreshCw className="h-4 w-4" aria-hidden />
-              Tentar novamente
+              Try again
             </button>
           </div>
         )}
@@ -268,18 +268,18 @@ export function GenerationProgress({
           style={{ color: "var(--color-warn)" }}
         >
           <AlertTriangle className="h-4 w-4" aria-hidden />
-          Geração demorou mais que o esperado
+          Generation took longer than expected
         </div>
         <p className="text-xs text-muted">
-          Paramos de monitorar após 12 minutos. O vídeo pode ainda finalizar —
-          confira em &quot;Histórico&quot;. Task ID:{" "}
+          We stopped monitoring after 12 minutes. The video may still finish —
+          check &quot;History&quot;. Task ID:{" "}
           <span style={{ fontFamily: "var(--font-mono)" }}>{taskId}</span>
         </p>
         {onReset && (
           <div>
             <button type="button" onClick={onReset} className="btn-ghost">
               <RefreshCw className="h-4 w-4" aria-hidden />
-              Voltar
+              Back
             </button>
           </div>
         )}
@@ -308,12 +308,12 @@ export function GenerationProgress({
         <div>
           <p className="text-[15px] font-semibold tracking-tight">
             {state.status === "pending"
-              ? "Enviando para a fila…"
-              : "Processando vídeo no Veo 3.1…"}
+              ? "Sending to the queue…"
+              : "Processing video on Veo 3.1…"}
           </p>
           <p className="mt-0.5 text-[13px] text-muted">
-            Pode levar de 1 a 5 minutos. Você pode fechar esta tela — o vídeo
-            ficará no histórico.
+            Can take 1 to 5 minutes. You can close this screen — the video
+            will be in History.
           </p>
         </div>
       </div>
@@ -325,7 +325,7 @@ export function GenerationProgress({
           className="text-xs text-muted"
           style={{ fontFamily: "var(--font-mono)" }}
         >
-          Decorrido
+          Elapsed
         </span>
         <span
           className="text-sm tabular-nums"

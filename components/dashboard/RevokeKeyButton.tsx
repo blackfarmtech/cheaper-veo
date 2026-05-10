@@ -17,13 +17,13 @@ export function RevokeKeyButton({ id, name }: RevokeKeyButtonProps) {
   function handleClick() {
     setError(null);
     const confirmed = window.confirm(
-      `Tem certeza que deseja revogar a chave “${name}”? Esta ação não pode ser desfeita.`,
+      `Are you sure you want to revoke the key "${name}"? This action cannot be undone.`,
     );
     if (!confirmed) return;
     startTransition(async () => {
       const result = await revokeKeyAction(id);
       if (!result.ok) {
-        setError(result.error ?? "Falha ao revogar chave.");
+        setError(result.error ?? "Failed to revoke key.");
       }
     });
   }
@@ -43,12 +43,12 @@ export function RevokeKeyButton({ id, name }: RevokeKeyButtonProps) {
         {isPending ? (
           <>
             <Loader2 className="h-3.5 w-3.5 animate-spin" />
-            Revogando…
+            Revoking…
           </>
         ) : (
           <>
             <Trash2 className="h-3.5 w-3.5" />
-            Revogar
+            Revoke
           </>
         )}
       </button>

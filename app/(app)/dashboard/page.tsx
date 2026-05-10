@@ -26,18 +26,18 @@ const MS_PER_DAY = MS_PER_HOUR * 24;
 
 function formatRelative(date: Date): string {
   const diff = Date.now() - date.getTime();
-  if (diff < MS_PER_MIN) return "agora mesmo";
+  if (diff < MS_PER_MIN) return "just now";
   if (diff < MS_PER_HOUR) {
     const m = Math.floor(diff / MS_PER_MIN);
-    return `há ${m} min`;
+    return `${m} min ago`;
   }
   if (diff < MS_PER_DAY) {
     const h = Math.floor(diff / MS_PER_HOUR);
-    return `há ${h} h`;
+    return `${h} h ago`;
   }
   const d = Math.floor(diff / MS_PER_DAY);
-  if (d < 30) return `há ${d} d`;
-  return date.toLocaleDateString("pt-BR");
+  if (d < 30) return `${d} d ago`;
+  return date.toLocaleDateString("en-US");
 }
 
 function modelLabel(modelId: string): string {
@@ -75,32 +75,32 @@ export default async function DashboardOverviewPage() {
           className="text-3xl font-semibold tracking-tight md:text-[2.25rem]"
           style={{ letterSpacing: "-0.024em" }}
         >
-          Visão geral
+          Overview
         </h1>
         <p className="text-[15px] text-secondary">
-          Acompanhe seu saldo, atividade recente e atalhos para começar.
+          Track your balance, recent activity and shortcuts to get started.
         </p>
       </header>
 
       <div className="grid gap-4 md:grid-cols-3">
         <KpiCard
           icon={Wallet}
-          label="Saldo atual"
+          label="Current balance"
           primary={`${formatCredits(balance)} cr`}
           secondary={formatUsd(balance)}
           accent
         />
         <KpiCard
           icon={Activity}
-          label="Gerações nos últimos 30 dias"
+          label="Generations in the last 30 days"
           primary={formatCredits(generations30d)}
-          secondary={`${generations30d === 1 ? "vídeo" : "vídeos"} criados`}
+          secondary={`${generations30d === 1 ? "video" : "videos"} created`}
         />
         <KpiCard
           icon={Sparkles}
-          label="Gasto nos últimos 30 dias"
+          label="Spent in the last 30 days"
           primary={formatUsd(spent30dCredits)}
-          secondary={`${formatCredits(spent30dCredits)} cr debitados`}
+          secondary={`${formatCredits(spent30dCredits)} cr debited`}
         />
       </div>
 
@@ -109,17 +109,17 @@ export default async function DashboardOverviewPage() {
           <div className="mb-5 flex items-center justify-between">
             <div>
               <h2 className="text-[17px] font-semibold tracking-tight">
-                Atividade recente
+                Recent activity
               </h2>
               <p className="mt-0.5 text-[13px] text-secondary">
-                Últimas 6 gerações da sua conta.
+                Last 6 generations from your account.
               </p>
             </div>
             <Link
               href="/dashboard/history"
               className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs text-secondary transition-all hover:bg-white/[0.05] hover:text-[var(--color-text)]"
             >
-              Ver tudo
+              View all
               <ArrowUpRight className="h-3.5 w-3.5" />
             </Link>
           </div>
@@ -127,9 +127,9 @@ export default async function DashboardOverviewPage() {
           {recent.length === 0 ? (
             <EmptyState
               icon={PlayCircle}
-              title="Nenhuma geração ainda"
-              description="Crie seu primeiro vídeo no playground em alguns segundos."
-              cta={{ label: "Abrir playground", href: "/dashboard/playground" }}
+              title="No generations yet"
+              description="Create your first video in the playground in seconds."
+              cta={{ label: "Open playground", href: "/dashboard/playground" }}
             />
           ) : (
             <ul className="-mx-3">
@@ -171,29 +171,29 @@ export default async function DashboardOverviewPage() {
 
         <section className="card p-7">
           <h2 className="text-[17px] font-semibold tracking-tight">
-            Atalhos rápidos
+            Quick shortcuts
           </h2>
           <p className="mt-1 text-[13px] text-secondary">
-            Comece pelo essencial.
+            Start with the essentials.
           </p>
           <div className="mt-5 space-y-2">
             <ShortcutLink
               href="/dashboard/playground"
               icon={PlayCircle}
-              label="Abrir playground"
-              description="Gere um vídeo direto pela UI."
+              label="Open playground"
+              description="Generate a video directly from the UI."
             />
             <ShortcutLink
               href="/dashboard/keys"
               icon={KeyRound}
-              label="Criar API key"
-              description="Integre nosso endpoint Veo 3.1."
+              label="Create API key"
+              description="Integrate our Veo 3.1 endpoint."
             />
             <ShortcutLink
               href="/docs"
               icon={BookText}
-              label="Ver documentação"
-              description="Endpoints, exemplos e SDKs."
+              label="View documentation"
+              description="Endpoints, examples and SDKs."
             />
           </div>
         </section>

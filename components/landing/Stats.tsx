@@ -1,7 +1,7 @@
 const stats = [
-  { value: "US$0.14", label: "por vídeo" },
-  { value: "Sem", label: "mensalidade" },
-  { value: "8s · 1080p", label: "com áudio" },
+  { value: "US$0.14", label: "per video" },
+  { value: "No", label: "monthly fee" },
+  { value: "8s · 1080p", label: "with audio" },
   { value: "Production", label: "ready" },
 ];
 

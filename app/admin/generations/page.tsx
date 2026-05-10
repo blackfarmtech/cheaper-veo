@@ -21,14 +21,14 @@ const STATUSES: GenerationStatus[] = [
 ];
 
 const STATUS_LABELS: Record<GenerationStatus, string> = {
-  pending: "Em fila",
-  processing: "Processando",
-  succeeded: "Concluído",
-  failed: "Falhou",
-  refunded: "Reembolsado",
+  pending: "Queued",
+  processing: "Processing",
+  succeeded: "Succeeded",
+  failed: "Failed",
+  refunded: "Refunded",
 };
 
-const dt = new Intl.DateTimeFormat("pt-BR", {
+const dt = new Intl.DateTimeFormat("en-US", {
   day: "2-digit",
   month: "2-digit",
   year: "numeric",
@@ -101,10 +101,10 @@ export default async function AdminGenerationsPage({ searchParams }: PageProps) 
           className="text-3xl font-semibold tracking-tight md:text-[2.25rem]"
           style={{ letterSpacing: "-0.024em" }}
         >
-          Gerações
+          Generations
         </h1>
         <p className="text-[15px] text-secondary">
-          Log global de todas as gerações da plataforma.
+          Global log of all platform generations.
         </p>
       </header>
 
@@ -118,13 +118,13 @@ export default async function AdminGenerationsPage({ searchParams }: PageProps) 
             className="text-[10.5px] uppercase text-muted"
             style={{ letterSpacing: "0.08em" }}
           >
-            Buscar
+            Search
           </label>
           <input
             type="text"
             name="q"
             defaultValue={q}
-            placeholder="prompt, taskId, ou email"
+            placeholder="prompt, taskId, or email"
             className="input-apple"
           />
         </div>
@@ -140,7 +140,7 @@ export default async function AdminGenerationsPage({ searchParams }: PageProps) 
             defaultValue={status ?? ""}
             className="input-apple"
           >
-            <option value="">Todos</option>
+            <option value="">All</option>
             {STATUSES.map((s) => (
               <option key={s} value={s}>
                 {STATUS_LABELS[s]}
@@ -153,14 +153,14 @@ export default async function AdminGenerationsPage({ searchParams }: PageProps) 
             className="text-[10.5px] uppercase text-muted"
             style={{ letterSpacing: "0.08em" }}
           >
-            Modelo
+            Model
           </label>
           <select
             name="model"
             defaultValue={sp.model ?? ""}
             className="input-apple"
           >
-            <option value="">Todos</option>
+            <option value="">All</option>
             {MODELS.map((m) => (
               <option key={m.id} value={m.id}>
                 {m.label}
@@ -170,11 +170,11 @@ export default async function AdminGenerationsPage({ searchParams }: PageProps) 
         </div>
         <div className="flex gap-2">
           <button type="submit" className="btn-primary">
-            Filtrar
+            Filter
           </button>
           {(status || sp.model || q) && (
             <Link href="/admin/generations" className="btn-ghost">
-              Limpar
+              Clear
             </Link>
           )}
         </div>
@@ -187,14 +187,14 @@ export default async function AdminGenerationsPage({ searchParams }: PageProps) 
         >
           <h2 className="text-[15px] font-semibold tracking-tight">
             {total === 0
-              ? "Nenhum resultado"
-              : `${showingFrom}–${showingTo} de ${formatCredits(total)} gerações`}
+              ? "No results"
+              : `${showingFrom}–${showingTo} of ${formatCredits(total)} generations`}
           </h2>
         </div>
 
         {generations.length === 0 ? (
           <div className="p-8 text-center text-[13px] text-muted">
-            Nenhuma geração encontrada.
+            No generations found.
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -208,12 +208,12 @@ export default async function AdminGenerationsPage({ searchParams }: PageProps) 
                     letterSpacing: "0.08em",
                   }}
                 >
-                  <th className="px-6 py-3.5 font-medium">Quando</th>
-                  <th className="px-6 py-3.5 font-medium">Usuário</th>
-                  <th className="px-6 py-3.5 font-medium">Modelo</th>
+                  <th className="px-6 py-3.5 font-medium">When</th>
+                  <th className="px-6 py-3.5 font-medium">User</th>
+                  <th className="px-6 py-3.5 font-medium">Model</th>
                   <th className="px-6 py-3.5 font-medium">Prompt</th>
                   <th className="px-6 py-3.5 font-medium">Status</th>
-                  <th className="px-6 py-3.5 text-right font-medium">Custo</th>
+                  <th className="px-6 py-3.5 text-right font-medium">Cost</th>
                 </tr>
               </thead>
               <tbody>
@@ -299,7 +299,7 @@ export default async function AdminGenerationsPage({ searchParams }: PageProps) 
             style={{ borderTop: "1px solid var(--color-border)" }}
           >
             <span className="text-xs text-muted">
-              Página {page} de {totalPages}
+              Page {page} of {totalPages}
             </span>
             <div className="flex gap-2">
               {page > 1 ? (
@@ -308,7 +308,7 @@ export default async function AdminGenerationsPage({ searchParams }: PageProps) 
                   className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs text-secondary transition-all hover:bg-white/[0.05]"
                   style={{ border: "1px solid var(--color-border-strong)" }}
                 >
-                  <ChevronLeft className="h-3.5 w-3.5" /> Anterior
+                  <ChevronLeft className="h-3.5 w-3.5" /> Previous
                 </Link>
               ) : null}
               {page < totalPages ? (
@@ -317,7 +317,7 @@ export default async function AdminGenerationsPage({ searchParams }: PageProps) 
                   className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs text-secondary transition-all hover:bg-white/[0.05]"
                   style={{ border: "1px solid var(--color-border-strong)" }}
                 >
-                  Próxima <ChevronRight className="h-3.5 w-3.5" />
+                  Next <ChevronRight className="h-3.5 w-3.5" />
                 </Link>
               ) : null}
             </div>

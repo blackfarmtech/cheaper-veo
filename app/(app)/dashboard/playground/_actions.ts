@@ -30,6 +30,11 @@ export type SubmitGenerationResult =
     }
   | {
       ok: false;
+      error: "EMAIL_NOT_VERIFIED";
+      message: string;
+    }
+  | {
+      ok: false;
       error: "FAILED";
       message: string;
     };
@@ -41,7 +46,12 @@ export async function submitGenerationAction(
 
   try {
     const generation = await createGeneration({
-      user: { id: user.id, email: user.email, creditsBalance: 0 },
+      user: {
+        id: user.id,
+        email: user.email,
+        creditsBalance: 0,
+        emailVerified: Boolean(user.emailVerified),
+      },
       apiKey: null,
       input,
     });
@@ -55,6 +65,9 @@ export async function submitGenerationAction(
       creditsCost: generation.creditsCost,
     };
   } catch (err) {
+    if (err instanceof GenerationError && err.code === "EMAIL_NOT_VERIFIED") {
+      return { ok: false, error: "EMAIL_NOT_VERIFIED", message: err.message };
+    }
     if (err instanceof GenerationError && err.code === "INSUFFICIENT_CREDITS") {
       const balance = await getBalance(user.id);
       // Try to recover the required amount from the message; fall back to balance + 1.
@@ -68,7 +81,7 @@ export async function submitGenerationAction(
       };
     }
     const message =
-      err instanceof Error ? err.message : "Erro inesperado ao gerar vídeo.";
+      err instanceof Error ? err.message : "Unexpected error generating video.";
     return { ok: false, error: "FAILED", message };
   }
 }
@@ -97,10 +110,10 @@ export async function pollGenerationAction(
   });
 
   if (!generation) {
-    return { ok: false, error: "NOT_FOUND", message: "Geração não encontrada." };
+    return { ok: false, error: "NOT_FOUND", message: "Generation not found." };
   }
   if (generation.userId !== user.id) {
-    return { ok: false, error: "FORBIDDEN", message: "Acesso negado." };
+    return { ok: false, error: "FORBIDDEN", message: "Access denied." };
   }
 
   let current = generation;

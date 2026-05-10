@@ -119,11 +119,11 @@ export function AutoRechargeCard({
           </div>
           <div>
             <h2 className="text-[17px] font-semibold tracking-tight">
-              Auto-recarga
+              Auto-recharge
             </h2>
             <p className="mt-1 text-[13px] text-secondary">
-              Quando seu saldo cair abaixo do limite, cobramos automaticamente
-              o cartão salvo.
+              When your balance drops below the threshold, we automatically
+              charge the saved card.
             </p>
           </div>
         </div>
@@ -135,7 +135,7 @@ export function AutoRechargeCard({
           aria-checked={enabled}
           onClick={() => {
             if (!hasCard && !enabled) {
-              setError("Adicione um cartão antes de ativar a auto-recarga.");
+              setError("Add a card before enabling auto-recharge.");
               return;
             }
             setEnabled((v) => !v);
@@ -170,7 +170,7 @@ export function AutoRechargeCard({
           className="mb-3 text-[11px] uppercase text-muted"
           style={{ letterSpacing: "0.08em" }}
         >
-          Cartão para auto-recarga
+          Card for auto-recharge
         </div>
         {hasCard ? (
           <div className="flex items-center justify-between gap-3">
@@ -188,7 +188,7 @@ export function AutoRechargeCard({
                   {savedCard!.brand.toUpperCase()} ···· {savedCard!.last4}
                 </div>
                 <div className="text-[12px] text-muted">
-                  Expira{" "}
+                  Expires{" "}
                   {savedCard!.expMonth.toString().padStart(2, "0")}/
                   {savedCard!.expYear.toString().slice(-2)}
                 </div>
@@ -205,7 +205,7 @@ export function AutoRechargeCard({
               }}
             >
               <Trash2 className="h-3.5 w-3.5" />
-              Remover
+              Remove
             </button>
           </div>
         ) : (
@@ -216,7 +216,7 @@ export function AutoRechargeCard({
             className="btn-ghost w-full disabled:opacity-50"
           >
             <Plus className="h-4 w-4" />
-            {isCardLoading ? "Abrindo Stripe…" : "Adicionar cartão"}
+            {isCardLoading ? "Opening Stripe…" : "Add card"}
           </button>
         )}
       </div>
@@ -234,7 +234,7 @@ export function AutoRechargeCard({
             className="text-[11px] uppercase text-muted"
             style={{ letterSpacing: "0.08em" }}
           >
-            Recarregar quando saldo for abaixo de
+            Recharge when balance falls below
           </label>
           <div className="relative">
             <input
@@ -266,7 +266,7 @@ export function AutoRechargeCard({
             className="text-[11px] uppercase text-muted"
             style={{ letterSpacing: "0.08em" }}
           >
-            Comprar pacote de
+            Buy pack of
           </label>
           <select
             id="topupId"
@@ -283,8 +283,8 @@ export function AutoRechargeCard({
           </select>
           {selectedTopup && (
             <p className="text-[11px] text-muted">
-              {formatCredits(selectedTopup.credits)} créditos serão adicionados
-              ao seu saldo.
+              {formatCredits(selectedTopup.credits)} credits will be added
+              to your balance.
             </p>
           )}
         </div>
@@ -302,10 +302,10 @@ export function AutoRechargeCard({
           <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
           <div>
             <strong className="text-[var(--color-text)]">
-              Última cobrança falhou:
+              Last charge failed:
             </strong>{" "}
-            {lastError}. Auto-recarga foi desabilitada — verifique o cartão e
-            ative novamente.
+            {lastError}. Auto-recharge has been disabled — check the card and
+            re-enable.
           </div>
         </div>
       )}
@@ -333,15 +333,15 @@ export function AutoRechargeCard({
         >
           {savedFlash ? (
             <>
-              <Check className="h-4 w-4" /> Salvo
+              <Check className="h-4 w-4" /> Saved
             </>
           ) : (
-            "Salvar configuração"
+            "Save configuration"
           )}
         </button>
         <span className="text-[11px] text-muted">
-          Você só é cobrado quando o saldo cai abaixo do limite. Cooldown de
-          5 min entre recargas.
+          You&apos;re only charged when the balance drops below the threshold.
+          5 min cooldown between recharges.
         </span>
       </div>
     </div>

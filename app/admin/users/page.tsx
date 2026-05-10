@@ -79,11 +79,11 @@ export default async function AdminUsersPage({ searchParams }: PageProps) {
           className="text-3xl font-semibold tracking-tight md:text-[2.25rem]"
           style={{ letterSpacing: "-0.024em" }}
         >
-          Usuários
+          Users
         </h1>
         <p className="text-[15px] text-secondary">
-          Busque por email, ID ou Stripe customer ID. Aplique filtros rápidos
-          se precisar.
+          Search by email, ID or Stripe customer ID. Apply quick filters
+          if needed.
         </p>
       </header>
 
@@ -101,7 +101,7 @@ export default async function AdminUsersPage({ searchParams }: PageProps) {
             type="text"
             name="q"
             defaultValue={q}
-            placeholder="email, user id ou cus_xxx..."
+            placeholder="email, user id or cus_xxx..."
             className="input-apple pl-10"
           />
         </div>
@@ -111,16 +111,16 @@ export default async function AdminUsersPage({ searchParams }: PageProps) {
           className="input-apple sm:max-w-[240px]"
           style={{ appearance: "auto" }}
         >
-          <option value="">Todos</option>
-          <option value="auto_recharge_enabled">Auto-recarga ativa</option>
-          <option value="auto_recharge_failed">Auto-recarga em erro</option>
+          <option value="">All</option>
+          <option value="auto_recharge_enabled">Auto-recharge active</option>
+          <option value="auto_recharge_failed">Auto-recharge in error</option>
         </select>
         <button type="submit" className="btn-primary">
-          Buscar
+          Search
         </button>
         {(q || filter) && (
           <Link href="/admin/users" className="btn-ghost">
-            Limpar
+            Clear
           </Link>
         )}
       </form>
@@ -132,14 +132,14 @@ export default async function AdminUsersPage({ searchParams }: PageProps) {
         >
           <h2 className="text-[15px] font-semibold tracking-tight">
             {total === 0
-              ? "Nenhum resultado"
-              : `${showingFrom}–${showingTo} de ${formatCredits(total)} usuários`}
+              ? "No results"
+              : `${showingFrom}–${showingTo} of ${formatCredits(total)} users`}
           </h2>
         </div>
 
         {users.length === 0 ? (
           <div className="p-8 text-center text-[13px] text-muted">
-            Nenhum usuário encontrado.
+            No users found.
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -154,10 +154,10 @@ export default async function AdminUsersPage({ searchParams }: PageProps) {
                   }}
                 >
                   <th className="px-7 py-3.5 font-medium">Email</th>
-                  <th className="px-7 py-3.5 text-right font-medium">Saldo</th>
-                  <th className="px-7 py-3.5 text-right font-medium">Gerações</th>
-                  <th className="px-7 py-3.5 font-medium">Auto-recarga</th>
-                  <th className="px-7 py-3.5 font-medium">Cadastrado em</th>
+                  <th className="px-7 py-3.5 text-right font-medium">Balance</th>
+                  <th className="px-7 py-3.5 text-right font-medium">Generations</th>
+                  <th className="px-7 py-3.5 font-medium">Auto-recharge</th>
+                  <th className="px-7 py-3.5 font-medium">Signed up</th>
                 </tr>
               </thead>
               <tbody>
@@ -229,7 +229,7 @@ export default async function AdminUsersPage({ searchParams }: PageProps) {
                               color: "var(--color-danger)",
                             }}
                           >
-                            erro
+                            error
                           </span>
                         ) : u.autoRechargeEnabled ? (
                           <span
@@ -241,10 +241,10 @@ export default async function AdminUsersPage({ searchParams }: PageProps) {
                             }}
                           >
                             <Zap className="h-3 w-3" />
-                            ativa
+                            active
                           </span>
                         ) : u.defaultPaymentMethodId ? (
-                          <span className="text-xs text-muted">cartão salvo</span>
+                          <span className="text-xs text-muted">card saved</span>
                         ) : (
                           <span className="text-xs text-muted">—</span>
                         )}
@@ -255,7 +255,7 @@ export default async function AdminUsersPage({ searchParams }: PageProps) {
                         href={`/admin/users/${u.id}`}
                         className="block"
                       >
-                        {u.createdAt.toLocaleDateString("pt-BR", {
+                        {u.createdAt.toLocaleDateString("en-US", {
                           day: "2-digit",
                           month: "2-digit",
                           year: "numeric",
@@ -275,7 +275,7 @@ export default async function AdminUsersPage({ searchParams }: PageProps) {
             style={{ borderTop: "1px solid var(--color-border)" }}
           >
             <span className="text-xs text-muted">
-              Página {page} de {totalPages}
+              Page {page} of {totalPages}
             </span>
             <div className="flex gap-2">
               {page > 1 ? (
@@ -285,11 +285,11 @@ export default async function AdminUsersPage({ searchParams }: PageProps) {
                   style={{ border: "1px solid var(--color-border-strong)" }}
                 >
                   <ChevronLeft className="h-3.5 w-3.5" />
-                  Anterior
+                  Previous
                 </Link>
               ) : (
                 <span className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs text-muted opacity-50" style={{ border: "1px solid var(--color-border)" }}>
-                  <ChevronLeft className="h-3.5 w-3.5" /> Anterior
+                  <ChevronLeft className="h-3.5 w-3.5" /> Previous
                 </span>
               )}
               {page < totalPages ? (
@@ -298,12 +298,12 @@ export default async function AdminUsersPage({ searchParams }: PageProps) {
                   className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs text-secondary transition-all hover:bg-white/[0.05]"
                   style={{ border: "1px solid var(--color-border-strong)" }}
                 >
-                  Próxima
+                  Next
                   <ChevronRight className="h-3.5 w-3.5" />
                 </Link>
               ) : (
                 <span className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs text-muted opacity-50" style={{ border: "1px solid var(--color-border)" }}>
-                  Próxima <ChevronRight className="h-3.5 w-3.5" />
+                  Next <ChevronRight className="h-3.5 w-3.5" />
                 </span>
               )}
             </div>

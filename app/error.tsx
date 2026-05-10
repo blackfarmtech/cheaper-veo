@@ -44,23 +44,23 @@ export default function GlobalError({
             letterSpacing: "0.12em",
           }}
         >
-          Erro inesperado
+          Unexpected error
         </p>
         <h1
           className="mt-3 text-4xl font-semibold tracking-tight md:text-5xl"
           style={{ letterSpacing: "-0.028em", lineHeight: 1.1 }}
         >
-          Algo quebrou no nosso lado
+          Something broke on our end
         </h1>
         <p className="body-large mt-4 text-secondary">
-          Já fomos notificados. Tenta de novo — se persistir, manda email pra{" "}
+          We&apos;ve been notified. Try again — if it persists, email us at{" "}
           <a
-            href="mailto:contato@cheapervideo.com"
+            href="mailto:contato@cheaperveo.com"
             className="legal-link"
           >
-            contato@cheapervideo.com
+            contato@cheaperveo.com
           </a>{" "}
-          com o ID abaixo.
+          with the ID below.
         </p>
         {error.digest && (
           <p
@@ -78,7 +78,7 @@ export default function GlobalError({
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <button type="button" onClick={reset} className="btn-primary">
             <RefreshCw className="h-4 w-4" />
-            Tentar de novo
+            Try again
           </button>
           <Link href="/" className="btn-ghost">
             <Home className="h-4 w-4" />

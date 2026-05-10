@@ -23,7 +23,7 @@ export function KeyCreateForm() {
     startTransition(async () => {
       const result: CreateKeyResult = await createKeyAction(formData);
       if (!result.ok || !result.plaintext || !result.prefix || !result.name) {
-        setError(result.error ?? "Falha ao criar chave.");
+        setError(result.error ?? "Failed to create key.");
         return;
       }
       setIssued({
@@ -42,7 +42,7 @@ export function KeyCreateForm() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      setError("Falha ao copiar para a área de transferência.");
+      setError("Failed to copy to clipboard.");
     }
   }
 
@@ -68,11 +68,11 @@ export function KeyCreateForm() {
         </div>
         <div className="flex-1">
           <h2 className="text-[17px] font-semibold tracking-tight">
-            Gerar nova chave
+            Generate new key
           </h2>
           <p className="mt-1 text-[13px] text-secondary">
-            Use um nome que ajude a identificar onde a chave será usada
-            (ex.: produção, app-mobile).
+            Use a name that helps identify where the key will be used
+            (e.g. production, mobile-app).
           </p>
         </div>
       </div>
@@ -86,7 +86,7 @@ export function KeyCreateForm() {
           name="name"
           value={name}
           onChange={(event) => setName(event.target.value)}
-          placeholder="Nome da chave"
+          placeholder="Key name"
           required
           maxLength={80}
           disabled={isPending}
@@ -100,10 +100,10 @@ export function KeyCreateForm() {
           {isPending ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" />
-              Gerando…
+              Generating…
             </>
           ) : (
-            "Gerar nova chave"
+            "Generate new key"
           )}
         </button>
       </form>
@@ -131,17 +131,17 @@ export function KeyCreateForm() {
                 id="issued-title"
                 className="text-[15px] font-semibold tracking-tight"
               >
-                Chave “{issued.name}” criada
+                Key &ldquo;{issued.name}&rdquo; created
               </h3>
               <p className="mt-1 text-[13px] text-secondary">
-                Esta chave não será mostrada novamente. Copie agora e guarde
-                em local seguro.
+                This key will not be shown again. Copy it now and store
+                it somewhere safe.
               </p>
             </div>
             <button
               type="button"
               onClick={handleCloseIssued}
-              aria-label="Fechar"
+              aria-label="Close"
               className="inline-flex h-8 w-8 items-center justify-center rounded-full text-secondary transition-colors hover:bg-white/[0.06] hover:text-[var(--color-text)]"
             >
               <X className="h-4 w-4" />
@@ -169,12 +169,12 @@ export function KeyCreateForm() {
               {copied ? (
                 <>
                   <Check className="h-3.5 w-3.5" />
-                  Copiado
+                  Copied
                 </>
               ) : (
                 <>
                   <Copy className="h-3.5 w-3.5" />
-                  Copiar
+                  Copy
                 </>
               )}
             </button>

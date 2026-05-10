@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useTransition } from "react";
@@ -31,7 +32,7 @@ const BASE_LINKS: NavLink[] = [
     href: "/dashboard/keys",
     match: (p) => p.startsWith("/dashboard/keys"),
   },
-  { label: "Pricing", href: "/#precos" },
+  { label: "Pricing", href: "/#pricing" },
   {
     label: "Docs",
     href: "/docs",
@@ -70,36 +71,39 @@ export function Navbar({ isAuthenticated, email, balance }: NavbarProps) {
 
   return (
     <header
-      className="sticky top-0 z-50 w-full"
+      className="relative z-50 w-full"
       style={{
-        background: "rgba(10, 10, 12, 0.72)",
-        backdropFilter: "blur(24px) saturate(180%)",
-        WebkitBackdropFilter: "blur(24px) saturate(180%)",
-        borderBottom: "1px solid var(--color-border)",
+        background: "transparent",
         animation: "fade-in 0.6s var(--ease-spring) both",
       }}
     >
-      <div className="mx-auto flex h-14 max-w-[1400px] items-center justify-between gap-6 px-6">
+      <div className="mx-auto flex h-20 max-w-[1400px] items-center justify-between gap-6 px-6">
         <Link
           href={isAuthenticated ? "/dashboard" : "/"}
-          className="flex shrink-0 items-center gap-2 transition-opacity hover:opacity-80"
+          className="flex shrink-0 items-center transition-opacity hover:opacity-80"
+          aria-label="Cheaper Veo"
         >
-          <span className="text-[17px] font-semibold tracking-tight">
-            Cheaper Veo
-          </span>
-          <span
-            className="hidden h-1.5 w-1.5 rounded-full sm:block"
-            style={{
-              background: "var(--color-accent)",
-              boxShadow: "0 0 8px rgba(162, 221, 0, 0.5)",
-            }}
-            aria-hidden
+          <Image
+            src="/logo-icon.png"
+            alt="Cheaper Veo"
+            width={442}
+            height={442}
+            priority
+            className="h-10 w-10 md:hidden"
+          />
+          <Image
+            src="/logo.png"
+            alt="Cheaper Veo"
+            width={1528}
+            height={442}
+            priority
+            className="hidden h-14 w-auto md:block"
           />
         </Link>
 
         <nav
           className="hidden flex-1 items-center justify-center md:flex"
-          aria-label="Principal"
+          aria-label="Main"
         >
           {links.map((link) => {
             const active = link.match?.(pathname) ?? false;
@@ -167,8 +171,8 @@ export function Navbar({ isAuthenticated, email, balance }: NavbarProps) {
                 onClick={handleSignOut}
                 disabled={isPending}
                 className="inline-flex h-8 w-8 items-center justify-center rounded-full text-secondary transition-all hover:bg-white/[0.06] hover:text-[var(--color-text)] disabled:opacity-60"
-                title="Sair"
-                aria-label="Sair"
+                title="Sign out"
+                aria-label="Sign out"
               >
                 <LogOut className="h-4 w-4" />
               </button>
@@ -179,14 +183,14 @@ export function Navbar({ isAuthenticated, email, balance }: NavbarProps) {
                 href="/login"
                 className="hidden rounded-full px-3.5 py-1.5 text-[13px] text-secondary transition-all hover:bg-white/[0.05] hover:text-[var(--color-text)] sm:inline-flex"
               >
-                Entrar
+                Sign in
               </Link>
               <Link
                 href="/login"
                 className="btn-primary"
                 style={{ padding: "0.5rem 1.125rem", fontSize: "13px" }}
               >
-                Começar grátis
+                Start free
               </Link>
             </>
           )}

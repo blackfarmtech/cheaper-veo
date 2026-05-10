@@ -4,6 +4,7 @@ import {
   calculateCredits,
   type Resolution,
 } from "@/lib/pricing";
+import { brlCentsToUsd, getUsdBrlRate } from "@/lib/fx";
 import { formatUsd, formatUsdPrecise, formatCredits } from "@/lib/utils";
 
 interface Row {
@@ -52,19 +53,26 @@ function buildRows(): Row[] {
 
 const FAST_1080P_AUDIO_CREDITS = 30;
 
-export function Pricing() {
+function formatUsdAmount(value: number): string {
+  return value >= 100
+    ? `$${Math.round(value)}`
+    : `$${value.toFixed(value < 10 ? 2 : 1)}`;
+}
+
+export async function Pricing() {
   const rows = buildRows();
+  const fx = await getUsdBrlRate();
 
   return (
-    <section id="precos" className="py-24 md:py-32">
+    <section id="pricing" className="py-24 md:py-32">
       <div className="mx-auto max-w-6xl px-6">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="headline-section text-balance">
-            Preço fixo por segundo. Sem surpresas.
+            Fixed price per second. No surprises.
           </h2>
           <p className="body-large mt-5 text-secondary">
-            1 crédito = US$0.01. Você só é cobrado quando a geração inicia.
-            Falhas da plataforma são reembolsadas automaticamente.
+            1 credit = US$0.01. You&apos;re only charged when the generation starts.
+            Platform failures are refunded automatically.
           </p>
         </div>
 
@@ -83,13 +91,13 @@ export function Pricing() {
                     letterSpacing: "0.08em",
                   }}
                 >
-                  <th className="px-6 py-4 font-medium">Modelo</th>
-                  <th className="px-6 py-4 font-medium">Resolução</th>
+                  <th className="px-6 py-4 font-medium">Model</th>
+                  <th className="px-6 py-4 font-medium">Resolution</th>
                   <th className="px-6 py-4 text-right font-medium">
-                    Com áudio
+                    With audio
                   </th>
                   <th className="px-6 py-4 text-right font-medium">
-                    Sem áudio
+                    Without audio
                   </th>
                 </tr>
               </thead>
@@ -121,7 +129,7 @@ export function Pricing() {
                             {formatUsdPrecise(row.withAudioCredits / 8)}
                             <span className="text-[11px] font-normal text-muted">
                               {" "}
-                              /seg
+                              /sec
                             </span>
                           </span>
                           <span
@@ -145,7 +153,7 @@ export function Pricing() {
                             {formatUsdPrecise(row.withoutAudioCredits / 8)}
                             <span className="text-[11px] font-normal text-muted">
                               {" "}
-                              /seg
+                              /sec
                             </span>
                           </span>
                           <span
@@ -169,10 +177,10 @@ export function Pricing() {
         <div className="mt-24">
           <div className="mx-auto max-w-2xl text-center">
             <h3 className="text-[2rem] font-semibold tracking-tight md:text-[2.25rem]" style={{ letterSpacing: "-0.024em" }}>
-              Recargas pré-pagas
+              Prepaid top-ups
             </h3>
             <p className="body-large mt-4 text-secondary">
-              Conversão 1:1 — cada US$1 vira 100 créditos. Sem expiração.
+              1:1 conversion — every US$1 becomes 100 credits. No expiration.
             </p>
           </div>
 
@@ -180,6 +188,7 @@ export function Pricing() {
             {TOPUPS.map((topup) => {
               const videos = Math.floor(topup.credits / FAST_1080P_AUDIO_CREDITS);
               const highlight = topup.highlight;
+              const usdAmount = brlCentsToUsd(topup.amountCents, fx.rate);
               return (
                 <div
                   key={topup.id}
@@ -199,7 +208,7 @@ export function Pricing() {
                         className="text-3xl font-semibold tracking-tight"
                         style={{ letterSpacing: "-0.022em" }}
                       >
-                        R${topup.amountCents / 100}
+                        {formatUsdAmount(usdAmount)}
                       </span>
                       <span
                         className="mt-0.5 text-[11px] uppercase text-muted"
@@ -208,7 +217,7 @@ export function Pricing() {
                           letterSpacing: "0.08em",
                         }}
                       >
-                        ≈ ${topup.usdReference} USD
+                        USD
                       </span>
                     </div>
                     {highlight && (
@@ -232,13 +241,13 @@ export function Pricing() {
                       fontFamily: "var(--font-mono)",
                     }}
                   >
-                    {formatCredits(topup.credits)} créditos
+                    {formatCredits(topup.credits)} credits
                   </div>
                   <div
                     className="text-[11px] text-muted"
                     style={{ fontFamily: "var(--font-mono)" }}
                   >
-                    ≈ {videos} vídeos Fast 1080p
+                    ≈ {videos} Fast 1080p videos
                   </div>
                 </div>
               );
@@ -246,7 +255,10 @@ export function Pricing() {
           </div>
 
           <p className="mt-8 text-center text-xs text-muted">
-            Estimativa baseada em Fast 1080p com áudio (30 créditos por vídeo).
+            Estimate based on Fast 1080p with audio (30 credits per video).
+            USD prices use today&apos;s mid-market rate
+            (1 USD ≈ R$ {fx.rate.toFixed(2)}). Final charge is shown in your
+            local currency at checkout.
           </p>
         </div>
       </div>

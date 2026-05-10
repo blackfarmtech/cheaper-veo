@@ -15,7 +15,7 @@ export function AdminRevokeKey({ keyId, userId, keyName }: Props) {
   const [isPending, startTransition] = useTransition();
 
   function handleRevoke() {
-    if (!confirm(`Revogar API key "${keyName}"? Não pode ser desfeito.`)) return;
+    if (!confirm(`Revoke API key "${keyName}"? This cannot be undone.`)) return;
     startTransition(async () => {
       await adminRevokeApiKeyAction({ keyId, userId });
     });
@@ -34,7 +34,7 @@ export function AdminRevokeKey({ keyId, userId, keyName }: Props) {
       ) : (
         <Trash2 className="h-3 w-3" />
       )}
-      Revogar
+      Revoke
     </button>
   );
 }

@@ -22,23 +22,23 @@ export function CtaFinal() {
           />
 
           <h2 className="headline-section relative text-balance">
-            Comece em menos de 2 minutos.
+            Get started in under 2 minutes.
           </h2>
           <p className="body-large relative mt-5 text-secondary">
-            Crie sua conta, gere uma API key e dispare a primeira chamada.
+            Create your account, generate an API key and fire the first call.
           </p>
 
           <div className="relative mt-10 flex flex-wrap items-center justify-center gap-3">
             <Link href="/login" className="btn-primary">
-              Criar conta grátis <ArrowRight className="h-4 w-4" />
+              Create free account <ArrowRight className="h-4 w-4" />
             </Link>
             <Link href="/docs" className="btn-ghost">
-              Ler a documentação
+              Read the docs
             </Link>
           </div>
 
           <p className="relative mt-7 text-xs text-muted">
-            Sem cartão de crédito até a primeira recarga.
+            No credit card until your first top-up.
           </p>
         </div>
       </div>

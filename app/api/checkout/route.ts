@@ -62,8 +62,8 @@ export async function POST(req: Request): Promise<Response> {
           price_data: {
             currency: topup.currency,
             product_data: {
-              name: `Cheaper Veo · ${topup.credits} créditos`,
-              description: `Recarga pay-as-you-go — ${topup.label}`,
+              name: `Cheaper Veo · ${topup.credits} credits`,
+              description: `Pay-as-you-go top-up — ${topup.label}`,
             },
             unit_amount: amountCents,
           },

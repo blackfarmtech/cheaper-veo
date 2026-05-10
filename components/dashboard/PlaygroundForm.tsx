@@ -193,7 +193,7 @@ function ImageUploader({
     e.target.value = "";
     if (!file) return;
     if (file.size > MAX_IMAGE_BYTES) {
-      setError("Imagem excede o limite de 10 MB.");
+      setError("Image exceeds the 10 MB limit.");
       return;
     }
     try {
@@ -206,7 +206,7 @@ function ImageUploader({
         fileName: file.name,
       });
     } catch {
-      setError("Não foi possível ler a imagem.");
+      setError("Could not read the image.");
     }
   }
 
@@ -224,7 +224,7 @@ function ImageUploader({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={image.previewUrl}
-            alt={`Preview de ${image.fileName}`}
+            alt={`Preview of ${image.fileName}`}
             className="h-40 w-full object-cover"
           />
           <button
@@ -236,7 +236,7 @@ function ImageUploader({
               backdropFilter: "blur(12px)",
               border: "1px solid var(--color-border-strong)",
             }}
-            aria-label="Remover imagem"
+            aria-label="Remove image"
           >
             <X className="h-3.5 w-3.5" aria-hidden />
           </button>
@@ -261,7 +261,7 @@ function ImageUploader({
           }}
         >
           <Upload className="h-4 w-4" aria-hidden />
-          <span>Selecionar imagem (até 10 MB)</span>
+          <span>Select image (up to 10 MB)</span>
           <input
             type="file"
             accept="image/png,image/jpeg,image/webp"
@@ -328,7 +328,7 @@ export function PlaygroundForm({ balance, models }: PlaygroundFormProps) {
       return { credits, error: null as string | null };
     } catch (err) {
       const message =
-        err instanceof PricingError ? err.message : "Combinação inválida.";
+        err instanceof PricingError ? err.message : "Invalid combination.";
       return { credits: 0, error: message };
     }
   }, [modelId, effectiveResolution, audio, effectiveDuration]);
@@ -421,7 +421,7 @@ export function PlaygroundForm({ balance, models }: PlaygroundFormProps) {
     setInsufficientInfo(null);
     const input = buildInput();
     if (!input) {
-      setSubmitError("Confira os campos obrigatórios.");
+      setSubmitError("Check the required fields.");
       return;
     }
     startTransition(async () => {
@@ -475,26 +475,26 @@ export function PlaygroundForm({ balance, models }: PlaygroundFormProps) {
             active={kind === "text_to_video"}
             onClick={() => setKind("text_to_video")}
             icon={Type}
-            label="Texto → Vídeo"
+            label="Text → Video"
           />
           <KindTab
             active={kind === "image_to_video"}
             onClick={() => setKind("image_to_video")}
             icon={ImageIcon}
-            label="Imagem → Vídeo"
+            label="Image → Video"
           />
           <KindTab
             active={kind === "references"}
             onClick={() => setKind("references")}
             icon={Layers}
-            label="Referências"
+            label="References"
           />
         </div>
 
         {/* Model */}
         <div className="space-y-3">
           <label htmlFor="modelId" className={fieldLabel}>
-            Modelo
+            Model
           </label>
           <div className="grid gap-2.5 sm:grid-cols-3">
             {models.map((m) => {
@@ -567,12 +567,12 @@ export function PlaygroundForm({ balance, models }: PlaygroundFormProps) {
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             rows={5}
-            placeholder="Ex.: Câmera lenta percorrendo um deserto ao pôr do sol, dunas alaranjadas, partículas de areia ao vento, atmosfera cinematográfica."
+            placeholder="E.g.: Slow camera moving through a desert at sunset, orange dunes, sand particles in the wind, cinematic atmosphere."
             className="input-apple resize-y"
           />
           <p className="text-[11px] text-muted">
-            Descreva cena, câmera, iluminação e atmosfera. Quanto mais
-            específico, melhor.
+            Describe scene, camera, lighting and atmosphere. The more
+            specific, the better.
           </p>
         </div>
 
@@ -586,13 +586,13 @@ export function PlaygroundForm({ balance, models }: PlaygroundFormProps) {
           }}
         >
           <summary className={cn("cursor-pointer", fieldLabel)}>
-            Prompt negativo (opcional)
+            Negative prompt (optional)
           </summary>
           <textarea
             value={negativePrompt}
             onChange={(e) => setNegativePrompt(e.target.value)}
             rows={3}
-            placeholder="O que evitar — ex.: texto, marca d'água, distorções, baixa resolução."
+            placeholder="What to avoid — e.g.: text, watermark, distortions, low resolution."
             className="input-apple mt-3 resize-y"
           />
         </details>
@@ -601,13 +601,13 @@ export function PlaygroundForm({ balance, models }: PlaygroundFormProps) {
         {kind === "image_to_video" && (
           <div className="grid gap-4 sm:grid-cols-2">
             <ImageUploader
-              label="Primeiro frame (obrigatório)"
+              label="First frame (required)"
               image={firstFrame}
               onChange={setFirstFrame}
               onRemove={() => setFirstFrame(null)}
             />
             <ImageUploader
-              label="Último frame (opcional)"
+              label="Last frame (optional)"
               image={lastFrame}
               onChange={setLastFrame}
               onRemove={() => setLastFrame(null)}
@@ -620,7 +620,7 @@ export function PlaygroundForm({ balance, models }: PlaygroundFormProps) {
             {referenceImages.map((img, i) => (
               <ImageUploader
                 key={i}
-                label={`Referência ${i + 1}`}
+                label={`Reference ${i + 1}`}
                 image={img}
                 onChange={(next) => handleSelectReference(i, next)}
                 onRemove={() => handleSelectReference(i, null)}
@@ -632,44 +632,44 @@ export function PlaygroundForm({ balance, models }: PlaygroundFormProps) {
         {/* Settings grid */}
         <div className="grid gap-6 sm:grid-cols-2">
           <div className="space-y-2.5">
-            <label className={fieldLabel}>Resolução</label>
+            <label className={fieldLabel}>Resolution</label>
             <PillRadio<Resolution>
               options={availableResolutions}
               value={effectiveResolution}
               onChange={setResolution}
-              ariaLabel="Resolução"
+              ariaLabel="Resolution"
             />
           </div>
 
           <div className="space-y-2.5">
-            <label className={fieldLabel}>Proporção</label>
+            <label className={fieldLabel}>Aspect ratio</label>
             <PillRadio<AspectRatio>
               options={ASPECT_RATIOS}
               value={aspectRatio}
               onChange={setAspectRatio}
-              ariaLabel="Proporção"
+              ariaLabel="Aspect ratio"
             />
           </div>
 
           <div className="space-y-2.5">
-            <label className={fieldLabel}>Duração</label>
+            <label className={fieldLabel}>Duration</label>
             <PillRadio<Duration>
               options={DURATIONS}
               value={effectiveDuration}
               onChange={setDurationSeconds}
               disabledOptions={disabledDurations}
-              ariaLabel="Duração"
+              ariaLabel="Duration"
               formatLabel={(d) => `${d}s`}
             />
             {hiRes && (
               <p className="text-[11px] text-[var(--color-warn)]">
-                1080p e 4K exigem duração de 8s.
+                1080p and 4K require an 8s duration.
               </p>
             )}
           </div>
 
           <div className="space-y-2.5">
-            <label className={fieldLabel}>Áudio</label>
+            <label className={fieldLabel}>Audio</label>
             <button
               type="button"
               role="switch"
@@ -692,7 +692,7 @@ export function PlaygroundForm({ balance, models }: PlaygroundFormProps) {
                 ) : (
                   <VolumeX className="h-4 w-4" aria-hidden />
                 )}
-                {audio ? "Com áudio" : "Sem áudio"}
+                {audio ? "With audio" : "No audio"}
               </span>
               <span
                 className={cn(
@@ -740,10 +740,10 @@ export function PlaygroundForm({ balance, models }: PlaygroundFormProps) {
           >
             <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
             <div>
-              Saldo insuficiente — você tem {formatCredits(insufficientInfo.balance)} cr,
-              precisa de {formatCredits(insufficientInfo.required)} cr.{" "}
+              Insufficient balance — you have {formatCredits(insufficientInfo.balance)} cr,
+              you need {formatCredits(insufficientInfo.required)} cr.{" "}
               <a href="/dashboard/billing" className="underline">
-                Recarregar agora
+                Top up now
               </a>
               .
             </div>
@@ -760,7 +760,7 @@ export function PlaygroundForm({ balance, models }: PlaygroundFormProps) {
             aria-hidden
           />
           <h3 className="text-[15px] font-semibold tracking-tight">
-            Custo estimado
+            Estimated cost
           </h3>
         </div>
 
@@ -789,7 +789,7 @@ export function PlaygroundForm({ balance, models }: PlaygroundFormProps) {
                 >
                   {formatCredits(costEstimate.credits)}
                 </span>
-                <span className="text-xs text-muted">créditos</span>
+                <span className="text-xs text-muted">credits</span>
               </div>
               <div
                 className="mt-2 text-sm text-secondary"
@@ -806,14 +806,14 @@ export function PlaygroundForm({ balance, models }: PlaygroundFormProps) {
           style={{ borderTop: "1px solid var(--color-border)" }}
         >
           <div className="flex justify-between">
-            <span>Saldo atual</span>
+            <span>Current balance</span>
             <span style={{ fontFamily: "var(--font-mono)" }}>
               {formatCredits(balance)} cr
             </span>
           </div>
           {!costEstimate.error && (
             <div className="flex justify-between">
-              <span>Após geração</span>
+              <span>After generation</span>
               <span
                 className={cn(
                   enoughBalance
@@ -837,7 +837,7 @@ export function PlaygroundForm({ balance, models }: PlaygroundFormProps) {
               borderRadius: "var(--radius-sm)",
             }}
           >
-            Saldo insuficiente para esta configuração.
+            Insufficient balance for this configuration.
           </p>
         )}
 
@@ -847,12 +847,12 @@ export function PlaygroundForm({ balance, models }: PlaygroundFormProps) {
           disabled={submitDisabled}
           className="btn-primary w-full disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {isPending ? "Enviando…" : "Gerar vídeo"}
+          {isPending ? "Submitting…" : "Generate video"}
         </button>
 
         <p className="text-[11px] text-muted">
-          Você só é cobrado quando a geração inicia. Falhas da plataforma são
-          reembolsadas automaticamente.
+          You&apos;re only charged when the generation starts. Platform failures are
+          refunded automatically.
         </p>
       </aside>
     </div>

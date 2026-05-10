@@ -2,26 +2,26 @@ import Link from "next/link";
 
 const columns = [
   {
-    title: "Produto",
+    title: "Product",
     links: [
-      { label: "Modelos", href: "#modelos" },
-      { label: "Preços", href: "#precos" },
-      { label: "Documentação", href: "/docs" },
+      { label: "Models", href: "#models" },
+      { label: "Pricing", href: "#pricing" },
+      { label: "Documentation", href: "/docs" },
     ],
   },
   {
-    title: "Empresa",
+    title: "Company",
     links: [
       { label: "Status", href: "/status" },
-      { label: "Contato", href: "mailto:contato@cheapervideo.com" },
+      { label: "Contact", href: "mailto:contato@cheaperveo.com" },
     ],
   },
   {
     title: "Legal",
     links: [
-      { label: "Termos de uso", href: "/legal/termos" },
-      { label: "Privacidade", href: "/legal/privacidade" },
-      { label: "Política de conteúdo", href: "/legal/conteudo" },
+      { label: "Terms of use", href: "/legal/terms" },
+      { label: "Privacy", href: "/legal/privacy" },
+      { label: "Content policy", href: "/legal/content" },
     ],
   },
 ];
@@ -48,7 +48,7 @@ export function Footer() {
               />
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-secondary">
-              API pay-as-you-go para geração de vídeo com Veo 3.1.
+              Pay-as-you-go API for video generation with Veo 3.1.
             </p>
           </div>
 
@@ -80,7 +80,7 @@ export function Footer() {
           className="mt-16 flex flex-col items-start justify-between gap-3 pt-8 text-xs text-muted md:flex-row md:items-center"
           style={{ borderTop: "1px solid var(--color-border)" }}
         >
-          <span>© 2026 Cheaper Veo. Todos os direitos reservados.</span>
+          <span>© 2026 Cheaper Veo. All rights reserved.</span>
           <span style={{ fontFamily: "var(--font-mono)" }}>
             Veo 3.1 · pay-as-you-go
           </span>

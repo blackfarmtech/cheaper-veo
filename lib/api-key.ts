@@ -88,7 +88,7 @@ export async function revokeApiKey(input: { userId: string; id: string }): Promi
 }
 
 export interface ValidatedKey {
-  user: { id: string; email: string; creditsBalance: number };
+  user: { id: string; email: string; creditsBalance: number; emailVerified: boolean };
   apiKey: PublicApiKey;
 }
 
@@ -102,7 +102,9 @@ export async function validateBearerKey(authHeader: string | null): Promise<Vali
   const apiKey = await prisma.apiKey.findUnique({
     where: { hashedKey: hashed },
     include: {
-      user: { select: { id: true, email: true, creditsBalance: true } },
+      user: {
+        select: { id: true, email: true, creditsBalance: true, emailVerified: true },
+      },
     },
   });
   if (!apiKey) return null;

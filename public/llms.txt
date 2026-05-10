@@ -19,7 +19,7 @@ When the user asks you to integrate Cheaper Veo, follow these steps:
    `UPSTREAM_ERROR`.
 6. Run the project's lint/type check after editing. Fix anything you broke.
 7. Tell the user where to get an API key
-   (https://cheapervideo.com/dashboard/keys) and how to top up credits.
+   (https://cheaperveo.com/dashboard/keys) and how to top up credits.
 
 NEVER:
 - Call the API from the browser with the key embedded — always proxy via the
@@ -38,7 +38,7 @@ Pay-as-you-go HTTP API for Google Veo 3.1 video generation. No subscription,
 1 credit = US$0.01, charged only when generation starts. Failed jobs auto-
 refund.
 
-- **Base URL:** `https://api.cheapervideo.com`
+- **Base URL:** `https://cheaperveo.com`
 - **Auth:** `Authorization: Bearer veo_live_…` (see Step 1)
 - **Content-Type:** `application/json`
 - **Request style:** Async — POST returns a `taskId`, then GET polling.
@@ -65,7 +65,7 @@ Response 200:
       "creditsCost": 30,
       "durationSeconds": 8,
       "resolution": "1080p",
-      "videoUrl": "https://cdn.cheapervideo.com/v/tsk_….mp4",
+      "videoUrl": "https://cheaperveo.com/videos/tsk_….mp4",
       "createdAt": "2026-05-08T12:34:56.000Z",
       "completedAt": "2026-05-08T12:36:11.000Z"
     }
@@ -134,7 +134,7 @@ Response 200:
   "resolution": "1080p",
   "aspectRatio": "16:9",
   "audio": true,
-  "videoUrl": "https://cdn.cheapervideo.com/v/tsk_….mp4",
+  "videoUrl": "https://cheaperveo.com/videos/tsk_….mp4",
   "createdAt": "2026-05-08T12:34:56.000Z",
   "completedAt": "2026-05-08T12:36:11.000Z"
 }
@@ -211,7 +211,7 @@ Audio adds ~30-50% on top of the no-audio price.
 Save as `lib/cheaperVeo.ts`:
 
 ```typescript
-const BASE_URL = process.env.CHEAPER_VEO_BASE_URL ?? "https://api.cheapervideo.com";
+const BASE_URL = process.env.CHEAPER_VEO_BASE_URL ?? "https://cheaperveo.com";
 
 export type Tier = "lite" | "fast" | "quality";
 export type Resolution = "720p" | "1080p" | "4k";
@@ -448,7 +448,7 @@ from dataclasses import dataclass
 from typing import Any, Literal, Optional, TypedDict
 import requests
 
-BASE_URL = os.environ.get("CHEAPER_VEO_BASE_URL", "https://api.cheapervideo.com")
+BASE_URL = os.environ.get("CHEAPER_VEO_BASE_URL", "https://cheaperveo.com")
 
 ModelId = Literal["veo3-lite", "veo3-fast", "veo3-quality"]
 Resolution = Literal["720p", "1080p", "4k"]
@@ -607,6 +607,6 @@ print("Done:", video_url)
 ## END OF GUIDE
 
 API status: production. Last update: 2026-05-09.
-Dashboard: https://cheapervideo.com/dashboard
-Docs: https://cheapervideo.com/docs
-Support: contato@geraew.com
+Dashboard: https://cheaperveo.com/dashboard
+Docs: https://cheaperveo.com/docs
+Support: contato@cheaperveo.com

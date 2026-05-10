@@ -24,15 +24,15 @@ export function TopupGrid({ topups }: TopupGridProps): React.ReactElement {
       });
       if (!res.ok) {
         const data: { error?: string } = await res.json().catch(() => ({}));
-        throw new Error(data.error ?? `Falha (${res.status})`);
+        throw new Error(data.error ?? `Failed (${res.status})`);
       }
       const data: { url?: string } = await res.json();
       if (!data.url) {
-        throw new Error("Resposta inválida do servidor.");
+        throw new Error("Invalid server response.");
       }
       window.location.href = data.url;
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Erro desconhecido.";
+      const message = err instanceof Error ? err.message : "Unknown error.";
       setError(message);
       setLoadingId(null);
     }
@@ -50,7 +50,7 @@ export function TopupGrid({ topups }: TopupGridProps): React.ReactElement {
             borderRadius: "var(--radius-md)",
           }}
         >
-          Não foi possível iniciar o checkout: {error}
+          Could not start checkout: {error}
         </div>
       ) : null}
 
@@ -92,7 +92,7 @@ export function TopupGrid({ topups }: TopupGridProps): React.ReactElement {
                     ≈ ${topup.usdReference} USD
                   </div>
                   <div className="mt-1.5 text-sm text-secondary">
-                    {formatCredits(topup.credits)} créditos
+                    {formatCredits(topup.credits)} credits
                   </div>
                 </div>
                 {isHighlighted ? (
@@ -117,7 +117,7 @@ export function TopupGrid({ topups }: TopupGridProps): React.ReactElement {
                 disabled={isLoading || loadingId !== null}
                 className="btn-primary mt-auto w-full disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {isLoading ? "Redirecionando…" : "Recarregar"}
+                {isLoading ? "Redirecting…" : "Top up"}
               </button>
             </div>
           );

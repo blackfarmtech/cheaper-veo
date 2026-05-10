@@ -5,7 +5,7 @@ import { Sparkles, Copy, Check, ExternalLink } from "lucide-react";
 
 const PROMPT_TEMPLATE = `Integrate Cheaper Veo into this project. The full API spec, types, error handling, and drop-in clients (Node.js + Python) are at:
 
-https://cheapervideo.com/llms.txt
+https://cheaperveo.com/llms.txt
 
 Fetch that file, follow the integration agent instructions, and wire up at least one working example using my existing stack. Add CHEAPER_VEO_API_KEY to .env. After you're done, tell me where to get an API key.`;
 
@@ -43,15 +43,15 @@ export function LlmsBanner() {
             }}
           >
             <Sparkles className="h-3 w-3" aria-hidden />
-            Integração via LLM
+            LLM integration
           </div>
           <h3 className="text-[17px] font-semibold tracking-tight">
-            Cole no Claude / ChatGPT / Cursor e integre em segundos
+            Paste into Claude / ChatGPT / Cursor and integrate in seconds
           </h3>
           <p className="mt-1.5 text-[13.5px] text-secondary">
-            Copie o prompt abaixo, cole no seu LLM de código e ele vai
-            scaffoldar o cliente, escrever a integração e wire up no seu
-            stack — Node ou Python — automaticamente.
+            Copy the prompt below, paste it into your code LLM and it will
+            scaffold the client, write the integration and wire it into your
+            stack — Node or Python — automatically.
           </p>
         </div>
       </div>
@@ -73,7 +73,7 @@ export function LlmsBanner() {
             letterSpacing: "0.08em",
           }}
         >
-          <span>prompt para LLM</span>
+          <span>prompt for LLM</span>
           <button
             type="button"
             onClick={handleCopy}
@@ -89,11 +89,11 @@ export function LlmsBanner() {
           >
             {copied ? (
               <>
-                <Check className="h-3.5 w-3.5" /> Copiado
+                <Check className="h-3.5 w-3.5" /> Copied
               </>
             ) : (
               <>
-                <Copy className="h-3.5 w-3.5" /> Copiar
+                <Copy className="h-3.5 w-3.5" /> Copy
               </>
             )}
           </button>
@@ -115,10 +115,10 @@ export function LlmsBanner() {
           style={{ border: "1px solid var(--color-border-strong)" }}
         >
           <ExternalLink className="h-3 w-3" />
-          Ver llms.txt completo
+          View full llms.txt
         </a>
         <span>
-          Convenção{" "}
+          Convention{" "}
           <a
             href="https://llmstxt.org"
             target="_blank"
@@ -128,7 +128,7 @@ export function LlmsBanner() {
           >
             llmstxt.org
           </a>{" "}
-          — funciona com qualquer LLM moderno.
+          — works with any modern LLM.
         </span>
       </div>
     </div>

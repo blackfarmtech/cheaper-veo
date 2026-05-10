@@ -1,35 +1,35 @@
 const faqs = [
   {
-    q: "Como funciona o pay-as-you-go?",
-    a: "Você adiciona créditos à conta quando quiser (de US$5 a US$500). Cada geração desconta o valor fixo do modelo escolhido. Sem assinatura, sem cobrança recorrente, sem mínimo mensal.",
+    q: "How does pay-as-you-go work?",
+    a: "You add credits to your account whenever you want (from US$5 to US$500). Each generation deducts the fixed price for the chosen model. No subscription, no recurring charges, no monthly minimum.",
   },
   {
-    q: "Os créditos expiram?",
-    a: "Não. Créditos comprados ficam disponíveis na sua conta indefinidamente, até serem usados ou você solicitar reembolso conforme nossa política.",
+    q: "Do credits expire?",
+    a: "No. Purchased credits stay available in your account indefinitely, until used or you request a refund per our policy.",
   },
   {
-    q: "Tem refund se a geração falhar?",
-    a: "Sim, automático. Falhas atribuíveis à plataforma (timeout, erro do upstream, indisponibilidade) reembolsam os créditos cobrados. Falhas por prompt bloqueado ou conteúdo inválido seguem nossa política específica.",
+    q: "Is there a refund if the generation fails?",
+    a: "Yes, automatic. Failures attributable to the platform (timeout, upstream error, unavailability) refund the credits charged. Failures from blocked prompts or invalid content follow our specific policy.",
   },
   {
-    q: "Posso testar grátis?",
-    a: "Sim — novas contas ganham 50 créditos de bônus no signup ($0.50). Suficiente pra ~10 gerações Lite 720p de teste antes de qualquer recarga.",
+    q: "Can I try it for free?",
+    a: "Yes — new accounts get 50 bonus credits at signup ($0.50). Enough for ~10 Lite 720p test generations before any top-up.",
   },
   {
-    q: "Quais formatos a API suporta?",
-    a: "Text-to-video, image-to-video e frame-to-frame (primeiro + último frame). Saída sempre MP4 H.264, com ou sem áudio sincronizado, em 720p, 1080p ou 4K conforme o modelo.",
+    q: "What formats does the API support?",
+    a: "Text-to-video, image-to-video and frame-to-frame (first + last frame). Output is always MP4 H.264, with or without synchronized audio, in 720p, 1080p or 4K depending on the model.",
   },
   {
-    q: "Tem rate limit?",
-    a: "Sim. Cada API key tem 100 gerações/hora e 1.000 polls/hora. Limites alinhados à hora UTC. Contas em alto volume podem solicitar aumento via suporte.",
+    q: "Is there a rate limit?",
+    a: "Yes. Each API key has 100 generations/hour and 1,000 polls/hour. Limits align to UTC hour. High-volume accounts can request increases via support.",
   },
   {
-    q: "Como sei quando o vídeo ficou pronto?",
-    a: "Polling em GET /api/v1/status/{taskId}. Recomendamos intervalo de 5–10s. Webhooks de notificação (push) estão no roadmap pra v2 — por enquanto, polling é o caminho.",
+    q: "How do I know when the video is ready?",
+    a: "Polling at GET /api/v1/status/{taskId}. We recommend a 5–10s interval. Notification (push) webhooks are on the v2 roadmap — for now, polling is the way.",
   },
   {
-    q: "E auto-recarga, como funciona?",
-    a: "Opcional. Você adiciona um cartão (saved via Stripe) e configura: 'recarregar quando saldo < X cr, comprar pack de $Y'. Quando o saldo cai, cobramos automático. Pode desativar quando quiser.",
+    q: "How does auto-recharge work?",
+    a: "Optional. You add a card (saved via Stripe) and configure: 'recharge when balance < X cr, buy pack of $Y'. When the balance drops, we charge automatically. You can disable it any time.",
   },
 ];
 
@@ -39,10 +39,10 @@ export function Faq() {
       <div className="mx-auto max-w-3xl px-6">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="headline-section text-balance">
-            Perguntas frequentes
+            Frequently asked questions
           </h2>
           <p className="body-large mt-5 text-secondary">
-            Algo não respondido aqui? Fale com a gente pelo suporte.
+            Something not answered here? Get in touch via support.
           </p>
         </div>
 

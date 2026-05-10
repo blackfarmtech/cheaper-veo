@@ -26,12 +26,12 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "Visão geral", href: "/dashboard", icon: LayoutDashboard, exact: true },
+  { label: "Overview", href: "/dashboard", icon: LayoutDashboard, exact: true },
   { label: "Playground", href: "/dashboard/playground", icon: PlayCircle },
   { label: "API Keys", href: "/dashboard/keys", icon: KeyRound },
-  { label: "Histórico", href: "/dashboard/history", icon: History },
-  { label: "Faturamento", href: "/dashboard/billing", icon: Wallet },
-  { label: "Documentação", href: "/docs", icon: BookText },
+  { label: "History", href: "/dashboard/history", icon: History },
+  { label: "Billing", href: "/dashboard/billing", icon: Wallet },
+  { label: "Documentation", href: "/docs", icon: BookText },
 ];
 
 function isActive(pathname: string, item: NavItem): boolean {
@@ -66,7 +66,7 @@ export function DashboardSidebar() {
           border: "1px solid var(--color-border-strong)",
           borderRadius: "var(--radius-md)",
         }}
-        aria-label="Abrir menu"
+        aria-label="Open menu"
       >
         <Menu className="h-5 w-5" />
       </button>
@@ -114,7 +114,7 @@ export function DashboardSidebar() {
             type="button"
             onClick={() => setOpen(false)}
             className="inline-flex h-8 w-8 items-center justify-center rounded-full text-secondary transition-colors hover:bg-white/[0.06] md:hidden"
-            aria-label="Fechar menu"
+            aria-label="Close menu"
           >
             <X className="h-4 w-4" />
           </button>
@@ -183,7 +183,7 @@ export function DashboardSidebar() {
           >
             <LogOut className="h-[17px] w-[17px]" />
             <span className="font-medium tracking-tight">
-              {isPending ? "Saindo…" : "Sair"}
+              {isPending ? "Signing out…" : "Sign out"}
             </span>
           </button>
         </div>

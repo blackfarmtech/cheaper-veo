@@ -59,11 +59,11 @@ export function SignupForm({ googleEnabled }: SignupFormProps) {
     const trimmedName = name.trim();
 
     if (!trimmedEmail || !trimmedEmail.includes("@")) {
-      setError("Informe um email válido.");
+      setError("Enter a valid email.");
       return;
     }
     if (password.length < 8) {
-      setError("A senha deve ter pelo menos 8 caracteres.");
+      setError("Password must be at least 8 characters.");
       return;
     }
 
@@ -78,16 +78,16 @@ export function SignupForm({ googleEnabled }: SignupFormProps) {
       if (signUpError) {
         const code = signUpError.code ?? "";
         if (code.includes("USER_ALREADY_EXISTS") || /exist/i.test(signUpError.message ?? "")) {
-          setError("Este email já tem conta. Tente entrar.");
+          setError("This email already has an account. Try signing in.");
         } else {
-          setError(signUpError.message ?? "Não foi possível criar a conta.");
+          setError(signUpError.message ?? "Could not create account.");
         }
         return;
       }
       router.push(callbackURL);
       router.refresh();
     } catch {
-      setError("Falha de rede. Tente novamente.");
+      setError("Network error. Try again.");
     } finally {
       setLoading(false);
     }
@@ -102,7 +102,7 @@ export function SignupForm({ googleEnabled }: SignupFormProps) {
         callbackURL,
       });
     } catch {
-      setError("Não foi possível iniciar login com Google.");
+      setError("Could not start Google login.");
       setGoogleLoading(false);
     }
   }
@@ -127,10 +127,10 @@ export function SignupForm({ googleEnabled }: SignupFormProps) {
           className="text-[1.75rem] font-semibold tracking-tight"
           style={{ letterSpacing: "-0.024em" }}
         >
-          Criar conta
+          Create account
         </h1>
         <p className="mt-2 text-[14px] text-secondary">
-          Comece em menos de 2 minutos. Sem cartão de crédito.
+          Get started in under 2 minutes. No credit card required.
         </p>
       </div>
 
@@ -140,7 +140,7 @@ export function SignupForm({ googleEnabled }: SignupFormProps) {
             htmlFor="name"
             className="mb-2 block text-[13px] font-medium"
           >
-            Nome <span className="text-muted">(opcional)</span>
+            Name <span className="text-muted">(optional)</span>
           </label>
           <input
             id="name"
@@ -148,7 +148,7 @@ export function SignupForm({ googleEnabled }: SignupFormProps) {
             autoComplete="name"
             value={name}
             onChange={(event) => setName(event.target.value)}
-            placeholder="Seu nome"
+            placeholder="Your name"
             disabled={loading}
             className="input-apple"
           />
@@ -168,7 +168,7 @@ export function SignupForm({ googleEnabled }: SignupFormProps) {
             required
             value={email}
             onChange={(event) => setEmail(event.target.value)}
-            placeholder="voce@empresa.com"
+            placeholder="you@company.com"
             disabled={loading}
             className="input-apple"
           />
@@ -179,7 +179,7 @@ export function SignupForm({ googleEnabled }: SignupFormProps) {
             htmlFor="password"
             className="mb-2 block text-[13px] font-medium"
           >
-            Senha
+            Password
           </label>
           <input
             id="password"
@@ -189,12 +189,12 @@ export function SignupForm({ googleEnabled }: SignupFormProps) {
             minLength={8}
             value={password}
             onChange={(event) => setPassword(event.target.value)}
-            placeholder="Mínimo 8 caracteres"
+            placeholder="At least 8 characters"
             disabled={loading}
             className="input-apple"
           />
           <p className="mt-1.5 text-xs text-muted">
-            Use no mínimo 8 caracteres.
+            Use at least 8 characters.
           </p>
         </div>
 
@@ -203,7 +203,7 @@ export function SignupForm({ googleEnabled }: SignupFormProps) {
           disabled={loading}
           className="btn-primary mt-2 w-full disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {loading ? "Criando conta…" : "Criar conta grátis"}
+          {loading ? "Creating account…" : "Create free account"}
         </button>
       </form>
 
@@ -233,7 +233,7 @@ export function SignupForm({ googleEnabled }: SignupFormProps) {
               className="text-[11px] uppercase text-muted"
               style={{ letterSpacing: "0.08em" }}
             >
-              ou
+              or
             </span>
             <span
               className="h-px flex-1"
@@ -249,18 +249,18 @@ export function SignupForm({ googleEnabled }: SignupFormProps) {
             style={{ fontFamily: "'Roboto', system-ui, -apple-system, sans-serif" }}
           >
             <GoogleLogo />
-            <span>{googleLoading ? "Redirecionando…" : "Sign up with Google"}</span>
+            <span>{googleLoading ? "Redirecting…" : "Sign up with Google"}</span>
           </button>
         </>
       ) : null}
 
       <p className="mt-7 text-center text-[14px] text-secondary">
-        Já tem conta?{" "}
+        Already have an account?{" "}
         <Link
           href={loginHref}
           className="font-medium text-[var(--color-text)] underline decoration-[rgba(162,221,0,0.5)] decoration-2 underline-offset-4 transition-colors hover:text-[var(--color-accent)]"
         >
-          Entrar
+          Sign in
         </Link>
       </p>
     </div>

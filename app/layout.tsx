@@ -17,16 +17,16 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cheaper Veo — Veo 3.1 API a partir de US$0.011/seg",
+  title: "Cheaper Veo — Veo 3.1 API from US$0.011/sec",
   description:
-    "Provedor de API pay-as-you-go para Veo 3.1. Sem mensalidade, créditos pré-pagos e preços fixos por segundo de vídeo. Pronto para produção.",
+    "Pay-as-you-go API provider for Veo 3.1. No monthly fees, prepaid credits, and fixed per-second video pricing. Production ready.",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
   ),
   openGraph: {
     title: "Cheaper Veo — Veo 3.1 API",
     description:
-      "Gere vídeos com Veo 3.1 a partir de US$0.011 por segundo. Pay as you go, sem mensalidade.",
+      "Generate videos with Veo 3.1 starting at US$0.011 per second. Pay as you go, no monthly fees.",
     type: "website",
   },
 };
@@ -37,7 +37,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR" className={`${inter.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body>{children}</body>
     </html>
   );

@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Status · Cheaper Veo",
-  description: "Status em tempo real dos serviços do Cheaper Veo.",
+  description: "Real-time status of Cheaper Veo services.",
 };
 
 const HOUR_MS = 60 * 60 * 1000;
@@ -25,14 +25,14 @@ async function checkDatabase(): Promise<ServiceCheck> {
     await prisma.$queryRaw`SELECT 1`;
     return {
       name: "Database (Postgres)",
-      description: "Banco principal de usuários, créditos e gerações.",
+      description: "Main database for users, credits and generations.",
       ok: true,
       latencyMs: Date.now() - t0,
     };
   } catch (err) {
     return {
       name: "Database (Postgres)",
-      description: "Banco principal de usuários, créditos e gerações.",
+      description: "Main database for users, credits and generations.",
       ok: false,
       detail: err instanceof Error ? err.message : "unknown error",
     };
@@ -50,7 +50,7 @@ async function checkUpstream(): Promise<ServiceCheck> {
     });
     return {
       name: "Veo upstream provider",
-      description: "Serviço NestJS que fala com Google Vertex AI.",
+      description: "NestJS service that talks to Google Vertex AI.",
       ok: res.ok,
       latencyMs: Date.now() - t0,
       detail: res.ok ? undefined : `HTTP ${res.status}`,
@@ -58,7 +58,7 @@ async function checkUpstream(): Promise<ServiceCheck> {
   } catch (err) {
     return {
       name: "Veo upstream provider",
-      description: "Serviço NestJS que fala com Google Vertex AI.",
+      description: "NestJS service that talks to Google Vertex AI.",
       ok: false,
       detail: err instanceof Error ? err.message : "timeout",
     };
@@ -96,9 +96,9 @@ export default async function StatusPage() {
   const services: ServiceCheck[] = [
     {
       name: "API HTTP (Next.js)",
-      description: "Endpoints públicos /api/v1/* e webhook de Stripe.",
+      description: "Public /api/v1/* endpoints and Stripe webhook.",
       ok: true,
-      detail: "Você tá vendo essa página, então está respondendo.",
+      detail: "You're seeing this page, so it's responding.",
     },
     db,
     upstream,
@@ -147,17 +147,17 @@ export default async function StatusPage() {
             style={{ letterSpacing: "-0.022em" }}
           >
             {allOk
-              ? "Todos os sistemas operacionais"
-              : "Alguns serviços com problema"}
+              ? "All systems operational"
+              : "Some services experiencing issues"}
           </h1>
           <p className="mt-0.5 text-[13px] text-secondary">
-            Atualizado em {new Date().toLocaleString("pt-BR")}
+            Updated at {new Date().toLocaleString("en-US")}
           </p>
         </div>
       </div>
 
       <section className="mt-8">
-        <h2 className="text-[15px] font-semibold tracking-tight">Serviços</h2>
+        <h2 className="text-[15px] font-semibold tracking-tight">Services</h2>
         <ul className="mt-3 space-y-2">
           {services.map((s) => (
             <li
@@ -215,17 +215,17 @@ export default async function StatusPage() {
 
       <section className="mt-10">
         <h2 className="text-[15px] font-semibold tracking-tight">
-          Métricas (últimas 24h)
+          Metrics (last 24h)
         </h2>
         <div className="mt-3 grid gap-3 sm:grid-cols-4">
-          <Stat label="Total gerações" value={metrics.total24h} />
+          <Stat label="Total generations" value={metrics.total24h} />
           <Stat
-            label="Concluídas"
+            label="Succeeded"
             value={metrics.succeeded24h}
             color="var(--color-accent)"
           />
           <Stat
-            label="Falhadas"
+            label="Failed"
             value={metrics.failed24h}
             color={metrics.failed24h > 0 ? "var(--color-danger)" : undefined}
           />
@@ -238,10 +238,10 @@ export default async function StatusPage() {
       </section>
 
       <p className="mt-12 text-[12px] text-muted">
-        Status calculado em tempo real (sem cache). Para histórico de incidentes
-        ou subscrever notificações, mande email pra{" "}
-        <a href="mailto:contato@cheapervideo.com" className="legal-link">
-          contato@cheapervideo.com
+        Status calculated in real time (no cache). For incident history
+        or to subscribe to notifications, email{" "}
+        <a href="mailto:contato@cheaperveo.com" className="legal-link">
+          contato@cheaperveo.com
         </a>
         .
       </p>

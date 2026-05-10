@@ -36,7 +36,7 @@ export function VideoPreviewButton({ url, prompt }: VideoPreviewButtonProps) {
         }}
       >
         <Play className="h-3.5 w-3.5" />
-        Ver vídeo
+        View video
       </button>
 
       {open ? (
@@ -50,7 +50,7 @@ export function VideoPreviewButton({ url, prompt }: VideoPreviewButtonProps) {
           onClick={() => setOpen(false)}
           role="dialog"
           aria-modal="true"
-          aria-label="Pré-visualização do vídeo"
+          aria-label="Video preview"
         >
           <div
             className="card-solid relative w-full max-w-3xl overflow-hidden"
@@ -69,7 +69,7 @@ export function VideoPreviewButton({ url, prompt }: VideoPreviewButtonProps) {
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                aria-label="Fechar"
+                aria-label="Close"
                 className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-secondary transition-colors hover:bg-white/[0.06] hover:text-[var(--color-text)]"
               >
                 <X className="h-4 w-4" />
@@ -92,7 +92,7 @@ export function VideoPreviewButton({ url, prompt }: VideoPreviewButtonProps) {
                 rel="noreferrer"
                 className="text-xs text-secondary underline-offset-4 transition-colors hover:text-[var(--color-text)] hover:underline"
               >
-                Abrir em nova aba
+                Open in new tab
               </a>
             </div>
           </div>

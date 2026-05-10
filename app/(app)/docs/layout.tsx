@@ -6,24 +6,24 @@ interface DocsSection {
 }
 
 const SECTIONS: DocsSection[] = [
-  { id: "introducao", label: "Introdução" },
+  { id: "introduction", label: "Introduction" },
   { id: "quickstart", label: "Quickstart" },
-  { id: "autenticacao", label: "Autenticação" },
-  { id: "geracao-de-video", label: "Geração de vídeo" },
+  { id: "authentication", label: "Authentication" },
+  { id: "video-generation", label: "Video generation" },
   { id: "image-to-video", label: "Image-to-video" },
-  { id: "video-com-referencias", label: "Vídeo com referências" },
-  { id: "polling-de-status", label: "Polling de status" },
-  { id: "conta", label: "Conta & saldo" },
-  { id: "modelos-e-precos", label: "Modelos e preços" },
-  { id: "erros", label: "Erros" },
-  { id: "boas-praticas", label: "Boas práticas" },
-  { id: "limites", label: "Limites" },
+  { id: "video-with-references", label: "Video with references" },
+  { id: "status-polling", label: "Status polling" },
+  { id: "account", label: "Account & balance" },
+  { id: "models-and-pricing", label: "Models and pricing" },
+  { id: "errors", label: "Errors" },
+  { id: "best-practices", label: "Best practices" },
+  { id: "limits", label: "Limits" },
 ];
 
 export const metadata = {
-  title: "Documentação — Cheaper Veo",
+  title: "Documentation — Cheaper Veo",
   description:
-    "Referência da API pública Cheaper Veo para gerar vídeos com Veo 3.1 via HTTP.",
+    "Cheaper Veo public API reference for generating videos with Veo 3.1 over HTTP.",
 };
 
 export default function DocsLayout({ children }: { children: ReactNode }) {
@@ -33,7 +33,7 @@ export default function DocsLayout({ children }: { children: ReactNode }) {
         {/* Mobile accordion */}
         <details className="card overflow-hidden lg:hidden" style={{ padding: 0 }}>
           <summary className="flex cursor-pointer items-center justify-between px-5 py-3.5 text-sm font-medium">
-            <span>Sumário</span>
+            <span>Contents</span>
             <span
               aria-hidden
               className="text-muted"
@@ -70,7 +70,7 @@ export default function DocsLayout({ children }: { children: ReactNode }) {
               letterSpacing: "0.08em",
             }}
           >
-            Sumário
+            Contents
           </p>
           <ul
             className="flex flex-col gap-0.5"

@@ -17,14 +17,14 @@ interface PageProps {
 }
 
 const TX_LABEL: Record<TransactionType, string> = {
-  topup: "Recarga",
-  debit: "Débito",
-  refund: "Reembolso",
-  bonus: "Bônus",
-  adjustment: "Ajuste",
+  topup: "Top-up",
+  debit: "Debit",
+  refund: "Refund",
+  bonus: "Bonus",
+  adjustment: "Adjustment",
 };
 
-const dt = new Intl.DateTimeFormat("pt-BR", {
+const dt = new Intl.DateTimeFormat("en-US", {
   day: "2-digit",
   month: "2-digit",
   year: "numeric",
@@ -76,7 +76,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
           className="inline-flex items-center gap-1.5 text-[13px] text-muted transition-colors hover:text-[var(--color-text)]"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
-          Voltar
+          Back
         </Link>
         <h1
           className="mt-2 text-3xl font-semibold tracking-tight md:text-[2rem]"
@@ -88,7 +88,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
           className="mt-1 text-[12px] text-muted"
           style={{ fontFamily: "var(--font-mono)" }}
         >
-          {user.id} · cadastrado {dt.format(user.createdAt)} · stripe:{" "}
+          {user.id} · signed up {dt.format(user.createdAt)} · stripe:{" "}
           {user.stripeCustomerId ?? "—"}
         </p>
       </header>
@@ -101,7 +101,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
               className="text-[11px] uppercase text-muted"
               style={{ letterSpacing: "0.08em" }}
             >
-              Saldo atual
+              Current balance
             </span>
             <Wallet
               className="h-4 w-4"
@@ -127,7 +127,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
             className="text-[11px] uppercase text-muted"
             style={{ letterSpacing: "0.08em" }}
           >
-            Gerações
+            Generations
           </span>
           <div
             className="mt-3 text-2xl font-semibold"
@@ -157,7 +157,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
             className="text-[11px] uppercase text-muted"
             style={{ letterSpacing: "0.08em" }}
           >
-            Transações
+            Transactions
           </span>
           <div
             className="mt-3 text-2xl font-semibold"
@@ -178,7 +178,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
                 style={{ color: "var(--color-accent)" }}
               />
               <h2 className="text-[15px] font-semibold tracking-tight">
-                Auto-recarga
+                Auto-recharge
               </h2>
               <span
                 className={cn(
@@ -198,13 +198,13 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
                       }),
                 }}
               >
-                {user.autoRechargeEnabled ? "ativa" : "inativa"}
+                {user.autoRechargeEnabled ? "active" : "inactive"}
               </span>
             </div>
             <p className="mt-1 text-[13px] text-secondary">
               {user.autoRechargeEnabled && topupConfigured
-                ? `Cobra ${topupConfigured.label.toLowerCase()} (${formatMoney(topupConfigured.amountCents, topupConfigured.currency)}) quando saldo < ${formatCredits(user.autoRechargeThreshold)} cr`
-                : "Sem configuração ativa."}
+                ? `Charges ${topupConfigured.label.toLowerCase()} (${formatMoney(topupConfigured.amountCents, topupConfigured.currency)}) when balance < ${formatCredits(user.autoRechargeThreshold)} cr`
+                : "No active configuration."}
             </p>
           </div>
 
@@ -231,7 +231,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
             />
             <div>
               <strong className="text-[var(--color-text)]">
-                Último erro:
+                Last error:
               </strong>{" "}
               {user.autoRechargeLastError}
             </div>
@@ -244,7 +244,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
               className="text-[10.5px] uppercase text-muted"
               style={{ letterSpacing: "0.08em" }}
             >
-              Cartão salvo
+              Saved card
             </div>
             <div
               className="mt-1 text-[13px]"
@@ -263,7 +263,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
               In progress
             </div>
             <div className="mt-1 text-[13px]">
-              {user.autoRechargeInProgress ? "Sim (lock ativo)" : "Não"}
+              {user.autoRechargeInProgress ? "Yes (lock active)" : "No"}
             </div>
           </div>
           <div>
@@ -271,12 +271,12 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
               className="text-[10.5px] uppercase text-muted"
               style={{ letterSpacing: "0.08em" }}
             >
-              Última cobrança
+              Last charge
             </div>
             <div className="mt-1 text-[13px]">
               {user.autoRechargeLastTriggeredAt
                 ? dt.format(user.autoRechargeLastTriggeredAt)
-                : "Nunca"}
+                : "Never"}
             </div>
           </div>
         </div>
@@ -293,14 +293,14 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
             style={{ borderBottom: "1px solid var(--color-border)" }}
           >
             <h2 className="text-[15px] font-semibold tracking-tight">
-              Últimas transações
+              Recent transactions
             </h2>
             <p className="mt-0.5 text-[12px] text-secondary">
-              25 mais recentes (de {user._count.transactions}).
+              25 most recent (of {user._count.transactions}).
             </p>
           </div>
           {transactions.length === 0 ? (
-            <p className="p-6 text-[13px] text-muted">Sem transações.</p>
+            <p className="p-6 text-[13px] text-muted">No transactions.</p>
           ) : (
             <ul>
               {transactions.map((tx, i) => (
@@ -357,14 +357,14 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
             style={{ borderBottom: "1px solid var(--color-border)" }}
           >
             <h2 className="text-[15px] font-semibold tracking-tight">
-              Últimas gerações
+              Recent generations
             </h2>
             <p className="mt-0.5 text-[12px] text-secondary">
-              15 mais recentes (de {user._count.generations}).
+              15 most recent (of {user._count.generations}).
             </p>
           </div>
           {generations.length === 0 ? (
-            <p className="p-6 text-[13px] text-muted">Sem gerações.</p>
+            <p className="p-6 text-[13px] text-muted">No generations.</p>
           ) : (
             <ul>
               {generations.map((gen, i) => {
@@ -420,13 +420,13 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
               API keys
             </h2>
             <p className="mt-0.5 text-[12px] text-secondary">
-              Todas as chaves desse usuário (ativas e revogadas).
+              All keys for this user (active and revoked).
             </p>
           </div>
         </div>
         {apiKeys.length === 0 ? (
           <div className="flex items-center gap-2 p-7 text-[13px] text-muted">
-            <KeyRound className="h-4 w-4" /> Nenhuma chave criada.
+            <KeyRound className="h-4 w-4" /> No keys created.
           </div>
         ) : (
           <table className="w-full text-left text-sm">
@@ -439,12 +439,12 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
                   letterSpacing: "0.08em",
                 }}
               >
-                <th className="px-7 py-3.5 font-medium">Nome</th>
+                <th className="px-7 py-3.5 font-medium">Name</th>
                 <th className="px-7 py-3.5 font-medium">Prefix</th>
                 <th className="px-7 py-3.5 font-medium">Status</th>
-                <th className="px-7 py-3.5 font-medium">Criada</th>
-                <th className="px-7 py-3.5 font-medium">Última uso</th>
-                <th className="px-7 py-3.5 text-right font-medium">Ação</th>
+                <th className="px-7 py-3.5 font-medium">Created</th>
+                <th className="px-7 py-3.5 font-medium">Last used</th>
+                <th className="px-7 py-3.5 text-right font-medium">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -469,14 +469,14 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
                     <td className="px-7 py-3.5">
                       {revoked ? (
                         <span className="text-[11px] text-[var(--color-danger)]">
-                          revogada
+                          revoked
                         </span>
                       ) : (
                         <span
                           className="text-[11px]"
                           style={{ color: "var(--color-accent)" }}
                         >
-                          ativa
+                          active
                         </span>
                       )}
                     </td>
@@ -484,7 +484,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
                       {dt.format(k.createdAt)}
                     </td>
                     <td className="px-7 py-3.5 text-xs text-muted">
-                      {k.lastUsedAt ? dt.format(k.lastUsedAt) : "Nunca"}
+                      {k.lastUsedAt ? dt.format(k.lastUsedAt) : "Never"}
                     </td>
                     <td className="px-7 py-3.5 text-right">
                       {!revoked && (

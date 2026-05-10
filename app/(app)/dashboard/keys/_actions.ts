@@ -19,10 +19,10 @@ export async function createKeyAction(formData: FormData): Promise<CreateKeyResu
   const name = typeof rawName === "string" ? rawName.trim() : "";
 
   if (!name) {
-    return { ok: false, error: "Informe um nome para identificar a chave." };
+    return { ok: false, error: "Provide a name to identify the key." };
   }
   if (name.length > 80) {
-    return { ok: false, error: "O nome deve ter no máximo 80 caracteres." };
+    return { ok: false, error: "Name must be at most 80 characters." };
   }
 
   try {
@@ -38,7 +38,7 @@ export async function createKeyAction(formData: FormData): Promise<CreateKeyResu
       name: record.name,
     };
   } catch {
-    return { ok: false, error: "Não foi possível criar a chave. Tente novamente." };
+    return { ok: false, error: "Could not create the key. Try again." };
   }
 }
 
@@ -50,16 +50,16 @@ export interface RevokeKeyResult {
 export async function revokeKeyAction(id: string): Promise<RevokeKeyResult> {
   const user = await requireUser();
   if (!id || typeof id !== "string") {
-    return { ok: false, error: "ID inválido." };
+    return { ok: false, error: "Invalid ID." };
   }
   try {
     const result = await revokeApiKey({ userId: user.id, id });
     if (!result) {
-      return { ok: false, error: "Chave não encontrada ou já revogada." };
+      return { ok: false, error: "Key not found or already revoked." };
     }
     revalidatePath("/dashboard/keys");
     return { ok: true };
   } catch {
-    return { ok: false, error: "Não foi possível revogar a chave." };
+    return { ok: false, error: "Could not revoke the key." };
   }
 }

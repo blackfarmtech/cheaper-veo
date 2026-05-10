@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 const FOOTER_LINKS = [
-  { href: "/termos", label: "Termos" },
-  { href: "/privacidade", label: "Privacidade" },
+  { href: "/legal/terms", label: "Terms" },
+  { href: "/legal/privacy", label: "Privacy" },
   { href: "/status", label: "Status" },
   { href: "/docs", label: "Docs" },
 ] as const;
@@ -13,8 +13,8 @@ export function SiteFooter() {
   return (
     <footer style={{ borderTop: "1px solid var(--color-border)" }}>
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-10 text-[13px] text-secondary md:flex-row">
-        <p>&copy; {year} Cheaper Veo. Todos os direitos reservados.</p>
-        <nav aria-label="Rodapé">
+        <p>&copy; {year} Cheaper Veo. All rights reserved.</p>
+        <nav aria-label="Footer">
           <ul className="flex flex-wrap items-center justify-center gap-2">
             {FOOTER_LINKS.map((link) => (
               <li key={link.href}>

@@ -13,7 +13,7 @@ function minPriceCents(modelId: string, resolutions: Resolution[]): number {
       });
       if (credits < min) min = credits;
     } catch {
-      // resolução não suportada — ignora
+      // unsupported resolution — ignore
     }
   }
   return min;
@@ -21,15 +21,15 @@ function minPriceCents(modelId: string, resolutions: Resolution[]): number {
 
 export function Models() {
   return (
-    <section id="modelos" className="py-24 md:py-32">
+    <section id="models" className="py-24 md:py-32">
       <div className="mx-auto max-w-6xl px-6">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="headline-section text-balance">
-            Três modelos, um endpoint
+            Three models, one endpoint
           </h2>
           <p className="body-large mt-5 text-secondary">
-            Escolha entre velocidade, custo ou qualidade premium. Mesma API,
-            mesmo formato de resposta.
+            Choose between speed, cost or premium quality. Same API,
+            same response format.
           </p>
         </div>
 
@@ -60,7 +60,7 @@ export function Models() {
                       letterSpacing: "0.05em",
                     }}
                   >
-                    Mais escolhido
+                    Most chosen
                   </span>
                 )}
 
@@ -77,7 +77,7 @@ export function Models() {
                 >
                   <span>{model.speedHint}</span>
                   <span aria-hidden>·</span>
-                  <span>preço por segundo</span>
+                  <span>price per second</span>
                 </div>
 
                 <div className="flex flex-wrap gap-1.5">
@@ -104,7 +104,7 @@ export function Models() {
                     className="text-[11px] uppercase text-muted"
                     style={{ letterSpacing: "0.08em" }}
                   >
-                    A partir de
+                    Starting at
                   </div>
                   <div
                     className="mt-2 text-3xl font-semibold tracking-tight"
@@ -112,7 +112,7 @@ export function Models() {
                   >
                     {formatUsdPrecise(minCents / 8)}
                     <span className="ml-1.5 text-xs font-normal text-muted">
-                      / seg
+                      / sec
                     </span>
                   </div>
                 </div>

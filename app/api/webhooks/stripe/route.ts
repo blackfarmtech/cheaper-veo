@@ -7,6 +7,11 @@ import {
   persistDefaultPaymentMethod,
   releaseAutoRechargeLock,
 } from "@/lib/auto-recharge";
+import {
+  sendAutoRechargeFailedEmail,
+  sendTopupSuccessEmail,
+} from "@/lib/email";
+import { prisma } from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
 
 export const runtime = "nodejs";
@@ -140,6 +145,19 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session): Promis
   console.log(
     `[stripe-webhook] topup applied user=${userId} credits=${credits} payment=${stripePaymentId} alreadyApplied=${result.alreadyApplied}`,
   );
+
+  // Send the receipt only the first time we apply the topup so duplicate
+  // webhook deliveries don't email the user twice.
+  if (!result.alreadyApplied) {
+    void notifyTopupSuccess({
+      userId,
+      credits,
+      amountCents,
+      currency,
+      newBalance: result.newBalance,
+      isAutoRecharge: false,
+    });
+  }
 }
 
 async function handleSetupCompleted(session: Stripe.Checkout.Session): Promise<void> {
@@ -201,6 +219,17 @@ async function handleAutoRechargeSucceeded(pi: Stripe.PaymentIntent): Promise<vo
   console.log(
     `[stripe-webhook] auto-recharge applied user=${userId} credits=${credits} pi=${pi.id} alreadyApplied=${result.alreadyApplied}`,
   );
+
+  if (!result.alreadyApplied) {
+    void notifyTopupSuccess({
+      userId,
+      credits,
+      amountCents,
+      currency,
+      newBalance: result.newBalance,
+      isAutoRecharge: true,
+    });
+  }
 }
 
 async function handleAutoRechargeFailed(pi: Stripe.PaymentIntent): Promise<void> {
@@ -208,23 +237,66 @@ async function handleAutoRechargeFailed(pi: Stripe.PaymentIntent): Promise<void>
   if (!userId) {
     throw new PermanentWebhookError(`auto-recharge PI ${pi.id} missing userId`);
   }
+  const reason =
+    pi.last_payment_error?.code ??
+    pi.last_payment_error?.message ??
+    "payment_failed";
+
   // Disable auto-recharge so we don't loop, and surface the error to UI.
-  const { prisma } = await import("@/lib/prisma");
-  await prisma.user.update({
+  const updated = await prisma.user.update({
     where: { id: userId },
     data: {
       autoRechargeInProgress: false,
       autoRechargeEnabled: false,
-      autoRechargeLastError:
-        pi.last_payment_error?.code ??
-        pi.last_payment_error?.message ??
-        "payment_failed",
+      autoRechargeLastError: reason,
     },
+    select: { email: true },
   });
   // eslint-disable-next-line no-console
   console.warn(
     `[stripe-webhook] auto-recharge FAILED user=${userId} pi=${pi.id} reason=${pi.last_payment_error?.code ?? "unknown"}`,
   );
+
+  void sendAutoRechargeFailedEmail({ to: updated.email, reason }).catch(
+    (err) => {
+      // eslint-disable-next-line no-console
+      console.error(
+        `[stripe-webhook] auto-recharge failed email error user=${userId}:`,
+        err,
+      );
+    },
+  );
+}
+
+async function notifyTopupSuccess(args: {
+  userId: string;
+  credits: number;
+  amountCents: number;
+  currency: string;
+  newBalance: number;
+  isAutoRecharge: boolean;
+}): Promise<void> {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: args.userId },
+      select: { email: true },
+    });
+    if (!user?.email) return;
+    await sendTopupSuccessEmail({
+      to: user.email,
+      credits: args.credits,
+      amountCents: args.amountCents,
+      currency: args.currency,
+      newBalance: args.newBalance,
+      isAutoRecharge: args.isAutoRecharge,
+    });
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error(
+      `[stripe-webhook] topup email failed user=${args.userId}:`,
+      err,
+    );
+  }
 }
 
 /**

@@ -125,7 +125,7 @@ export default function Image() {
             fontFamily: "ui-monospace, monospace",
           }}
         >
-          <span>cheapervideo.com</span>
+          <span>cheaperveo.com</span>
           <span>$0.011/sec</span>
         </div>
       </div>

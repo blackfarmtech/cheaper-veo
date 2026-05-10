@@ -7,8 +7,8 @@ import { getSession } from "@/lib/session";
 import { SignupForm } from "./signup-form";
 
 export const metadata: Metadata = {
-  title: "Criar conta — Cheaper Veo",
-  description: "Crie sua conta Cheaper Veo e comece a gerar vídeos com Veo 3.1 em minutos.",
+  title: "Create account — Cheaper Veo",
+  description: "Create your Cheaper Veo account and start generating videos with Veo 3.1 in minutes.",
 };
 
 export default async function SignupPage() {

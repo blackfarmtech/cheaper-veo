@@ -20,9 +20,9 @@ interface NavItem {
 }
 
 const NAV: NavItem[] = [
-  { label: "Visão geral", href: "/admin", icon: LayoutDashboard, exact: true },
-  { label: "Usuários", href: "/admin/users", icon: Users },
-  { label: "Gerações", href: "/admin/generations", icon: Film },
+  { label: "Overview", href: "/admin", icon: LayoutDashboard, exact: true },
+  { label: "Users", href: "/admin/users", icon: Users },
+  { label: "Generations", href: "/admin/generations", icon: Film },
 ];
 
 function isActive(pathname: string, item: NavItem): boolean {
@@ -133,7 +133,7 @@ export function AdminSidebar({ adminEmail }: { adminEmail: string }) {
           style={{ borderRadius: "var(--radius-md)" }}
         >
           <ArrowLeft className="h-[15px] w-[15px]" />
-          <span className="font-medium tracking-tight">Voltar ao app</span>
+          <span className="font-medium tracking-tight">Back to app</span>
         </Link>
       </div>
     </aside>

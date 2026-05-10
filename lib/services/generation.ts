@@ -107,6 +107,14 @@ export async function createGeneration(args: {
 }): Promise<Generation> {
   const { user, apiKey, input } = args;
 
+  if (!user.emailVerified) {
+    throw new GenerationError(
+      "EMAIL_NOT_VERIFIED",
+      "Verify your email before generating videos. Check your inbox or request a new link from /verify-email.",
+      403,
+    );
+  }
+
   const model = getModelById(input.modelId);
   if (!model) {
     throw new GenerationError("INVALID_MODEL", `Unknown model "${input.modelId}".`, 400);

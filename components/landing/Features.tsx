@@ -11,32 +11,32 @@ const features = [
   {
     icon: Coins,
     title: "Pay as you go",
-    body: "Sem assinatura, sem cartão preso. Recarregue de US$5 a US$500 e debite por geração.",
+    body: "No subscription, no card on file. Top up from US$5 to US$500 and debit per generation.",
   },
   {
     icon: InfinityIcon,
-    title: "Sem mínimo de uso",
-    body: "Gere um vídeo por mês ou dez mil. O preço por geração é o mesmo.",
+    title: "No usage minimum",
+    body: "Generate one video a month or ten thousand. The per-generation price is the same.",
   },
   {
     icon: Wand2,
-    title: "Text, image e frame-to-frame",
-    body: "Suporte a prompt textual, imagem de referência e interpolação entre primeiro e último frame.",
+    title: "Text, image and frame-to-frame",
+    body: "Support for text prompts, reference images and interpolation between first and last frame.",
   },
   {
     icon: Monitor,
-    title: "720p, 1080p e 4K",
-    body: "Escolha resolução por requisição. 4K disponível em Fast e Quality.",
+    title: "720p, 1080p and 4K",
+    body: "Pick resolution per request. 4K available on Fast and Quality.",
   },
   {
     icon: Volume2,
-    title: "Geração com áudio",
-    body: "Trilha e foley sincronizados ativados via flag única. Disponível em todos os tiers.",
+    title: "Generation with audio",
+    body: "Synchronized score and foley enabled via a single flag. Available across all tiers.",
   },
   {
     icon: Webhook,
     title: "Webhook + polling",
-    body: "Receba o resultado por webhook ou consulte o status do task quando preferir.",
+    body: "Get the result via webhook or check task status whenever you prefer.",
   },
 ];
 
@@ -52,10 +52,10 @@ export function Features() {
       <div className="mx-auto max-w-6xl px-6">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="headline-section text-balance">
-            Feito para integrar e esquecer
+            Built to integrate and forget
           </h2>
           <p className="body-large mt-5 text-secondary">
-            Endpoints estáveis, semântica clara, sem mágica escondida.
+            Stable endpoints, clear semantics, no hidden magic.
           </p>
         </div>
 

@@ -8,11 +8,11 @@ interface StatusBadgeProps {
 }
 
 const STATUS_LABEL: Record<GenerationStatus, string> = {
-  pending: "Em fila",
-  processing: "Processando",
-  succeeded: "Concluído",
-  failed: "Falhou",
-  refunded: "Reembolsado",
+  pending: "Queued",
+  processing: "Processing",
+  succeeded: "Succeeded",
+  failed: "Failed",
+  refunded: "Refunded",
 };
 
 const STATUS_STYLES: Record<GenerationStatus, string> = {

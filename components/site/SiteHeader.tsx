@@ -3,8 +3,8 @@ import Link from "next/link";
 import { getSession } from "@/lib/session";
 
 const NAV_LINKS = [
-  { href: "/modelos", label: "Modelos" },
-  { href: "/precos", label: "Preços" },
+  { href: "/#models", label: "Models" },
+  { href: "/#pricing", label: "Pricing" },
   { href: "/docs", label: "Docs" },
 ] as const;
 
@@ -40,7 +40,7 @@ export async function SiteHeader() {
 
         <nav
           className="hidden items-center md:flex"
-          aria-label="Principal"
+          aria-label="Main"
         >
           {NAV_LINKS.map((link) => (
             <Link
@@ -68,7 +68,7 @@ export async function SiteHeader() {
               className="btn-primary"
               style={{ padding: "0.5rem 1.125rem", fontSize: "13px" }}
             >
-              Entrar
+              Sign in
             </Link>
           )}
         </div>

@@ -20,7 +20,7 @@ export function CreditGrantForm({ userId }: Props) {
   function handleSubmit() {
     setFeedback(null);
     if (!description.trim()) {
-      setFeedback({ kind: "error", msg: "Descrição é obrigatória." });
+      setFeedback({ kind: "error", msg: "Description is required." });
       return;
     }
     startTransition(async () => {
@@ -32,7 +32,7 @@ export function CreditGrantForm({ userId }: Props) {
         type,
       });
       if (res.ok) {
-        setFeedback({ kind: "ok", msg: res.message ?? "Aplicado." });
+        setFeedback({ kind: "ok", msg: res.message ?? "Applied." });
         setDescription("");
       } else {
         setFeedback({ kind: "error", msg: res.error });
@@ -43,10 +43,10 @@ export function CreditGrantForm({ userId }: Props) {
   return (
     <div className="card p-6">
       <h3 className="text-[15px] font-semibold tracking-tight">
-        Adicionar / debitar créditos
+        Add / debit credits
       </h3>
       <p className="mt-1 text-[13px] text-secondary">
-        Operação manual, registrada como bonus ou ajuste com seu email no log.
+        Manual operation, logged as bonus or adjustment with your email.
       </p>
 
       <div className="mt-5 grid gap-4 sm:grid-cols-[auto_1fr] sm:items-end">
@@ -55,7 +55,7 @@ export function CreditGrantForm({ userId }: Props) {
             className="text-[11px] uppercase text-muted"
             style={{ letterSpacing: "0.08em" }}
           >
-            Direção
+            Direction
           </label>
           <div
             className="flex gap-1 p-1"
@@ -79,7 +79,7 @@ export function CreditGrantForm({ userId }: Props) {
                   : { color: "var(--color-text-secondary)" }
               }
             >
-              <Plus className="h-3.5 w-3.5" /> Adicionar
+              <Plus className="h-3.5 w-3.5" /> Add
             </button>
             <button
               type="button"
@@ -95,7 +95,7 @@ export function CreditGrantForm({ userId }: Props) {
                   : { color: "var(--color-text-secondary)" }
               }
             >
-              <Minus className="h-3.5 w-3.5" /> Debitar
+              <Minus className="h-3.5 w-3.5" /> Debit
             </button>
           </div>
         </div>
@@ -105,7 +105,7 @@ export function CreditGrantForm({ userId }: Props) {
             className="text-[11px] uppercase text-muted"
             style={{ letterSpacing: "0.08em" }}
           >
-            Quantidade (créditos)
+            Amount (credits)
           </label>
           <div className="relative">
             <input
@@ -135,7 +135,7 @@ export function CreditGrantForm({ userId }: Props) {
             className="text-[11px] uppercase text-muted"
             style={{ letterSpacing: "0.08em" }}
           >
-            Tipo
+            Type
           </label>
           <select
             value={type}
@@ -143,8 +143,8 @@ export function CreditGrantForm({ userId }: Props) {
             disabled={isPending}
             className="input-apple"
           >
-            <option value="bonus">Bônus</option>
-            <option value="adjustment">Ajuste</option>
+            <option value="bonus">Bonus</option>
+            <option value="adjustment">Adjustment</option>
           </select>
         </div>
 
@@ -153,13 +153,13 @@ export function CreditGrantForm({ userId }: Props) {
             className="text-[11px] uppercase text-muted"
             style={{ letterSpacing: "0.08em" }}
           >
-            Descrição (auditoria)
+            Description (audit)
           </label>
           <input
             type="text"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Ex.: compensação por geração que falhou em 09/05"
+            placeholder="E.g.: compensation for a generation that failed on 05/09"
             disabled={isPending}
             className="input-apple"
             maxLength={200}
@@ -201,7 +201,7 @@ export function CreditGrantForm({ userId }: Props) {
         disabled={isPending || amount <= 0}
         className="btn-primary mt-5 disabled:opacity-50"
       >
-        {isPending ? "Aplicando…" : `Aplicar ${direction === "add" ? "+" : "−"}${amount} cr`}
+        {isPending ? "Applying…" : `Apply ${direction === "add" ? "+" : "−"}${amount} cr`}
       </button>
     </div>
   );

@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const SITE = process.env.NEXT_PUBLIC_APP_URL ?? "https://cheapervideo.com";
+const SITE = process.env.NEXT_PUBLIC_APP_URL ?? "https://cheaperveo.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -36,19 +36,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.4,
     },
     {
-      url: `${SITE}/legal/termos`,
+      url: `${SITE}/legal/terms`,
       lastModified: now,
       changeFrequency: "yearly",
       priority: 0.3,
     },
     {
-      url: `${SITE}/legal/privacidade`,
+      url: `${SITE}/legal/privacy`,
       lastModified: now,
       changeFrequency: "yearly",
       priority: 0.3,
     },
     {
-      url: `${SITE}/legal/conteudo`,
+      url: `${SITE}/legal/content`,
       lastModified: now,
       changeFrequency: "yearly",
       priority: 0.3,

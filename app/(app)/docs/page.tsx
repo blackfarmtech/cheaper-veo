@@ -9,7 +9,7 @@ import {
 } from "@/lib/pricing";
 
 const PLACEHOLDER_KEY = "veo_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-const BASE_URL = "https://api.geraew.com";
+const BASE_URL = "https://cheaperveo.com";
 
 const CURL_TEXT_TO_VIDEO = `curl -X POST ${BASE_URL}/api/v1/generate \\
   -H "Authorization: Bearer ${PLACEHOLDER_KEY}" \\
@@ -232,61 +232,61 @@ export default function DocsPage() {
           className="text-[2.5rem] font-semibold tracking-tight md:text-[3rem]"
           style={{ letterSpacing: "-0.028em", lineHeight: 1.1 }}
         >
-          Documentação da API Cheaper Veo
+          Cheaper Veo API Documentation
         </h1>
         <p className="body-large mt-5 text-secondary">
-          Gere vídeos com Veo 3.1 via HTTP. Pay as you go, sem mensalidade,
-          créditos pré-pagos. Esta referência cobre autenticação, geração,
-          polling de status, modelos disponíveis e tratamento de erros.
+          Generate videos with Veo 3.1 over HTTP. Pay as you go, no monthly fees,
+          prepaid credits. This reference covers authentication, generation,
+          status polling, available models and error handling.
         </p>
       </div>
 
       <LlmsBanner />
 
-      <SectionAnchor id="introducao">Introdução</SectionAnchor>
+      <SectionAnchor id="introduction">Introduction</SectionAnchor>
       <p className="text-secondary">
-        A API Cheaper Veo é uma camada HTTP fina sobre o Google Veo 3.1. Você envia um
-        prompt (e opcionalmente imagens de referência), recebe um{" "}
+        The Cheaper Veo API is a thin HTTP layer over Google Veo 3.1. You send a
+        prompt (and optionally reference images), receive an immediate{" "}
         <code className="docs-inline-code">
           taskId
         </code>{" "}
-        imediato e faz polling até o vídeo ficar pronto. Em três passos:
+        and poll until the video is ready. In three steps:
       </p>
       <ol className="mt-4 list-decimal space-y-2 pl-6 text-secondary">
         <li>
-          <strong className="text-[var(--color-text)]">Autenticar:</strong>{" "}
-          envie sua chave no header{" "}
+          <strong className="text-[var(--color-text)]">Authenticate:</strong>{" "}
+          send your key in the header{" "}
           <code className="docs-inline-code">
             Authorization: Bearer veo_live_…
           </code>
           .
         </li>
         <li>
-          <strong className="text-[var(--color-text)]">Gerar:</strong>{" "}
+          <strong className="text-[var(--color-text)]">Generate:</strong>{" "}
           <code className="docs-inline-code">
             POST /api/v1/generate
           </code>{" "}
-          com o body do tipo desejado (text-to-video, image-to-video ou
-          references). A resposta contém o{" "}
+          with the body of your chosen kind (text-to-video, image-to-video or
+          references). The response contains the{" "}
           <code className="docs-inline-code">
             taskId
           </code>{" "}
-          e o custo em créditos já debitado.
+          and the credit cost already debited.
         </li>
         <li>
-          <strong className="text-[var(--color-text)]">Aguardar:</strong>{" "}
+          <strong className="text-[var(--color-text)]">Wait:</strong>{" "}
           <code className="docs-inline-code">
             GET /api/v1/status/&#123;taskId&#125;
           </code>{" "}
-          a cada 5–10 segundos até o status virar{" "}
+          every 5–10 seconds until status becomes{" "}
           <code className="docs-inline-code">
             succeeded
           </code>
-          . O campo{" "}
+          . The{" "}
           <code className="docs-inline-code">
             videoUrl
           </code>{" "}
-          aponta para o MP4 final.
+          field points to the final MP4.
         </li>
       </ol>
 
@@ -301,16 +301,18 @@ export default function DocsPage() {
           Base URL
         </p>
         <p className="mt-2 text-sm" style={{ fontFamily: "var(--font-mono)" }}>
-          <span className="text-secondary">Produção:</span> {BASE_URL}
-          <br />
-          <span className="text-secondary">Desenvolvimento:</span>{" "}
-          http://localhost:3000
+          {BASE_URL}
+        </p>
+        <p className="mt-2 text-[12.5px] text-muted">
+          All routes live under{" "}
+          <code className="docs-inline-code">/api/v1</code>. Use HTTPS — HTTP
+          calls are rejected.
         </p>
       </div>
 
       <SectionAnchor id="quickstart">Quickstart</SectionAnchor>
       <p className="text-secondary">
-        Do zero ao primeiro vídeo em 3 passos. Total: ~2 minutos.
+        From zero to first video in 3 steps. Total: ~2 minutes.
       </p>
 
       <ol className="mt-5 space-y-6 pl-0 text-secondary">
@@ -328,21 +330,21 @@ export default function DocsPage() {
           </span>
           <div className="flex-1">
             <h4 className="text-[15px] font-semibold tracking-tight text-[var(--color-text)]">
-              Crie uma API key
+              Create an API key
             </h4>
             <p className="mt-1 text-[14px]">
-              Acesse{" "}
+              Go to{" "}
               <a
                 href="/dashboard/keys"
                 className="text-[var(--color-accent)] underline-offset-4 hover:underline"
               >
-                Painel → API Keys
+                Dashboard → API Keys
               </a>{" "}
-              e clique em <strong className="text-[var(--color-text)]">Gerar nova chave</strong>.
-              A chave (formato{" "}
-              <code className="docs-inline-code">veo_live_…</code>) é exibida{" "}
-              <strong className="text-[var(--color-text)]">apenas uma vez</strong> —
-              copie pra um cofre de segredos.
+              and click <strong className="text-[var(--color-text)]">Generate new key</strong>.
+              The key (format{" "}
+              <code className="docs-inline-code">veo_live_…</code>) is shown{" "}
+              <strong className="text-[var(--color-text)]">only once</strong> —
+              copy it to a secrets vault.
             </p>
           </div>
         </li>
@@ -361,22 +363,22 @@ export default function DocsPage() {
           </span>
           <div className="flex-1">
             <h4 className="text-[15px] font-semibold tracking-tight text-[var(--color-text)]">
-              Teste o saldo
+              Test the balance
             </h4>
             <p className="mt-1 text-[14px]">
-              Confirma que a chave tá funcionando antes de gerar nada (não
-              consome crédito):
+              Confirm the key works before generating anything (does not
+              consume credits):
             </p>
             <CodeBlock language="bash">
               {`curl ${BASE_URL}/api/v1/account \\
   -H "Authorization: Bearer ${PLACEHOLDER_KEY}"`}
             </CodeBlock>
             <p className="text-[13px] text-muted">
-              Resposta deve mostrar seu email e{" "}
-              <code className="docs-inline-code">balance</code> em créditos. Se
-              receber{" "}
-              <code className="docs-inline-code">401</code>, a chave está
-              errada ou foi revogada.
+              The response should show your email and{" "}
+              <code className="docs-inline-code">balance</code> in credits. If
+              you get{" "}
+              <code className="docs-inline-code">401</code>, the key is
+              wrong or has been revoked.
             </p>
           </div>
         </li>
@@ -395,14 +397,14 @@ export default function DocsPage() {
           </span>
           <div className="flex-1">
             <h4 className="text-[15px] font-semibold tracking-tight text-[var(--color-text)]">
-              Gere e aguarde
+              Generate and wait
             </h4>
             <p className="mt-1 text-[14px]">
-              Vídeo barato pra testar (Lite 720p sem áudio, 4s = 5 créditos =
-              US$0,05):
+              Cheap video to test (Lite 720p no audio, 4s = 5 credits =
+              US$0.05):
             </p>
             <CodeBlock language="bash">
-              {`# Inicia geração — retorna taskId imediato
+              {`# Start generation — returns taskId immediately
 curl -X POST ${BASE_URL}/api/v1/generate \\
   -H "Authorization: Bearer ${PLACEHOLDER_KEY}" \\
   -H "Content-Type: application/json" \\
@@ -416,71 +418,84 @@ curl -X POST ${BASE_URL}/api/v1/generate \\
     "audio": false
   }'
 
-# Resposta: { "taskId": "tsk_01HYAB…", "status": "pending", … }
+# Response: { "taskId": "tsk_01HYAB…", "status": "pending", … }
 
-# Pega o taskId acima e faz polling a cada 5s
+# Take the taskId above and poll every 5s
 curl ${BASE_URL}/api/v1/status/tsk_01HYAB… \\
   -H "Authorization: Bearer ${PLACEHOLDER_KEY}"`}
             </CodeBlock>
             <p className="text-[13px] text-muted">
-              Quando{" "}
-              <code className="docs-inline-code">status</code> virar{" "}
-              <code className="docs-inline-code">succeeded</code>, o campo{" "}
-              <code className="docs-inline-code">videoUrl</code> traz o MP4
-              final.
+              When{" "}
+              <code className="docs-inline-code">status</code> becomes{" "}
+              <code className="docs-inline-code">succeeded</code>, the{" "}
+              <code className="docs-inline-code">videoUrl</code> field returns the final
+              MP4.
             </p>
           </div>
         </li>
       </ol>
 
-      <SectionAnchor id="autenticacao">Autenticação</SectionAnchor>
+      <SectionAnchor id="authentication">Authentication</SectionAnchor>
       <p className="text-secondary">
-        Toda requisição precisa do header{" "}
+        Every request needs the header{" "}
         <code className="docs-inline-code">
           Authorization: Bearer veo_live_…
         </code>
-        . As chaves começam com{" "}
+        . Keys start with{" "}
         <code className="docs-inline-code">
           veo_live_
         </code>{" "}
-        e são geradas em{" "}
+        and are generated in{" "}
         <a
           href="/dashboard/keys"
           className="text-[var(--color-accent)] underline-offset-4 hover:underline"
         >
-          Painel → API keys
+          Dashboard → API keys
         </a>
-        . A chave é exibida apenas uma vez no momento da criação — guarde-a num
-        cofre de segredos.
+        . The key is shown only once at creation — store it in a
+        secrets vault.
       </p>
 
       <CodeBlock language="http">
         {`Authorization: Bearer ${PLACEHOLDER_KEY}\nContent-Type: application/json`}
       </CodeBlock>
 
+      <p className="mt-5 text-secondary">
+        Recommended convention: store the key in an environment variable{" "}
+        <code className="docs-inline-code">CHEAPER_VEO_API_KEY</code> in your{" "}
+        <code className="docs-inline-code">.env</code> (or{" "}
+        <code className="docs-inline-code">.env.local</code> in Next.js). The
+        examples below assume that name.
+      </p>
+
+      <CodeBlock language="bash">
+        {`# .env
+CHEAPER_VEO_API_KEY=${PLACEHOLDER_KEY}`}
+      </CodeBlock>
+
       <p className="mt-3 text-secondary">
-        Se a chave for inválida, revogada ou estiver ausente, a API responde{" "}
+        If the key is invalid, revoked or missing, the API responds with{" "}
         <code className="docs-inline-code">
           401 UNAUTHORIZED
         </code>
-        . Nunca exponha a chave em código client-side: faça as chamadas a partir
-        do seu backend.
+        . Never expose the key in client-side code: call from
+        your backend.
       </p>
 
-      <SectionAnchor id="geracao-de-video">Geração de vídeo</SectionAnchor>
+      <SectionAnchor id="video-generation">Video generation</SectionAnchor>
       <p className="text-secondary">
         <code className="docs-inline-code">
           POST /api/v1/generate
         </code>{" "}
-        aceita um body discriminado pelo campo{" "}
+        accepts a body discriminated by the{" "}
         <code className="docs-inline-code">
           kind
-        </code>
-        . O caso mais comum é{" "}
+        </code>{" "}
+        field. The most common case is{" "}
         <code className="docs-inline-code">
           text_to_video
         </code>
-        . A chamada retorna imediatamente com{" "}
+        . The call returns immediately with{" "}
         <code className="docs-inline-code">
           taskId
         </code>
@@ -488,7 +503,7 @@ curl ${BASE_URL}/api/v1/status/tsk_01HYAB… \\
         <code className="docs-inline-code">
           status
         </code>{" "}
-        e o custo em créditos.
+        and the credit cost.
       </p>
 
       <h3 className="mt-10 mb-3 text-[1.0625rem] font-semibold tracking-tight">
@@ -503,29 +518,29 @@ curl ${BASE_URL}/api/v1/status/tsk_01HYAB… \\
   "aspectRatio": "16:9 | 9:16",
   "durationSeconds": 4 | 6 | 8,
   "audio": true,
-  "negativePrompt": "string (opcional, max 2000 chars)"
+  "negativePrompt": "string (optional, max 2000 chars)"
 }`}
       </CodeBlock>
 
       <p className="mt-3 text-[13px] text-muted">
-        <strong className="text-[var(--color-text-secondary)]">Atenção:</strong>{" "}
-        o campo é <code className="docs-inline-code">modelId</code> (não{" "}
-        <code className="docs-inline-code">model</code>) na requisição.
-        Restrições:{" "}
-        <code className="docs-inline-code">veo3-lite</code> só suporta
-        720p/1080p (sem 4K).{" "}
-        <code className="docs-inline-code">1080p</code> e{" "}
-        <code className="docs-inline-code">4k</code> exigem{" "}
+        <strong className="text-[var(--color-text-secondary)]">Note:</strong>{" "}
+        the field is <code className="docs-inline-code">modelId</code> (not{" "}
+        <code className="docs-inline-code">model</code>) in the request.
+        Constraints:{" "}
+        <code className="docs-inline-code">veo3-lite</code> only supports
+        720p/1080p (no 4K).{" "}
+        <code className="docs-inline-code">1080p</code> and{" "}
+        <code className="docs-inline-code">4k</code> require{" "}
         <code className="docs-inline-code">durationSeconds: 8</code>.
       </p>
 
       <h3 className="mt-10 mb-3 text-[1.0625rem] font-semibold tracking-tight">
-        Resposta
+        Response
       </h3>
       <p className="text-[13px] text-secondary">
-        <code className="docs-inline-code">HTTP 202 Accepted</code> — créditos
-        já debitados, geração enfileirada. Note que a resposta usa{" "}
-        <code className="docs-inline-code">model</code> (sem o "Id"):
+        <code className="docs-inline-code">HTTP 202 Accepted</code> — credits
+        already debited, generation queued. Note the response uses{" "}
+        <code className="docs-inline-code">model</code> (without &quot;Id&quot;):
       </p>
       <CodeBlock language="json">
         {`{
@@ -552,29 +567,29 @@ curl ${BASE_URL}/api/v1/status/tsk_01HYAB… \\
         <code className="docs-inline-code">
           kind: &quot;image_to_video&quot;
         </code>{" "}
-        para animar a partir de um quadro inicial. Envie a imagem em base64 com{" "}
+        to animate from a starting frame. Send the image in base64 via{" "}
         <code className="docs-inline-code">
           firstFrame
         </code>
-        . O campo opcional{" "}
+        . The optional{" "}
         <code className="docs-inline-code">
           lastFrame
         </code>{" "}
-        (suportado apenas em{" "}
+        field (supported only on{" "}
         <code className="docs-inline-code">
           veo3-quality
         </code>
-        ) define o quadro final, fazendo a interpolação entre os dois.
+        ) defines the final frame, interpolating between the two.
       </p>
 
       <h3 className="mt-10 mb-3 text-[1.0625rem] font-semibold tracking-tight">
-        Formato do objeto de imagem
+        Image object format
       </h3>
       <p className="text-secondary">
-        Toda imagem (em <code className="docs-inline-code">firstFrame</code>,{" "}
-        <code className="docs-inline-code">lastFrame</code> ou{" "}
-        <code className="docs-inline-code">referenceImages[]</code>) segue o
-        mesmo schema:
+        Every image (in <code className="docs-inline-code">firstFrame</code>,{" "}
+        <code className="docs-inline-code">lastFrame</code> or{" "}
+        <code className="docs-inline-code">referenceImages[]</code>) follows the
+        same schema:
       </p>
       <CodeBlock language="json">
         {`{
@@ -585,12 +600,12 @@ curl ${BASE_URL}/api/v1/status/tsk_01HYAB… \\
       <ul className="mt-3 list-disc space-y-1.5 pl-6 text-[13.5px] text-secondary">
         <li>
           <code className="docs-inline-code">bytesBase64Encoded</code>{" "}
-          (obrigatório): string base64 sem o prefixo{" "}
-          <code className="docs-inline-code">data:</code>. Limite ~10MB
-          decodificado.
+          (required): base64 string without the{" "}
+          <code className="docs-inline-code">data:</code> prefix. Limit ~10MB
+          decoded.
         </li>
         <li>
-          <code className="docs-inline-code">mimeType</code> (opcional, padrão{" "}
+          <code className="docs-inline-code">mimeType</code> (optional, default{" "}
           <code className="docs-inline-code">image/jpeg</code>):{" "}
           <code className="docs-inline-code">image/png</code>,{" "}
           <code className="docs-inline-code">image/jpeg</code> ou{" "}
@@ -601,20 +616,20 @@ curl ${BASE_URL}/api/v1/status/tsk_01HYAB… \\
       <CodeBlock language="bash">{CURL_IMAGE_TO_VIDEO}</CodeBlock>
       <CodeBlock language="typescript">{NODE_IMAGE_TO_VIDEO}</CodeBlock>
 
-      <SectionAnchor id="video-com-referencias">
-        Vídeo com referências
+      <SectionAnchor id="video-with-references">
+        Video with references
       </SectionAnchor>
       <p className="text-secondary">
         Use{" "}
         <code className="docs-inline-code">
           kind: &quot;references&quot;
         </code>{" "}
-        para guiar o estilo, personagem ou produto através de 1 a 3 imagens de
-        referência. Cada item do array{" "}
+        to guide the style, character or product via 1 to 3 reference images.
+        Each item in the{" "}
         <code className="docs-inline-code">
           referenceImages
         </code>{" "}
-        aceita{" "}
+        array accepts{" "}
         <code className="docs-inline-code">
           base64
         </code>
@@ -622,11 +637,11 @@ curl ${BASE_URL}/api/v1/status/tsk_01HYAB… \\
         <code className="docs-inline-code">
           mimeType
         </code>{" "}
-        e{" "}
+        and{" "}
         <code className="docs-inline-code">
           referenceType
         </code>{" "}
-        (atualmente apenas{" "}
+        (currently only{" "}
         <code className="docs-inline-code">
           asset
         </code>
@@ -635,78 +650,78 @@ curl ${BASE_URL}/api/v1/status/tsk_01HYAB… \\
 
       <CodeBlock language="bash">{CURL_REFERENCES}</CodeBlock>
 
-      <SectionAnchor id="polling-de-status">Polling de status</SectionAnchor>
+      <SectionAnchor id="status-polling">Status polling</SectionAnchor>
       <p className="text-secondary">
         <code className="docs-inline-code">
           GET /api/v1/status/&#123;taskId&#125;
         </code>{" "}
-        retorna o estado atual da tarefa. Os possíveis valores de{" "}
+        returns the current state of the task. Possible values of{" "}
         <code className="docs-inline-code">
           status
         </code>{" "}
-        são:
+        are:
       </p>
       <ul className="mt-3 list-disc space-y-1 pl-6 text-secondary">
         <li>
           <code className="docs-inline-code">
             pending
           </code>{" "}
-          — fila inicial, ainda não enviado ao provider.
+          — initial queue, not yet sent to the provider.
         </li>
         <li>
           <code className="docs-inline-code">
             processing
           </code>{" "}
-          — Veo está gerando.
+          — Veo is generating.
         </li>
         <li>
           <code className="docs-inline-code">
             succeeded
           </code>{" "}
-          — pronto. Use{" "}
+          — ready. Use{" "}
           <code className="docs-inline-code">
             videoUrl
           </code>{" "}
-          para baixar.
+          to download.
         </li>
         <li>
           <code className="docs-inline-code">
             failed
           </code>{" "}
-          — falha definitiva sem reembolso (entrada inválida, content policy,
+          — definitive failure with no refund (invalid input, content policy,
           etc).
         </li>
         <li>
           <code className="docs-inline-code">
             refunded
           </code>{" "}
-          — falha de upstream; os créditos já voltaram para sua conta.
+          — upstream failure; credits have already been returned to your account.
         </li>
       </ul>
 
       <p className="mt-4 text-secondary">
-        <strong className="text-[var(--color-text)]">Recomendado:</strong>{" "}
-        intervalo de 5 a 10 segundos entre chamadas. Não consulte com mais
-        frequência: vai apenas consumir rate limit sem acelerar a geração.
-        Tempos típicos:{" "}
+        <strong className="text-[var(--color-text)]">Recommended:</strong>{" "}
+        5 to 10 second interval between calls. Don&apos;t poll more frequently:
+        it only burns rate limit without speeding up generation.
+        Typical times:{" "}
         <code className="docs-inline-code">
           lite/fast
         </code>{" "}
-        em 1–3 minutos,{" "}
+        in 1–3 minutes,{" "}
         <code className="docs-inline-code">
           quality
         </code>{" "}
-        em 2–5 minutos.
+        in 2–5 minutes.
       </p>
 
-      <h3 className="mt-10 mb-3 text-[1.0625rem] font-semibold tracking-tight">Resposta</h3>
+      <h3 className="mt-10 mb-3 text-[1.0625rem] font-semibold tracking-tight">Response</h3>
       <CodeBlock language="json">
         {`{
   "taskId": "tsk_01HYABCDEF…",
   "status": "succeeded",
   "model": "veo3-fast",
   "creditsCost": 30,
-  "videoUrl": "https://cdn.cheapervideo.com/v/tsk_01HYABCDEF.mp4",
+  "videoUrl": "https://cheaperveo.com/videos/tsk_01HYABCDEF.mp4",
   "createdAt": "2026-05-08T12:34:56.000Z",
   "completedAt": "2026-05-08T12:36:11.000Z"
 }`}
@@ -718,21 +733,21 @@ curl ${BASE_URL}/api/v1/status/tsk_01HYAB… \\
       <h3 className="mt-10 mb-3 text-[1.0625rem] font-semibold tracking-tight">Python</h3>
       <CodeBlock language="python">{PYTHON_POLLING}</CodeBlock>
 
-      <SectionAnchor id="conta">Conta &amp; saldo</SectionAnchor>
+      <SectionAnchor id="account">Account &amp; balance</SectionAnchor>
       <p className="text-secondary">
-        <code className="docs-inline-code">GET /api/v1/account</code> retorna
-        o saldo atual em créditos e as últimas 10 gerações da conta dona da
-        API key. Útil pra checar saldo antes de chamar{" "}
-        <code className="docs-inline-code">/generate</code> e evitar{" "}
+        <code className="docs-inline-code">GET /api/v1/account</code> returns
+        the current credit balance and the last 10 generations for the account
+        owning the API key. Useful for checking balance before calling{" "}
+        <code className="docs-inline-code">/generate</code> and avoiding{" "}
         <code className="docs-inline-code">402 INSUFFICIENT_CREDITS</code>.
       </p>
 
       <h3 className="mt-10 mb-3 text-[1.0625rem] font-semibold tracking-tight">
-        Resposta
+        Response
       </h3>
       <CodeBlock language="json">
         {`{
-  "email": "voce@empresa.com",
+  "email": "you@company.com",
   "balance": 713,
   "recentGenerations": [
     {
@@ -743,7 +758,7 @@ curl ${BASE_URL}/api/v1/status/tsk_01HYAB… \\
       "creditsCost": 30,
       "durationSeconds": 8,
       "resolution": "1080p",
-      "videoUrl": "https://cdn.cheapervideo.com/v/tsk_01HYABCDEF.mp4",
+      "videoUrl": "https://cheaperveo.com/videos/tsk_01HYABCDEF.mp4",
       "createdAt": "2026-05-08T12:34:56.000Z",
       "completedAt": "2026-05-08T12:36:11.000Z"
     }
@@ -760,14 +775,14 @@ curl ${BASE_URL}/api/v1/status/tsk_01HYAB… \\
       </CodeBlock>
 
       <p className="mt-3 text-[13px] text-muted">
-        <code className="docs-inline-code">balance</code> está em créditos —
-        divida por 100 pra ter o equivalente em USD (1 crédito = US$ 0,01).
+        <code className="docs-inline-code">balance</code> is in credits —
+        divide by 100 to get the USD equivalent (1 credit = US$0.01).
       </p>
 
-      <SectionAnchor id="modelos-e-precos">Modelos e preços</SectionAnchor>
+      <SectionAnchor id="models-and-pricing">Models and pricing</SectionAnchor>
       <p className="text-secondary">
-        Tabela de custo para vídeos de 8 segundos com áudio. Para 6s aplique 75%
-        e para 4s, 50% (sempre arredondado para cima). 1 crédito = US$ 0,01.
+        Cost table for 8-second videos with audio. For 6s apply 75%
+        and for 4s, 50% (always rounded up). 1 credit = US$0.01.
       </p>
 
       <div
@@ -785,8 +800,8 @@ curl ${BASE_URL}/api/v1/status/tsk_01HYAB… \\
                   letterSpacing: "0.08em",
                 }}
               >
-                <th className="px-5 py-3.5 font-medium">Modelo</th>
-                <th className="px-5 py-3.5 font-medium">Velocidade</th>
+                <th className="px-5 py-3.5 font-medium">Model</th>
+                <th className="px-5 py-3.5 font-medium">Speed</th>
                 {RESOLUTIONS.map((r) => (
                   <th key={r} className="px-5 py-3.5 font-medium">
                     {r}
@@ -836,26 +851,26 @@ curl ${BASE_URL}/api/v1/status/tsk_01HYAB… \\
       </div>
 
       <p className="mt-3 text-xs text-muted">
-        Valores acima incluem áudio. Sem áudio o custo é menor; consulte a
-        página de preços do site para o detalhamento completo. O custo exato é
-        sempre informado no campo{" "}
+        Values above include audio. Without audio the cost is lower; check the
+        pricing page for the full breakdown. The exact cost is
+        always reported in the{" "}
         <code className="docs-inline-code">
           creditsCost
         </code>{" "}
-        da resposta de{" "}
+        field of the{" "}
         <code className="docs-inline-code">
           /generate
-        </code>
-        .
+        </code>{" "}
+        response.
       </p>
 
-      <SectionAnchor id="erros">Erros</SectionAnchor>
+      <SectionAnchor id="errors">Errors</SectionAnchor>
       <p className="text-secondary">
-        Erros usam HTTP status codes padrão e um body JSON com{" "}
+        Errors use standard HTTP status codes and a JSON body with{" "}
         <code className="docs-inline-code">
           error.code
         </code>{" "}
-        e{" "}
+        and{" "}
         <code className="docs-inline-code">
           error.message
         </code>
@@ -866,7 +881,7 @@ curl ${BASE_URL}/api/v1/status/tsk_01HYAB… \\
         {`{
   "error": {
     "code": "INSUFFICIENT_CREDITS",
-    "message": "Saldo insuficiente: 12 créditos disponíveis, 30 necessários."
+    "message": "Insufficient balance: 12 credits available, 30 required."
   }
 }`}
       </CodeBlock>
@@ -885,17 +900,17 @@ curl ${BASE_URL}/api/v1/status/tsk_01HYAB… \\
               >
                 <th className="px-5 py-3.5 font-medium">Status</th>
                 <th className="px-5 py-3.5 font-medium">Code</th>
-                <th className="px-5 py-3.5 font-medium">Quando ocorre</th>
+                <th className="px-5 py-3.5 font-medium">When it happens</th>
               </tr>
             </thead>
             <tbody className="text-secondary">
               {[
-                ["401", "UNAUTHORIZED", "Chave ausente, inválida ou revogada."],
-                ["400", "VALIDATION_ERROR", "Body fora do schema (campo faltando, valor inválido, imagem muito grande)."],
-                ["402", "INSUFFICIENT_CREDITS", "Saldo abaixo do custo da geração. Recarregue no painel."],
-                ["429", "RATE_LIMITED", "Limite de requisições excedido para esta API key. Header Retry-After indica quando tentar de novo."],
-                ["502", "UPSTREAM_ERROR", "Falha do provider Veo. Reembolso automático em créditos."],
-                ["500", "INTERNAL_ERROR", "Erro inesperado do nosso lado. Tente novamente."],
+                ["401", "UNAUTHORIZED", "Key missing, invalid or revoked."],
+                ["400", "VALIDATION_ERROR", "Body fails schema (missing field, invalid value, image too large)."],
+                ["402", "INSUFFICIENT_CREDITS", "Balance below generation cost. Top up in the dashboard."],
+                ["429", "RATE_LIMITED", "Request limit exceeded for this API key. Retry-After header indicates when to retry."],
+                ["502", "UPSTREAM_ERROR", "Veo provider failure. Automatic credit refund."],
+                ["500", "INTERNAL_ERROR", "Unexpected error on our end. Try again."],
               ].map(([status, code, when], i, arr) => (
                 <tr
                   key={code}
@@ -929,7 +944,7 @@ curl ${BASE_URL}/api/v1/status/tsk_01HYAB… \\
         </div>
       </div>
 
-      <SectionAnchor id="boas-praticas">Boas práticas</SectionAnchor>
+      <SectionAnchor id="best-practices">Best practices</SectionAnchor>
       <ul className="list-disc space-y-3 pl-6 text-secondary">
         <li>
           <strong className="text-[var(--color-text)]">
@@ -939,67 +954,67 @@ curl ${BASE_URL}/api/v1/status/tsk_01HYAB… \\
             </code>
             :
           </strong>{" "}
-          descreva o que você não quer (&quot;sem texto, sem marca d&apos;água,
-          sem distorções&quot;) para reduzir descartes.
+          describe what you don&apos;t want (&quot;no text, no watermark,
+          no distortions&quot;) to reduce rejects.
         </li>
         <li>
           <strong className="text-[var(--color-text)]">
-            Retry com backoff exponencial:
+            Retry with exponential backoff:
           </strong>{" "}
-          se receber{" "}
+          if you get{" "}
           <code className="docs-inline-code">
             500
           </code>{" "}
-          ou{" "}
+          or{" "}
           <code className="docs-inline-code">
             502
           </code>
-          , aguarde 1s, 2s, 4s e desista após 3 tentativas. Erros{" "}
+          , wait 1s, 2s, 4s and give up after 3 tries.{" "}
           <code className="docs-inline-code">
             4xx
           </code>{" "}
-          não devem ser repetidos sem corrigir o body.
+          errors should not be retried without fixing the body.
         </li>
         <li>
-          <strong className="text-[var(--color-text)]">Idempotência:</strong>{" "}
-          guarde o{" "}
+          <strong className="text-[var(--color-text)]">Idempotency:</strong>{" "}
+          store the{" "}
           <code className="docs-inline-code">
             taskId
           </code>{" "}
-          no seu banco antes de prosseguir. Se a sua função morrer no meio do
-          polling, recupere o taskId e continue de onde parou — não chame{" "}
+          in your database before proceeding. If your function dies mid-poll,
+          recover the taskId and resume — don&apos;t call{" "}
           <code className="docs-inline-code">
             /generate
           </code>{" "}
-          de novo.
+          again.
         </li>
         <li>
-          <strong className="text-[var(--color-text)]">Polling no backend:</strong>{" "}
-          nunca faça polling do navegador com a chave embutida. Faça do seu
-          servidor ou via webhook próprio que notifica seu front quando o vídeo
-          está pronto.
+          <strong className="text-[var(--color-text)]">Backend polling:</strong>{" "}
+          never poll from the browser with the key embedded. Do it from your
+          server or via your own webhook that notifies the front-end when the
+          video is ready.
         </li>
         <li>
           <strong className="text-[var(--color-text)]">
-            Cache de{" "}
+            Cache the{" "}
             <code className="docs-inline-code">
               videoUrl
             </code>
             :
           </strong>{" "}
-          o link de saída tem validade longa, mas baixe e reupload para o seu
-          storage se for servir publicamente.
+          the output link is long-lived, but download and re-upload to your
+          storage if you&apos;ll serve it publicly.
         </li>
       </ul>
 
-      <SectionAnchor id="limites">Limites</SectionAnchor>
+      <SectionAnchor id="limits">Limits</SectionAnchor>
 
       <h3 className="mt-10 mb-3 text-[1.0625rem] font-semibold tracking-tight">
         Rate limits
       </h3>
       <p className="text-secondary">
-        Cada API key tem dois buckets independentes, ambos resetando a cada
-        hora cheia (UTC):
+        Each API key has two independent buckets, both resetting every
+        full hour (UTC):
       </p>
 
       <div className="card mt-5 overflow-hidden" style={{ padding: 0 }}>
@@ -1016,7 +1031,7 @@ curl ${BASE_URL}/api/v1/status/tsk_01HYAB… \\
               >
                 <th className="px-5 py-3.5 font-medium">Endpoint</th>
                 <th className="px-5 py-3.5 font-medium">Bucket</th>
-                <th className="px-5 py-3.5 text-right font-medium">Limite</th>
+                <th className="px-5 py-3.5 text-right font-medium">Limit</th>
               </tr>
             </thead>
             <tbody className="text-secondary">
@@ -1034,7 +1049,7 @@ curl ${BASE_URL}/api/v1/status/tsk_01HYAB… \\
                     color: "var(--color-accent)",
                   }}
                 >
-                  100 / hora
+                  100 / hour
                 </td>
               </tr>
               <tr>
@@ -1053,7 +1068,7 @@ curl ${BASE_URL}/api/v1/status/tsk_01HYAB… \\
                     color: "var(--color-accent)",
                   }}
                 >
-                  1.000 / hora
+                  1,000 / hour
                 </td>
               </tr>
             </tbody>
@@ -1062,8 +1077,8 @@ curl ${BASE_URL}/api/v1/status/tsk_01HYAB… \\
       </div>
 
       <p className="mt-5 text-secondary">
-        Toda resposta autenticada — mesmo em caso de erro — carrega headers
-        com o estado atual:
+        Every authenticated response — even errors — carries headers
+        with the current state:
       </p>
 
       <CodeBlock language="http">
@@ -1073,9 +1088,9 @@ X-RateLimit-Reset: 1762531200`}
       </CodeBlock>
 
       <p className="text-secondary">
-        Quando o limite é atingido, a API retorna{" "}
-        <code className="docs-inline-code">429 RATE_LIMITED</code> com o header{" "}
-        <code className="docs-inline-code">Retry-After</code> em segundos:
+        When the limit is hit, the API returns{" "}
+        <code className="docs-inline-code">429 RATE_LIMITED</code> with the{" "}
+        <code className="docs-inline-code">Retry-After</code> header in seconds:
       </p>
 
       <CodeBlock language="json">
@@ -1088,29 +1103,29 @@ X-RateLimit-Reset: 1762531200`}
       </CodeBlock>
 
       <p className="mt-3 text-secondary">
-        Os limites são <strong className="text-[var(--color-text)]">por API
-        key</strong>, não por conta — você pode emitir múltiplas chaves para
-        paralelizar workloads. Janelas são alinhadas à hora UTC (ex.: 14:00
-        →&nbsp;15:00); não é uma janela deslizante.
+        Limits are <strong className="text-[var(--color-text)]">per API
+        key</strong>, not per account — you can issue multiple keys to
+        parallelize workloads. Windows are aligned to the UTC hour (e.g. 14:00
+        →&nbsp;15:00); it&apos;s not a sliding window.
       </p>
 
       <h3 className="mt-12 mb-3 text-[1.0625rem] font-semibold tracking-tight">
-        Outros limites
+        Other limits
       </h3>
       <ul className="list-disc space-y-3 pl-6 text-secondary">
         <li>
           <strong className="text-[var(--color-text)]">
-            Tamanho de imagem:
+            Image size:
           </strong>{" "}
-          até ~10 MB por imagem em base64. PNG e JPEG são aceitos.
+          up to ~10 MB per base64 image. PNG and JPEG accepted.
         </li>
         <li>
-          <strong className="text-[var(--color-text)]">Duração:</strong> 4, 6
-          ou 8 segundos. Resoluções a partir de{" "}
+          <strong className="text-[var(--color-text)]">Duration:</strong> 4, 6
+          or 8 seconds. Resolutions from{" "}
           <code className="docs-inline-code">
             1080p
           </code>{" "}
-          exigem{" "}
+          and up require{" "}
           <code className="docs-inline-code">
             durationSeconds: 8
           </code>
@@ -1121,19 +1136,19 @@ X-RateLimit-Reset: 1762531200`}
           <code className="docs-inline-code">
             16:9
           </code>{" "}
-          (paisagem) e{" "}
+          (landscape) and{" "}
           <code className="docs-inline-code">
             9:16
           </code>{" "}
-          (retrato).
+          (portrait).
         </li>
         <li>
-          <strong className="text-[var(--color-text)]">Referências:</strong>{" "}
-          de 1 a 3 imagens por geração no modo{" "}
+          <strong className="text-[var(--color-text)]">References:</strong>{" "}
+          1 to 3 images per generation in{" "}
           <code className="docs-inline-code">
             references
-          </code>
-          .
+          </code>{" "}
+          mode.
         </li>
         <li>
           <strong className="text-[var(--color-text)]">
@@ -1142,19 +1157,19 @@ X-RateLimit-Reset: 1762531200`}
             </code>
             :
           </strong>{" "}
-          suportado apenas em{" "}
+          supported only on{" "}
           <code className="docs-inline-code">
             veo3-quality
           </code>
           .
         </li>
         <li>
-          <strong className="text-[var(--color-text)]">Resolução 4K:</strong>{" "}
-          disponível em{" "}
+          <strong className="text-[var(--color-text)]">4K resolution:</strong>{" "}
+          available on{" "}
           <code className="docs-inline-code">
             veo3-fast
           </code>{" "}
-          e{" "}
+          and{" "}
           <code className="docs-inline-code">
             veo3-quality
           </code>
@@ -1162,7 +1177,7 @@ X-RateLimit-Reset: 1762531200`}
           <code className="docs-inline-code">
             veo3-lite
           </code>{" "}
-          vai até 1080p.
+          goes up to 1080p.
         </li>
       </ul>
 
@@ -1176,18 +1191,18 @@ X-RateLimit-Reset: 1762531200`}
         }}
       >
         <p className="text-xl font-semibold tracking-tight">
-          Pronto para testar?
+          Ready to test?
         </p>
         <p className="mt-2 text-[14px] text-secondary">
-          Crie sua conta, gere uma chave e dispare o primeiro vídeo em menos de
-          dois minutos.
+          Create your account, generate a key and fire the first video in under
+          two minutes.
         </p>
         <div className="mt-6 flex justify-center gap-3">
           <a href="/login" className="btn-primary">
-            Criar conta
+            Create account
           </a>
           <a href="/dashboard/keys" className="btn-ghost">
-            Gerar API key
+            Generate API key
           </a>
         </div>
       </div>

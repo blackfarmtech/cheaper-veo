@@ -15,7 +15,7 @@ const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
 function formatRelative(date: Date): string {
   const diff = Date.now() - date.getTime();
-  if (diff < 60_000) return "agora";
+  if (diff < 60_000) return "now";
   if (diff < 3_600_000) return `${Math.floor(diff / 60_000)} min`;
   if (diff < MS_PER_DAY) return `${Math.floor(diff / 3_600_000)} h`;
   return `${Math.floor(diff / MS_PER_DAY)} d`;
@@ -107,10 +107,10 @@ export default async function AdminOverviewPage() {
           className="text-3xl font-semibold tracking-tight md:text-[2.25rem]"
           style={{ letterSpacing: "-0.024em" }}
         >
-          Visão geral
+          Overview
         </h1>
         <p className="text-[15px] text-secondary">
-          Métricas em tempo real da plataforma. Atualiza a cada refresh.
+          Real-time platform metrics. Updates on each refresh.
         </p>
       </header>
 
@@ -118,28 +118,28 @@ export default async function AdminOverviewPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Kpi
           icon={UsersIcon}
-          label="Total de usuários"
+          label="Total users"
           value={formatCredits(totalUsers)}
-          sub={`+${newUsers30d} nos últimos 30d`}
+          sub={`+${newUsers30d} in the last 30d`}
           accent
         />
         <Kpi
           icon={DollarSign}
-          label="Receita (30d)"
+          label="Revenue (30d)"
           value={formatMoney(revenue30d, revenue30dCurrency)}
-          sub={`Total all-time: ${formatMoney(revenueAll, revenueAllCurrency)}`}
+          sub={`All-time total: ${formatMoney(revenueAll, revenueAllCurrency)}`}
         />
         <Kpi
           icon={Activity}
-          label="Gerações (30d)"
+          label="Generations (30d)"
           value={formatCredits(gens30d)}
-          sub={`${activeUsers30d} usuários ativos`}
+          sub={`${activeUsers30d} active users`}
         />
         <Kpi
           icon={Coins}
-          label="Créditos em circulação"
+          label="Credits in circulation"
           value={formatCredits(creditsTotal)}
-          sub={`= ${formatMoney(creditsTotal * 5, "brl")} a usar`}
+          sub={`= ${formatMoney(creditsTotal * 5, "brl")} to be used`}
         />
       </div>
 
@@ -159,19 +159,19 @@ export default async function AdminOverviewPage() {
           />
           <div className="space-y-1">
             <h2 className="text-[15px] font-semibold tracking-tight">
-              Atenção
+              Attention
             </h2>
             {gensFailed24h > 0 && (
               <p className="text-[13.5px] text-secondary">
                 <strong className="text-[var(--color-text)]">
                   {gensFailed24h}
                 </strong>{" "}
-                gerações falharam nas últimas 24h.{" "}
+                generations failed in the last 24h.{" "}
                 <Link
                   href="/admin/generations?status=failed"
                   className="text-[var(--color-accent)] underline-offset-4 hover:underline"
                 >
-                  Ver
+                  View
                 </Link>
               </p>
             )}
@@ -180,12 +180,12 @@ export default async function AdminOverviewPage() {
                 <strong className="text-[var(--color-text)]">
                   {autoRechargeFailed}
                 </strong>{" "}
-                contas com auto-recarga em estado de erro.{" "}
+                accounts with auto-recharge in error state.{" "}
                 <Link
                   href="/admin/users?filter=auto_recharge_failed"
                   className="text-[var(--color-accent)] underline-offset-4 hover:underline"
                 >
-                  Ver
+                  View
                 </Link>
               </p>
             )}
@@ -200,21 +200,21 @@ export default async function AdminOverviewPage() {
           <div className="mb-5 flex items-center justify-between">
             <div>
               <h2 className="text-[17px] font-semibold tracking-tight">
-                Novos usuários
+                New users
               </h2>
               <p className="mt-0.5 text-[13px] text-secondary">
-                Últimos 5 signups.
+                Last 5 signups.
               </p>
             </div>
             <Link
               href="/admin/users"
               className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs text-secondary transition-all hover:bg-white/[0.05] hover:text-[var(--color-text)]"
             >
-              Ver todos <ArrowUpRight className="h-3.5 w-3.5" />
+              View all <ArrowUpRight className="h-3.5 w-3.5" />
             </Link>
           </div>
           {recentSignups.length === 0 ? (
-            <p className="text-[13px] text-muted">Nenhum signup ainda.</p>
+            <p className="text-[13px] text-muted">No signups yet.</p>
           ) : (
             <ul className="-mx-3">
               {recentSignups.map((u) => (
@@ -230,7 +230,7 @@ export default async function AdminOverviewPage() {
                       {u.email}
                     </div>
                     <div className="text-[11px] text-muted">
-                      Saldo: {formatCredits(u.creditsBalance)} cr
+                      Balance: {formatCredits(u.creditsBalance)} cr
                     </div>
                   </Link>
                   <span className="shrink-0 text-[11px] text-muted">
@@ -247,15 +247,15 @@ export default async function AdminOverviewPage() {
           <div className="mb-5 flex items-center justify-between">
             <div>
               <h2 className="text-[17px] font-semibold tracking-tight">
-                Recargas recentes
+                Recent top-ups
               </h2>
               <p className="mt-0.5 text-[13px] text-secondary">
-                Últimos 5 pagamentos confirmados.
+                Last 5 confirmed payments.
               </p>
             </div>
           </div>
           {recentTopups.length === 0 ? (
-            <p className="text-[13px] text-muted">Nenhuma recarga ainda.</p>
+            <p className="text-[13px] text-muted">No top-ups yet.</p>
           ) : (
             <ul className="-mx-3">
               {recentTopups.map((tx) => (

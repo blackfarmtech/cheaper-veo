@@ -19,13 +19,13 @@ function truncate(text: string, max: number): string {
 function formatRelative(date: Date): string {
   const diff = Date.now() - date.getTime();
   const sec = Math.round(diff / 1000);
-  if (sec < 60) return `há ${sec}s`;
+  if (sec < 60) return `${sec}s ago`;
   const min = Math.round(sec / 60);
-  if (min < 60) return `há ${min} min`;
+  if (min < 60) return `${min} min ago`;
   const hours = Math.round(min / 60);
-  if (hours < 24) return `há ${hours} h`;
+  if (hours < 24) return `${hours} h ago`;
   const days = Math.round(hours / 24);
-  return `há ${days} d`;
+  return `${days} d ago`;
 }
 
 export async function RecentRunsAside({
@@ -59,7 +59,7 @@ export async function RecentRunsAside({
             aria-hidden
           />
           <h3 className="text-[15px] font-semibold tracking-tight">
-            Últimas gerações
+            Recent generations
           </h3>
         </div>
         {refreshHref ? (
@@ -67,7 +67,7 @@ export async function RecentRunsAside({
             href={refreshHref}
             prefetch={false}
             className="inline-flex h-7 w-7 items-center justify-center rounded-full text-secondary transition-all hover:bg-white/[0.06] hover:text-[var(--color-text)]"
-            aria-label="Atualizar"
+            aria-label="Refresh"
           >
             <RefreshCw className="h-3.5 w-3.5" aria-hidden />
           </Link>
@@ -76,7 +76,7 @@ export async function RecentRunsAside({
 
       {runs.length === 0 ? (
         <p className="text-[13px] text-muted">
-          Nenhuma geração ainda. Envie seu primeiro prompt ao lado.
+          No generations yet. Send your first prompt to the side.
         </p>
       ) : (
         <ul className="space-y-3">

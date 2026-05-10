@@ -1,32 +1,34 @@
 const steps = [
   {
     number: "01",
-    title: "Crie sua API key",
-    body: "Faça signup, abra o dashboard e gere uma chave veo_•••. As chaves são prefixadas e podem ser revogadas a qualquer momento.",
-    code: `# Sua chave fica visível uma única vez
+    title: "Create your API key",
+    body: "Sign up, open the dashboard and generate a veo_••• key. Keys are prefixed and can be revoked at any time.",
+    code: `# Your key is shown only once
 veo_live_8f3c2a9d4b6e1f0a7c5b9d2e8f4a3c6b`,
   },
   {
     number: "02",
-    title: "Chame /api/v1/generate",
-    body: "Envie o prompt, modelo, resolução e duração. A resposta vem com um taskId imediato — a geração roda assíncrona.",
+    title: "Call /api/v1/generate",
+    body: "Send the prompt, model, resolution and duration. The response returns an immediate taskId — generation runs asynchronously.",
     code: `POST /api/v1/generate
 Authorization: Bearer veo_live_••••
 
-{ "model": "veo3-fast",
+{ "kind": "text_to_video",
+  "modelId": "veo3-fast",
   "prompt": "...",
   "resolution": "1080p",
-  "audio": true,
-  "duration": 8 }`,
+  "aspectRatio": "16:9",
+  "durationSeconds": 8,
+  "audio": true }`,
   },
   {
     number: "03",
-    title: "Polling em /api/v1/status/{taskId}",
-    body: "Consulte o status até receber done com a URL do MP4. Ou registre um webhook para evitar polling.",
+    title: "Poll /api/v1/status/{taskId}",
+    body: "Check the status every 5s until you get succeeded with the MP4 URL.",
     code: `GET /api/v1/status/tsk_a8f2c1
-{ "status": "done",
-  "videoUrl": "https://cdn.geraew.com/...mp4",
-  "creditsCharged": 30 }`,
+{ "status": "succeeded",
+  "videoUrl": "https://cheaperveo.com/videos/...mp4",
+  "creditsCost": 30 }`,
   },
 ];
 
@@ -42,10 +44,10 @@ export function HowItWorks() {
       <div className="mx-auto max-w-6xl px-6">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="headline-section text-balance">
-            Da chave ao MP4 em três chamadas
+            From key to MP4 in three calls
           </h2>
           <p className="body-large mt-5 text-secondary">
-            Sem SDK obrigatório. Funciona em qualquer linguagem que faça HTTP.
+            No SDK required. Works in any language that can do HTTP.
           </p>
         </div>
 

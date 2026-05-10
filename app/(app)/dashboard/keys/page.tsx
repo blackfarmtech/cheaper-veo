@@ -9,13 +9,13 @@ import { EmptyState } from "@/components/dashboard/EmptyState";
 
 export const dynamic = "force-dynamic";
 
-const dateFmt = new Intl.DateTimeFormat("pt-BR", {
+const dateFmt = new Intl.DateTimeFormat("en-US", {
   day: "2-digit",
   month: "2-digit",
   year: "numeric",
 });
 
-const dateTimeFmt = new Intl.DateTimeFormat("pt-BR", {
+const dateTimeFmt = new Intl.DateTimeFormat("en-US", {
   day: "2-digit",
   month: "2-digit",
   year: "numeric",
@@ -45,8 +45,8 @@ export default async function ApiKeysPage() {
           API Keys
         </h1>
         <p className="text-[15px] text-secondary">
-          Crie chaves para autenticar requisições no endpoint{" "}
-          <code style={codeStyle}>/api/v1</code>. Use o cabeçalho{" "}
+          Create keys to authenticate requests to the{" "}
+          <code style={codeStyle}>/api/v1</code> endpoint. Use the header{" "}
           <code style={codeStyle}>Authorization: Bearer veo_…</code>.
         </p>
       </header>
@@ -63,12 +63,12 @@ export default async function ApiKeysPage() {
         >
           <div>
             <h2 className="text-[17px] font-semibold tracking-tight">
-              Suas chaves
+              Your keys
             </h2>
             <p className="mt-0.5 text-[13px] text-secondary">
               {keys.length === 0
-                ? "Nenhuma chave criada ainda."
-                : `${keys.length} ${keys.length === 1 ? "chave" : "chaves"} no total.`}
+                ? "No keys created yet."
+                : `${keys.length} ${keys.length === 1 ? "key" : "keys"} total.`}
             </p>
           </div>
         </div>
@@ -77,8 +77,8 @@ export default async function ApiKeysPage() {
           <div className="p-7">
             <EmptyState
               icon={KeyRound}
-              title="Nenhuma chave criada ainda"
-              description="Gere sua primeira chave acima para começar a usar a API."
+              title="No keys created yet"
+              description="Generate your first key above to start using the API."
             />
           </div>
         ) : (
@@ -93,14 +93,14 @@ export default async function ApiKeysPage() {
                     letterSpacing: "0.08em",
                   }}
                 >
-                  <th className="px-7 py-3.5 font-medium">Nome</th>
-                  <th className="px-7 py-3.5 font-medium">Prefixo</th>
+                  <th className="px-7 py-3.5 font-medium">Name</th>
+                  <th className="px-7 py-3.5 font-medium">Prefix</th>
                   <th className="px-7 py-3.5 font-medium">
-                    Última utilização
+                    Last used
                   </th>
-                  <th className="px-7 py-3.5 font-medium">Criada em</th>
+                  <th className="px-7 py-3.5 font-medium">Created on</th>
                   <th className="px-7 py-3.5 font-medium">Status</th>
-                  <th className="px-7 py-3.5 text-right font-medium">Ação</th>
+                  <th className="px-7 py-3.5 text-right font-medium">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -129,7 +129,7 @@ export default async function ApiKeysPage() {
                             {dateTimeFmt.format(key.lastUsedAt)}
                           </span>
                         ) : (
-                          <span className="text-xs text-muted">Nunca</span>
+                          <span className="text-xs text-muted">Never</span>
                         )}
                       </td>
                       <td className="px-7 py-4 text-xs text-secondary">
@@ -150,7 +150,7 @@ export default async function ApiKeysPage() {
                               className="h-1.5 w-1.5 rounded-full"
                               style={{ background: "var(--color-danger)" }}
                             />
-                            Revogada
+                            Revoked
                           </span>
                         ) : (
                           <span
@@ -170,7 +170,7 @@ export default async function ApiKeysPage() {
                                   "0 0 8px rgba(162, 221, 0, 0.6)",
                               }}
                             />
-                            Ativa
+                            Active
                           </span>
                         )}
                       </td>

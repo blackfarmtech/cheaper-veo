@@ -19,13 +19,13 @@ export async function adminGrantCreditsAction(input: {
     const admin = await requireAdmin();
 
     if (!Number.isInteger(input.amount) || input.amount === 0) {
-      return { ok: false, error: "Quantidade deve ser inteira e diferente de zero." };
+      return { ok: false, error: "Amount must be an integer and non-zero." };
     }
     if (input.amount > 1_000_000 || input.amount < -1_000_000) {
-      return { ok: false, error: "Quantidade fora do limite seguro (±1.000.000)." };
+      return { ok: false, error: "Amount out of safe range (±1,000,000)." };
     }
     if (!input.description.trim()) {
-      return { ok: false, error: "Descrição é obrigatória (auditoria)." };
+      return { ok: false, error: "Description is required (audit)." };
     }
 
     await prisma.$transaction(async (tx) => {
@@ -38,7 +38,7 @@ export async function adminGrantCreditsAction(input: {
       const newBalance = user.creditsBalance + input.amount;
       if (newBalance < 0) {
         throw new Error(
-          `Operação resultaria em saldo negativo (${newBalance}).`,
+          `Operation would result in negative balance (${newBalance}).`,
         );
       }
 
@@ -59,11 +59,11 @@ export async function adminGrantCreditsAction(input: {
 
     revalidatePath(`/admin/users/${input.userId}`);
     revalidatePath("/admin");
-    return { ok: true, message: `${input.amount > 0 ? "+" : ""}${input.amount} créditos aplicados.` };
+    return { ok: true, message: `${input.amount > 0 ? "+" : ""}${input.amount} credits applied.` };
   } catch (err) {
     return {
       ok: false,
-      error: err instanceof Error ? err.message : "Falha desconhecida.",
+      error: err instanceof Error ? err.message : "Unknown failure.",
     };
   }
 }
@@ -87,7 +87,7 @@ export async function adminToggleAutoRechargeAction(input: {
   } catch (err) {
     return {
       ok: false,
-      error: err instanceof Error ? err.message : "Falha desconhecida.",
+      error: err instanceof Error ? err.message : "Unknown failure.",
     };
   }
 }
@@ -112,7 +112,7 @@ export async function adminClearAutoRechargeLockAction(
   } catch (err) {
     return {
       ok: false,
-      error: err instanceof Error ? err.message : "Falha desconhecida.",
+      error: err instanceof Error ? err.message : "Unknown failure.",
     };
   }
 }
@@ -134,7 +134,7 @@ export async function adminRevokeApiKeyAction(input: {
   } catch (err) {
     return {
       ok: false,
-      error: err instanceof Error ? err.message : "Falha desconhecida.",
+      error: err instanceof Error ? err.message : "Unknown failure.",
     };
   }
 }

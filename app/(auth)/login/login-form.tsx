@@ -56,11 +56,11 @@ export function LoginForm({ googleEnabled }: LoginFormProps) {
 
     const trimmedEmail = email.trim().toLowerCase();
     if (!trimmedEmail || !trimmedEmail.includes("@")) {
-      setError("Informe um email válido.");
+      setError("Enter a valid email.");
       return;
     }
     if (password.length < 8) {
-      setError("A senha deve ter pelo menos 8 caracteres.");
+      setError("Password must be at least 8 characters.");
       return;
     }
 
@@ -72,13 +72,13 @@ export function LoginForm({ googleEnabled }: LoginFormProps) {
         callbackURL,
       });
       if (signInError) {
-        setError(signInError.message ?? "Email ou senha incorretos.");
+        setError(signInError.message ?? "Incorrect email or password.");
         return;
       }
       router.push(callbackURL);
       router.refresh();
     } catch {
-      setError("Falha de rede. Tente novamente.");
+      setError("Network error. Try again.");
     } finally {
       setLoading(false);
     }
@@ -93,7 +93,7 @@ export function LoginForm({ googleEnabled }: LoginFormProps) {
         callbackURL,
       });
     } catch {
-      setError("Não foi possível iniciar login com Google.");
+      setError("Could not start Google login.");
       setGoogleLoading(false);
     }
   }
@@ -118,10 +118,10 @@ export function LoginForm({ googleEnabled }: LoginFormProps) {
           className="text-[1.75rem] font-semibold tracking-tight"
           style={{ letterSpacing: "-0.024em" }}
         >
-          Entrar na sua conta
+          Sign in to your account
         </h1>
         <p className="mt-2 text-[14px] text-secondary">
-          Use seu email e senha.
+          Use your email and password.
         </p>
       </div>
 
@@ -141,19 +141,24 @@ export function LoginForm({ googleEnabled }: LoginFormProps) {
             autoFocus
             value={email}
             onChange={(event) => setEmail(event.target.value)}
-            placeholder="voce@empresa.com"
+            placeholder="you@company.com"
             disabled={loading}
             className="input-apple"
           />
         </div>
 
         <div>
-          <label
-            htmlFor="password"
-            className="mb-2 block text-[13px] font-medium"
-          >
-            Senha
-          </label>
+          <div className="mb-2 flex items-baseline justify-between">
+            <label htmlFor="password" className="block text-[13px] font-medium">
+              Password
+            </label>
+            <Link
+              href="/forgot-password"
+              className="text-[12px] text-secondary underline-offset-4 hover:underline"
+            >
+              Forgot password?
+            </Link>
+          </div>
           <input
             id="password"
             type="password"
@@ -162,7 +167,7 @@ export function LoginForm({ googleEnabled }: LoginFormProps) {
             minLength={8}
             value={password}
             onChange={(event) => setPassword(event.target.value)}
-            placeholder="Mínimo 8 caracteres"
+            placeholder="At least 8 characters"
             disabled={loading}
             className="input-apple"
           />
@@ -173,7 +178,7 @@ export function LoginForm({ googleEnabled }: LoginFormProps) {
           disabled={loading}
           className="btn-primary mt-2 w-full disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {loading ? "Entrando…" : "Entrar"}
+          {loading ? "Signing in…" : "Sign in"}
         </button>
       </form>
 
@@ -203,7 +208,7 @@ export function LoginForm({ googleEnabled }: LoginFormProps) {
               className="text-[11px] uppercase text-muted"
               style={{ letterSpacing: "0.08em" }}
             >
-              ou
+              or
             </span>
             <span
               className="h-px flex-1"
@@ -219,23 +224,23 @@ export function LoginForm({ googleEnabled }: LoginFormProps) {
             style={{ fontFamily: "'Roboto', system-ui, -apple-system, sans-serif" }}
           >
             <GoogleLogo />
-            <span>{googleLoading ? "Redirecionando…" : "Sign in with Google"}</span>
+            <span>{googleLoading ? "Redirecting…" : "Sign in with Google"}</span>
           </button>
         </>
       ) : null}
 
       <p className="mt-7 text-center text-[14px] text-secondary">
-        Ainda não tem conta?{" "}
+        Don&apos;t have an account yet?{" "}
         <Link
           href={signupHref}
           className="font-medium text-[var(--color-text)] underline decoration-[rgba(162,221,0,0.5)] decoration-2 underline-offset-4 transition-colors hover:text-[var(--color-accent)]"
         >
-          Criar conta grátis
+          Create free account
         </Link>
       </p>
 
       <p className="mt-3 text-center text-xs text-muted">
-        Ao continuar você concorda com os Termos e a Política de Privacidade.
+        By continuing you agree to the Terms and Privacy Policy.
       </p>
     </div>
   );

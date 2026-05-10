@@ -47,7 +47,7 @@ export function Hero() {
 
   return (
     <section
-      className="relative -mt-14 flex min-h-[100svh] items-center justify-center overflow-hidden"
+      className="relative -mt-20 flex min-h-[100svh] items-center justify-center overflow-hidden"
       style={{
         isolation: "isolate",
         backgroundColor: "rgb(10, 10, 12)",

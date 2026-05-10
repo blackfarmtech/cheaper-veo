@@ -3,9 +3,9 @@
 @theme inline {
   /* ============================================================
      Brand — Apple dark-premium adaptation
-     Mantém #a2dd00 + off-white #f3f0ed como cores sagradas,
-     mas eleva o background com um preto mais profundo (Apple-like)
-     e uma escala de superfícies translúcidas em camadas.
+     Keeps #a2dd00 + off-white #f3f0ed as sacred colors,
+     but elevates the background with a deeper, Apple-like black
+     and a layered scale of translucent surfaces.
      ============================================================ */
   --color-bg: #0a0a0c;
   --color-bg-secondary: #0f1012;
@@ -216,7 +216,7 @@
     box-shadow: var(--shadow-md);
   }
 
-  /* Card sólido (sem blur) para áreas com vídeo / imagem por trás */
+  /* Solid card (no blur) for areas with video / image behind */
   .card-solid {
     background: var(--color-card-solid);
     border: 1px solid var(--color-border);
@@ -225,7 +225,7 @@
   }
 
   /* ============================================================
-     Inputs — pílula suave Apple
+     Inputs — soft Apple pill
      ============================================================ */
   .input-apple {
     width: 100%;

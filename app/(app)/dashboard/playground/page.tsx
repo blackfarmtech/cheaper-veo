@@ -9,7 +9,7 @@ import { RecentRunsAside } from "@/components/dashboard/RecentRunsAside";
 
 export const metadata = {
   title: "Playground · Cheaper Veo",
-  description: "Gere vídeos Veo 3.1 a partir do dashboard.",
+  description: "Generate Veo 3.1 videos from the dashboard.",
 };
 
 interface PlaygroundPageProps {
@@ -34,7 +34,7 @@ export default async function PlaygroundPage({ searchParams }: PlaygroundPagePro
             Playground
           </h1>
           <p className="mt-1.5 text-[15px] text-secondary">
-            Gere vídeos Veo 3.1 usando o saldo da sua conta.
+            Generate Veo 3.1 videos using your account balance.
           </p>
         </div>
         <div
@@ -46,7 +46,7 @@ export default async function PlaygroundPage({ searchParams }: PlaygroundPagePro
             backdropFilter: "blur(12px)",
           }}
         >
-          <span className="text-muted">Saldo:</span>
+          <span className="text-muted">Balance:</span>
           <span
             className="font-semibold"
             style={{ fontFamily: "var(--font-mono)" }}
@@ -62,7 +62,7 @@ export default async function PlaygroundPage({ searchParams }: PlaygroundPagePro
         <Suspense
           key={refreshKey}
           fallback={
-            <div className="card p-6 text-xs text-muted">Carregando…</div>
+            <div className="card p-6 text-xs text-muted">Loading…</div>
           }
         >
           <RecentRunsAside
